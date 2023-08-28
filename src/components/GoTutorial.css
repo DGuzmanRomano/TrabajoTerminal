@@ -1,0 +1,10 @@
+.go-tutorial {
+    padding: 15px;
+    width: 50vw;
+    overflow: auto;
+    height: calc(100vh - 270px); /* Adjusted to make space for the header, toolbar, and output panel */
+    background-color: #F2F8FC;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    border-right: 1px solid #D1E6ED;
+}

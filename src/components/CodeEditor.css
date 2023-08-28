@@ -1,0 +1,6 @@
+.ace-editor-container {
+    width: 50vw;
+    height: calc(100vh - 220px);  /* Same height adjustment as the tutorial */
+    background-color: #272822;
+    border-left: 1px solid #D1E6ED;
+}

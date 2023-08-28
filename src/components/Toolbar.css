@@ -1,0 +1,54 @@
+.toolbar-header {
+    background-color: #00ADD8; /* Go Blue */
+    color: white;
+   
+    text-align: center;
+    font-size: 24px;
+    font-family: 'Arial', sans-serif; /* Choosing a readable font for education */
+}
+
+.toolbar {
+    background-color: #E5F4F9; /* Lighter Go Blue for contrast */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    padding: 8px 15px;
+ 
+    cursor: pointer;
+    background-color: #007AB8; /* Slightly darker blue for buttons */
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #005a8e; /* A shade darker for hover state */
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: block;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    z-index: 11;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.dropdown-menu a {
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    color: #007AB8; /* Dark Blue */
+}
+
+.dropdown-menu a:hover {
+    background-color: #E5F4F9; /* Light Blue */
+}

@@ -1,44 +1,22 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
+import { Dropdown } from 'react-bootstrap';
 
 const DropdownButton = ({ title, items, onItemClick }) => {
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const dropdownRef = useRef(null);
-
-    const toggleDropdown = () => {
-        setDropdownOpen(prev => !prev);
-    };
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setDropdownOpen(false);
-            }
-        };
-
-        document.addEventListener('click', handleClickOutside);
-
-        // Cleanup on component unmount
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
-    }, []);
 
     return (
-        <div className={`dropdown ${dropdownOpen ? 'show' : ''}`} ref={dropdownRef}>
-            <button className="btn btn-secondary dropdown-toggle" type="button" onClick={toggleDropdown}>
+        <Dropdown>
+            <Dropdown.Toggle variant="primary" id="dropdown-basic">
                 {title}
-            </button>
-            <div className={`dropdown-menu ${dropdownOpen ? 'show' : ''}`}>
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
                 {items.map((item, index) => (
-                    <a key={index} href="#" className="dropdown-item" onClick={(e) => {
-                        e.preventDefault();
-                        onItemClick(index);
-                    }}>
+                    <Dropdown.Item key={index} onClick={() => onItemClick(index)}>
                         {item}
-                    </a>
+                    </Dropdown.Item>
                 ))}
-            </div>
-        </div>
+            </Dropdown.Menu>
+        </Dropdown>
     );
 };
 

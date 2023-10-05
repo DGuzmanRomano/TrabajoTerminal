@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './GoTutorial.css';
 
-
 const GoTutorial = ({ lectureId }) => {
     const [content, setContent] = useState('');
 
     useEffect(() => {
-        if(lectureId) {
+        if (lectureId) {
             axios.get(`http://localhost:3001/lecture/${lectureId}`)
                 .then(response => {
                     setContent(response.data);
@@ -19,7 +18,11 @@ const GoTutorial = ({ lectureId }) => {
     }, [lectureId]);
 
     return (
-        <div className="go-tutorial" dangerouslySetInnerHTML={{ __html: content }} />
+        <div className="card go-tutorial">
+            <div className="card-body">
+                <div dangerouslySetInnerHTML={{ __html: content }} className="text-muted" />
+            </div>
+        </div>
     );
 }
 

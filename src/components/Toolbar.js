@@ -8,13 +8,16 @@ import axios from 'axios';
 const Toolbar = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedQuizId, setSelectedQuizId] = useState(null);
+    const [selectedOptionName, setSelectedOptionName] = useState("");
+
 
     const handleLectureClick = (lectureId) => {
         props.onLectureSelect(lectureId +1);
     };
 
-    const handleOptionClick = (index) => {
+    const handleOptionClick = (index, itemName) => {
         setSelectedQuizId(index + 1);
+        setSelectedOptionName(itemName);
         setIsModalOpen(true);
     };
     
@@ -48,13 +51,13 @@ const Toolbar = (props) => {
                     <DropdownButton 
                         title="Quiz"
                         items={['Option 1', 'Option 2', 'Option 3']}
-                        onItemClick={handleOptionClick}
+                        onItemClick={(index, itemName) => handleOptionClick(index, itemName)}
                     />
                 </div>
             </div>
 
             {/* Modal */}
-            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} content={<Quiz quizId={selectedQuizId} />} />
+            <Modal isOpen={isModalOpen} title={selectedOptionName} onClose={() => setIsModalOpen(false)} content={<Quiz quizId={selectedQuizId} />} />
         </div>
     );
 };

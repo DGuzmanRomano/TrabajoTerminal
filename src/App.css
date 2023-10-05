@@ -1,40 +1,18 @@
+.content .row > div {
+    height: calc((100vh - 100px - 100px) * 0.90);
+    /* Adjust YOUR_TOOLBAR_HEIGHT and YOUR_OUTPUT_PANEL_HEIGHT based on your actual measurements. The '0.75' multiplier is to allocate 75% of the remaining space for these panels and leave 25% for the output panel. Adjust as needed. */
+    overflow: auto; /* Allow for scrolling if the content exceeds the box size. */
+}
+
+.output-panel {
+    height: calc((100vh - 100px) * 0.25);
+}
+
+
 .App {
-    font-family: Arial, sans-serif;
+    background-color: #074468;
 }
 
-.content {
-    display: flex;
-    height: calc(100vh - 250px);
+.toolbar {
+    background-color: #007D9C;
 }
-
-/* Adjust width in CodeEditor and GoTutorial components if needed */
-.Resizer {
-    background: #000;
-    opacity: 0.5;
-    z-index: 1;
-    box-sizing: border-box;
-    background-clip: padding-box;
-  }
-  
-  .Resizer:hover {
-    -webkit-transition: all 0.2s ease;
-    transition: all 0.2s ease;
-  }
-  
-  .Resizer.horizontal {
-    height: 10px;
-    margin: -5px 0;
-    border-top: 5px solid rgba(255, 255, 255, 0);
-    border-bottom: 5px solid rgba(255, 255, 255, 0);
-    cursor: row-resize;
-    width: 100%;
-  }
-  
-  .Resizer.vertical {
-    width: 10px;
-    margin: 0 -5px;
-    border-left: 5px solid rgba(255, 255, 255, 0);
-    border-right: 5px solid rgba(255, 255, 255, 0);
-    cursor: col-resize;
-  }
-  

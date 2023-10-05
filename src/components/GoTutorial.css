@@ -1,10 +1,11 @@
+.go-tutorial .card-body {
+    max-height: 545px; /* Adjust this value based on your desired fixed height */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .go-tutorial {
-    padding: 15px;
-    width: 50vw;
-    overflow: auto;
-    height: calc(100vh - 270px); /* Adjusted to make space for the header, toolbar, and output panel */
-    background-color: #F2F8FC;
-    font-family: 'Arial', sans-serif;
-    color: #333;
-    border-right: 1px solid #D1E6ED;
+    background-color: #FAFAFA;
+   border: 1px solid #E0E0E0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

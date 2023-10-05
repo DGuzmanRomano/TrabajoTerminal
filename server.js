@@ -56,3 +56,67 @@ app.get('/lecture/:id', (req, res) => {
         }
     });
 });
+
+// Add an endpoint to fetch quiz by its ID
+app.get('/quiz/:id', (req, res) => {
+    const quizId = req.params.id;
+
+    // Fetch the quiz question first
+    const query = 'SELECT * FROM questions WHERE id = ?';
+    db.query(query, [quizId], (err, quizResults) => {
+        if(err) {
+            console.error(err);
+            return res.status(500).send('Database error.');
+        }
+
+        // If quiz question found, fetch its options
+        if (quizResults.length > 0) {
+            const optionsQuery = 'SELECT option_text, is_correct FROM options WHERE question_id = ?';
+            db.query(optionsQuery, [quizId], (err, optionsResults) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).send('Database error.');
+                }
+
+                // Add the options to the quiz question data and send
+                quizResults[0].options = optionsResults;
+                res.json(quizResults[0]);
+            });
+        } else {
+            res.status(404).send('Quiz not found.');
+        }
+    });
+});
+
+
+
+app.get('/quiz/random/:id', (req, res) => {
+    const topicId = req.params.id;
+
+    // This SQL selects a random question for the given topic.
+    const query = `SELECT * FROM questions WHERE topic = ? ORDER BY RAND() LIMIT 1`;
+    db.query(query, [topicId], (err, quizResults) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Database error.');
+        }
+
+        // If a quiz question is found, fetch its options
+        if (quizResults.length > 0) {
+            const selectedQuizId = quizResults[0].id;
+            const optionsQuery = 'SELECT option_text, is_correct FROM options WHERE question_id = ?';
+            db.query(optionsQuery, [selectedQuizId], (err, optionsResults) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).send('Database error.');
+                }
+
+                // Add the options to the quiz question data and send the response
+                quizResults[0].options = optionsResults;
+                res.json(quizResults[0]);
+            });
+        } else {
+            res.status(404).send('Quiz not found.');
+        }
+    });
+});

@@ -5,6 +5,9 @@ import Toolbar from './components/Toolbar';
 import CodeEditor from './components/CodeEditor';
 import GoTutorial from './components/GoTutorial';
 import OutputPanel from './components/OutputPanel'; 
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import axios from 'axios';
 
 function App() {

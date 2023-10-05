@@ -120,3 +120,25 @@ app.get('/quiz/random/:id', (req, res) => {
         }
     });
 });
+
+
+
+app.post('/quiz/validate', (req, res) => {
+    const quizId = req.body.quizId;
+    const userAnswer = req.body.answer;
+
+    const query = 'SELECT * FROM options WHERE question_id = ? AND is_correct = 1';
+    db.query(query, [quizId], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Database error.');
+        }
+
+        const correctAnswer = results[0].option_text; // Adjust this if the correct answer is stored differently.
+        if (userAnswer === correctAnswer) {
+            res.json({ message: 'Correct!' });
+        } else {
+            res.json({ message: 'Incorrect. Please try again.' });
+        }
+    });
+});

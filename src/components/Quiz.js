@@ -6,26 +6,43 @@ import 'ace-builds/src-noconflict/theme-monokai';
 
 const Quiz = ({ quizId }) => {
 
+    const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
     const [feedback, setFeedback] = useState(null);
     const [data, setData] = useState(null);
     const [userAnswer, setUserAnswer] = useState(""); 
     const [selectedOption, setSelectedOption] = useState(null);
 
-    const handleSubmit = () => {
-        const handleSubmit = () => {
-            axios.post('http://localhost:3001/quiz/validate', {
-                quizId: data.id,
-                answer: data.type === "text_answer" ? userAnswer : selectedOption
-            })
-            .then(response => {
-                setFeedback(response.data.message);
-            })
-            .catch(error => {
-                console.error('Error validating answer:', error);
-            });
-        };
-        
-    };
+
+const handleSubmit = () => {
+    setIsSubmitDisabled(true);
+
+    let answer;
+    if (data.type === 'text_answer') {
+        answer = userAnswer;
+    } else {
+        // Assuming the selected option sends the actual string of the option.
+        answer = data.options[selectedOption].option_text;
+    }
+
+    console.log("Selected answer:", answer);  // Debugging line
+
+    axios.post('http://localhost:3001/quiz/validate', {
+        quizId: data.id,
+        answer: answer
+    })
+    .then(response => {
+        setFeedback(response.data.message);
+        setIsSubmitDisabled(false);
+    })
+    .catch(error => {
+        console.error('Error validating answer:', error);
+        setIsSubmitDisabled(false);
+    });
+};
+
+    
+
+    
 
     useEffect(() => {
         if(quizId) {
@@ -68,13 +85,13 @@ const Quiz = ({ quizId }) => {
     
                     {data.type === "true_false" && ['True', 'False'].map((option, index) => (
                         <button
-                            key={index}
-                            className={`quiz-option-button ${selectedOption === index ? 'selected' : ''}`}
-                            onClick={() => handleOptionClick(index)}
-                        >
-                            {option}
-                        </button>
-                    ))}
+                        key={index}
+                        className={`quiz-option-button ${selectedOption === index ? 'selected' : ''}`}
+                        onClick={() => handleOptionClick(index)}
+                    >
+                        {option}
+                    </button>
+                ))}
     
                     {data.type === "text_answer" && (
                         <>
@@ -87,7 +104,8 @@ const Quiz = ({ quizId }) => {
                         </>
                     )}
     
-                    <button onClick={handleSubmit}>Submit</button>
+                 <button onClick={handleSubmit} disabled={isSubmitDisabled}>Submit</button>
+                 <p>{feedback}</p>
                 </>
             ) : (
                 <p>Loading...</p>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Toolbar.css';
+
 import DropdownButton from './DropdownButton';
 import Modal from './Modal'; 
 import Quiz from './Quiz';
@@ -14,41 +14,43 @@ const Toolbar = (props) => {
     };
 
     const handleOptionClick = (index) => {
-     
-        setSelectedQuizId(index + 1); 
+        setSelectedQuizId(index + 1);
         setIsModalOpen(true);
     };
     
     return (
         <div>
             {/* Header */}
-            <header className="toolbar-header">
+            <header className="bg-info p-3 text-white text-center">
                 Laboratorio Web para GoLang
             </header>
 
             {/* Toolbar */}
-            <div className="toolbar">
-
-                <button  className="button" onClick={props.onExecute}>Execute</button>
-                <button>Button 2</button>
-
-                <DropdownButton
-                    title="Lecciones"
-                    items={[
-                        'Variables y operadores',
-                        'Control de flujo',
-                        'Arreglos y cadenas',
-                        'Estructuras y funciones',
-                        'Recursividad'
-                    ]}
-                    onItemClick={handleLectureClick}
-                />
-               
-                <DropdownButton 
-                    title="Quiz"
-                    items={['Option 1', 'Option 2', 'Option 3']}
-                    onItemClick={handleOptionClick}
-                />
+            <div className="btn-toolbar p-3" role="toolbar">
+                <div className="btn-group mr-2" role="group">
+                    <button type="button" className="btn btn-primary" onClick={props.onExecute}>Execute</button>
+                    <button type="button" className="btn btn-secondary">Button 2</button>
+                </div>
+                <div className="btn-group mr-2" role="group">
+                    <DropdownButton
+                        title="Lecciones"
+                        items={[
+                            'Variables y operadores',
+                            'Control de flujo',
+                            'Arreglos y cadenas',
+                            'Estructuras y funciones',
+                            'Recursividad'
+                        ]}
+                        onItemClick={handleLectureClick}
+                    />
+                </div>
+                <div className="btn-group" role="group">
+                    <DropdownButton 
+                        title="Quiz"
+                        items={['Option 1', 'Option 2', 'Option 3']}
+                        onItemClick={handleOptionClick}
+                    />
+                </div>
             </div>
 
             {/* Modal */}

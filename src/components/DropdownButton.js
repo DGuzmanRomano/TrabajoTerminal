@@ -24,17 +24,20 @@ const DropdownButton = ({ title, items, onItemClick }) => {
     }, []);
 
     return (
-        <div className="dropdown" ref={dropdownRef}>
-            <button onClick={toggleDropdown}>{title}</button>
-            {dropdownOpen && (
-                <div className="dropdown-menu">
-                    {items.map((item, index) => (
-                        <a key={index} href="#" onClick={() => onItemClick(index)}>
-                            {item}
-                        </a>
-                    ))}
-                </div>
-            )}
+        <div className={`dropdown ${dropdownOpen ? 'show' : ''}`} ref={dropdownRef}>
+            <button className="btn btn-secondary dropdown-toggle" type="button" onClick={toggleDropdown}>
+                {title}
+            </button>
+            <div className={`dropdown-menu ${dropdownOpen ? 'show' : ''}`}>
+                {items.map((item, index) => (
+                    <a key={index} href="#" className="dropdown-item" onClick={(e) => {
+                        e.preventDefault();
+                        onItemClick(index);
+                    }}>
+                        {item}
+                    </a>
+                ))}
+            </div>
         </div>
     );
 };

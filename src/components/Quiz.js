@@ -61,7 +61,7 @@ const handleSubmit = () => {
     };
 
     return (
-        <div className="quiz-container">
+        <div className="container mt-3">
             {data ? (
                 <>
                     <p>{data.question_text}</p>
@@ -76,43 +76,38 @@ const handleSubmit = () => {
                     {data.type === "multiple_choice" && data.options.map((option, index) => (
                         <button
                             key={index}
-                            className={`quiz-option-button ${selectedOption === index ? 'selected' : ''}`}
+                            className={`btn btn-block mt-3 ${selectedOption === index ? 'btn-danger' : 'btn-primary'}`}
                             onClick={() => handleOptionClick(index)}
                         >
                             {option.option_text}
                         </button>
                     ))}
-    
                     {data.type === "true_false" && ['True', 'False'].map((option, index) => (
                         <button
-                        key={index}
-                        className={`quiz-option-button ${selectedOption === index ? 'selected' : ''}`}
-                        onClick={() => handleOptionClick(index)}
-                    >
-                        {option}
-                    </button>
-                ))}
-    
+                            key={index}
+                            className={`btn btn-block mt-3 ${selectedOption === index ? 'btn-danger' : 'btn-primary'}`}
+                            onClick={() => handleOptionClick(index)}
+                        >
+                            {option}
+                        </button>
+                    ))}
                     {data.type === "text_answer" && (
-                        <>
-                            <input 
-                                type="text" 
-                                value={userAnswer} 
-                                onChange={(e) => setUserAnswer(e.target.value)}
-                                placeholder="Type your answer here"
-                            />
-                        </>
+                        <input 
+                            type="text"
+                            className="form-control mt-3"
+                            value={userAnswer}
+                            onChange={(e) => setUserAnswer(e.target.value)}
+                            placeholder="Type your answer here"
+                        />
                     )}
-    
-                 <button onClick={handleSubmit} disabled={isSubmitDisabled}>Submit</button>
-                 <p>{feedback}</p>
+                    <button onClick={handleSubmit} disabled={isSubmitDisabled} className="btn btn-success mt-3">Submit</button>
+                    <p className="mt-3">{feedback}</p>
                 </>
             ) : (
                 <p>Loading...</p>
             )}
         </div>
     );
-    
-}
+};
 
 export default Quiz;

@@ -7,6 +7,8 @@ import GoTutorial from './components/GoTutorial';
 import OutputPanel from './components/OutputPanel'; 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+
 
 import axios from 'axios';
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import './Modal.css'; // Assuming you still have this file for additional custom styles
+import './Modal.css'; 
 
 const Modal = ({ isOpen, onClose, content, title }) => {
     if (!isOpen) return null;
@@ -10,7 +10,7 @@ const Modal = ({ isOpen, onClose, content, title }) => {
             <div className="modal-dialog modal-lg modal-custom-size">
                 <div className="modal-content">
                     <div className="modal-header">
-                    <h5 className="modal-title">{title}</h5> 
+                    <h5 className="modal-title">{title}</h5> {}
                         <button type="button" className="close" onClick={onClose}>
                             <span aria-hidden="true">&times;</span>
                         </button>

@@ -58,6 +58,7 @@ const Toolbar = (props) => {
 
             {/* Modal */}
             <Modal isOpen={isModalOpen} title={selectedOptionName} onClose={() => setIsModalOpen(false)} content={<Quiz quizId={selectedQuizId} />} />
+
         </div>
     );
 };

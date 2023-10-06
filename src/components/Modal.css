@@ -1,13 +1,20 @@
 .modal-custom-size {
-  max-width: 95%;
-  height: 80vh; /* 80% of the viewport height */
+  width: 80vw;    /* 80% of the viewport width */
+  max-width: 80vw;
+  height: 80vh; 
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
+
 .modal-custom-size .modal-content {
   height: auto;
   max-height: 100%;
   overflow-y: auto;
+}
+
+.modal-dialog {
+  margin: 2% auto;
+  padding: 0;
 }

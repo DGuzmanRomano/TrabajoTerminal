@@ -11,9 +11,10 @@ const DropdownButton = ({ title, items, onItemClick }) => {
 
             <Dropdown.Menu>
                 {items.map((item, index) => (
-                    <Dropdown.Item key={index} onClick={() => onItemClick(index)}>
-                        {item}
-                    </Dropdown.Item>
+                    <Dropdown.Item key={index} onClick={() => onItemClick(index, item)}>
+                    {item}
+                </Dropdown.Item>
+                
                 ))}
             </Dropdown.Menu>
         </Dropdown>

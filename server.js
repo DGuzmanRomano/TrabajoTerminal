@@ -123,6 +123,79 @@ app.get('/quiz/random/:id', (req, res) => {
 
 
 
+
+
+
+app.get('/quiz/all/:id', (req, res) => {
+    const topicId = req.params.id;
+
+    // This SQL selects all questions for the given topic.
+    const query = `SELECT * FROM questions WHERE topic = ?`;
+    db.query(query, [topicId], (err, quizResults) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Database error.');
+        }
+
+        // If quiz questions are found, fetch their options and send them all
+        const allQuizzes = [];
+        let completedQueries = 0;
+
+        quizResults.forEach(quiz => {
+            const optionsQuery = 'SELECT option_text, is_correct FROM options WHERE question_id = ?';
+            db.query(optionsQuery, [quiz.id], (err, optionsResults) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).send('Database error.');
+                }
+                quiz.options = optionsResults;
+                allQuizzes.push(quiz);
+                completedQueries++;
+
+                if (completedQueries === quizResults.length) {
+                    res.json(allQuizzes);
+                }
+            });
+        });
+    });
+});
+
+
+app.post('/quiz/validateAll', (req, res) => {
+    const responses = req.body.responses;
+    let correctCount = 0;
+    
+    const checkAnswers = responses.map((userAnswerIndex, i) => {
+        return new Promise((resolve, reject) => {
+            const questionId = i + 1;
+
+            const query = 'SELECT * FROM options WHERE question_id = ? AND is_correct = 1';
+            db.query(query, [questionId], (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    const correctOption = results[0].option_text;
+                    if (correctOption && userAnswerIndex === correctOption.id) {
+                        correctCount++;
+                    }
+                    resolve();
+                }
+            });
+        });
+    });
+
+    Promise.all(checkAnswers).then(() => {
+        res.json({ correctCount });
+    }).catch(err => {
+        console.error(err);
+        res.status(500).send('Database error.');
+    });
+});
+
+
+
+
+
 app.post('/quiz/validate', (req, res) => {
     const quizId = req.body.quizId;
     const userAnswer = req.body.answer;

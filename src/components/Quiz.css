@@ -38,3 +38,24 @@
 .quiz-option-button:hover {
     background-color: #005a8e; /* A shade darker for hover state */
 }
+
+
+.carousel-control-prev, .carousel-control-next {
+    top: 90%; /* Move it to the bottom */
+    bottom: auto;
+}
+
+.carousel-inner {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.carousel-item {
+    display: grid;
+    place-items: center;     /* center both vertically and horizontally */
+    height: 100%;            /* You can adjust this as per your requirements */
+}
+
+.carousel-item .btn-success {
+    z-index: 10;
+}

@@ -8,13 +8,7 @@ const Quiz = ({ quizId }) => {
 
 
     const [score, setScore] = useState(null);
-    const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
-    const [feedback, setFeedback] = useState(null);
     const [data, setData] = useState(null);
-    const [userAnswer, setUserAnswer] = useState(""); 
-    const [selectedOption, setSelectedOption] = useState(null);
-
-
     const [userResponses, setUserResponses] = useState([]);
 
     const handleSubmitAll = () => {
@@ -32,33 +26,17 @@ const Quiz = ({ quizId }) => {
     };
     
 
+    const handleOptionClick = (questionIndex, selectedOptionText) => {
+        const newResponses = [...userResponses];
+        newResponses[questionIndex] = selectedOptionText;
+        setUserResponses(newResponses);
+    };
     
-const handleSubmit = () => {
-    setIsSubmitDisabled(true);
-
-    let answer;
-    if (data.type === 'text_answer') {
-        answer = userAnswer;
-    } else {
-        // Assuming the selected option sends the actual string of the option.
-        answer = data.options[selectedOption].option_text;
-    }
-
-    console.log("Selected answer:", answer);  // Debugging line
-
-    axios.post('http://localhost:3001/quiz/validate', {
-        quizId: data.id,
-        answer: answer
-    })
-    .then(response => {
-        setFeedback(response.data.message);
-        setIsSubmitDisabled(false);
-    })
-    .catch(error => {
-        console.error('Error validating answer:', error);
-        setIsSubmitDisabled(false);
-    });
-};
+    const handleTextChange = (questionIndex, text) => {
+        const newResponses = [...userResponses];
+        newResponses[questionIndex] = text;
+        setUserResponses(newResponses);
+    };
 
     
 
@@ -76,12 +54,6 @@ useEffect(() => {
 }, [quizId]);
 
 
-
-const handleOptionClick = (quizIndex, selectedOptionIndex) => {
-    const updatedResponses = [...userResponses];
-    updatedResponses[quizIndex] = selectedOptionIndex;
-    setUserResponses(updatedResponses);
-};
 
 
     return (
@@ -105,7 +77,7 @@ const handleOptionClick = (quizIndex, selectedOptionIndex) => {
                                     <button
                                         key={idx}
                                         className={`btn btn-block mt-3`}
-                                        onClick={() => handleOptionClick(index, idx)}
+                                        onClick={() => handleOptionClick(index, option.option_text)} 
 
                                     >
                                         {option.option_text}
@@ -116,7 +88,7 @@ const handleOptionClick = (quizIndex, selectedOptionIndex) => {
                                     <button
                                         key={idx}
                                         className={`btn btn-block mt-3`}
-                                        onClick={() => handleOptionClick(index, idx)}
+                                        onClick={() => handleOptionClick(index, option.option_text)} 
 
                                     >
                                         {option}
@@ -128,6 +100,8 @@ const handleOptionClick = (quizIndex, selectedOptionIndex) => {
                                         type="text"
                                         className="form-control mt-3"
                                         placeholder="Type your answer here"
+                                       
+                                       
                                     />
                                 )}
     
@@ -135,7 +109,7 @@ const handleOptionClick = (quizIndex, selectedOptionIndex) => {
                         ))}
 
 <div className="carousel-item">
-    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<button onClick={handleSubmitAll} className="btn btn-success">Submit All</button>
+    _____________________________<button onClick={handleSubmitAll} className="btn btn-success">Submit All</button>
     <div className="score">
     {score !== null ? `Your score is: ${score}/${data.length}` : ""}
 </div>

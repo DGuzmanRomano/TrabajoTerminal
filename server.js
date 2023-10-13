@@ -57,71 +57,6 @@ app.get('/lecture/:id', (req, res) => {
     });
 });
 
-// Add an endpoint to fetch quiz by its ID
-app.get('/quiz/:id', (req, res) => {
-    const quizId = req.params.id;
-
-    // Fetch the quiz question first
-    const query = 'SELECT * FROM questions WHERE id = ?';
-    db.query(query, [quizId], (err, quizResults) => {
-        if(err) {
-            console.error(err);
-            return res.status(500).send('Database error.');
-        }
-
-        // If quiz question found, fetch its options
-        if (quizResults.length > 0) {
-            const optionsQuery = 'SELECT option_text, is_correct FROM options WHERE question_id = ?';
-            db.query(optionsQuery, [quizId], (err, optionsResults) => {
-                if (err) {
-                    console.error(err);
-                    return res.status(500).send('Database error.');
-                }
-
-                // Add the options to the quiz question data and send
-                quizResults[0].options = optionsResults;
-                res.json(quizResults[0]);
-            });
-        } else {
-            res.status(404).send('Quiz not found.');
-        }
-    });
-});
-
-
-
-app.get('/quiz/random/:id', (req, res) => {
-    const topicId = req.params.id;
-
-    // This SQL selects a random question for the given topic.
-    const query = `SELECT * FROM questions WHERE topic = ? ORDER BY RAND() LIMIT 1`;
-    db.query(query, [topicId], (err, quizResults) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send('Database error.');
-        }
-
-        // If a quiz question is found, fetch its options
-        if (quizResults.length > 0) {
-            const selectedQuizId = quizResults[0].id;
-            const optionsQuery = 'SELECT option_text, is_correct FROM options WHERE question_id = ?';
-            db.query(optionsQuery, [selectedQuizId], (err, optionsResults) => {
-                if (err) {
-                    console.error(err);
-                    return res.status(500).send('Database error.');
-                }
-
-                // Add the options to the quiz question data and send the response
-                quizResults[0].options = optionsResults;
-                res.json(quizResults[0]);
-            });
-        } else {
-            res.status(404).send('Quiz not found.');
-        }
-    });
-});
-
-
 
 
 
@@ -161,21 +96,24 @@ app.get('/quiz/all/:id', (req, res) => {
 });
 
 
+
 app.post('/quiz/validateAll', (req, res) => {
     const responses = req.body.responses;
     let correctCount = 0;
-    
-    const checkAnswers = responses.map((userAnswerIndex, i) => {
+
+    const checkAnswers = responses.map((userAnswer, i) => {
         return new Promise((resolve, reject) => {
             const questionId = i + 1;
 
-            const query = 'SELECT * FROM options WHERE question_id = ? AND is_correct = 1';
+            const query = 'SELECT option_text FROM options WHERE question_id = ? AND is_correct = 1';
+
             db.query(query, [questionId], (err, results) => {
                 if (err) {
                     reject(err);
                 } else {
-                    const correctOption = results[0].option_text;
-                    if (correctOption && userAnswerIndex === correctOption.id) {
+                    const correctOptionText = results[0].option_text;
+                    console.log(`QuestionId: ${questionId}, UserAnswer: ${userAnswer}, CorrectAnswer: ${correctOptionText}`);
+                    if (correctOptionText && userAnswer === correctOptionText) {
                         correctCount++;
                     }
                     resolve();
@@ -195,23 +133,3 @@ app.post('/quiz/validateAll', (req, res) => {
 
 
 
-
-app.post('/quiz/validate', (req, res) => {
-    const quizId = req.body.quizId;
-    const userAnswer = req.body.answer;
-
-    const query = 'SELECT * FROM options WHERE question_id = ? AND is_correct = 1';
-    db.query(query, [quizId], (err, results) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send('Database error.');
-        }
-
-        const correctAnswer = results[0].option_text; // Adjust this if the correct answer is stored differently.
-        if (userAnswer === correctAnswer) {
-            res.json({ message: 'Correct!' });
-        } else {
-            res.json({ message: 'Incorrect. Please try again.' });
-        }
-    });
-});

@@ -101,9 +101,10 @@ app.post('/quiz/validateAll', (req, res) => {
     const responses = req.body.responses;
     let correctCount = 0;
 
-    const checkAnswers = responses.map((userAnswer, i) => {
+    const checkAnswers = responses.map((responseObj) => {
         return new Promise((resolve, reject) => {
-            const questionId = i + 1;
+            const questionId = responseObj.questionId;
+            const userAnswer = responseObj.answer;
 
             const query = 'SELECT option_text FROM options WHERE question_id = ? AND is_correct = 1';
 
@@ -129,7 +130,5 @@ app.post('/quiz/validateAll', (req, res) => {
         res.status(500).send('Database error.');
     });
 });
-
-
 
 

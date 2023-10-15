@@ -26,21 +26,29 @@ const Quiz = ({ quizId }) => {
     };
     
 
-    const handleOptionClick = (questionIndex, selectedOptionText) => {
+    const handleOptionClick = (questionId, selectedOptionText) => {
         const newResponses = [...userResponses];
-        newResponses[questionIndex] = selectedOptionText;
+        newResponses.push({ questionId, answer: selectedOptionText });
         setUserResponses(newResponses);
     };
     
-    const handleTextChange = (questionIndex, text) => {
+    const handleTextChange = (questionId, textValue) => {
         const newResponses = [...userResponses];
-        newResponses[questionIndex] = text;
+        const existingResponseIndex = newResponses.findIndex(resp => resp.questionId === questionId);
+        if (existingResponseIndex > -1) {
+            newResponses[existingResponseIndex].answer = textValue;
+        } else {
+            newResponses.push({ questionId, answer: textValue });
+        }
         setUserResponses(newResponses);
     };
-
+    
     
 
-    
+
+
+
+
 useEffect(() => {
     if(quizId) {
         axios.get(`http://localhost:3001/quiz/all/${quizId}`)
@@ -77,21 +85,21 @@ useEffect(() => {
                                     <button
                                         key={idx}
                                         className={`btn btn-block mt-3`}
-                                        onClick={() => handleOptionClick(index, option.option_text)} 
+                                        onClick={() => handleOptionClick(quizItem.id, option.option_text)}
 
                                     >
                                         {option.option_text}
                                     </button>
                                 ))}
                                 
-                                {quizItem.type === "true_false" && ['True', 'False'].map((option, idx) => (
+                                {quizItem.type === "true_false" && quizItem.options.map((option, idx) => (
                                     <button
                                         key={idx}
                                         className={`btn btn-block mt-3`}
-                                        onClick={() => handleOptionClick(index, option.option_text)} 
+                                        onClick={() => handleOptionClick(quizItem.id, option.option_text)}
 
                                     >
-                                        {option}
+                                      {option.option_text}
                                     </button>
                                 ))}
                                 
@@ -100,8 +108,7 @@ useEffect(() => {
                                         type="text"
                                         className="form-control mt-3"
                                         placeholder="Type your answer here"
-                                       
-                                       
+                                        onChange={(e) => handleTextChange(quizItem.id, e.target.value)}
                                     />
                                 )}
     

@@ -132,3 +132,15 @@ app.post('/quiz/validateAll', (req, res) => {
 });
 
 
+app.get('/api/quiz', (req, res) => {
+    const query = `
+      SELECT q.*, o.option_text, o.is_correct
+      FROM questions q
+      JOIN options o ON q.id = o.question_id
+    `;
+    db.query(query, (err, result) => {
+      if (err) throw err;
+      res.json(result);
+    });
+  });
+  

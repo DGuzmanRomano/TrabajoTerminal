@@ -64,13 +64,14 @@ useEffect(() => {
 
 
 
-    return (
-        <div className="container mt-3">
-            {data ? (
-                <div id="quizCarousel" className="carousel slide" data-ride="carousel">
-                    <div className="carousel-inner">
-                        {data.map((quizItem, index) => (
-                            <div className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+return (
+    <div className="container mt-3">
+        {data ? (
+            <div id="quizCarousel" className="carousel slide" data-ride="carousel" data-interval="false">
+                <div className="carousel-inner" style={{ padding: '0 50px' }}> 
+                    {/* Increased padding to push content inwards */}
+                    {data.map((quizItem, index) => (
+                        <div className={`carousel-item ${index === 0 ? 'active' : ''}`}>
                                 <p>{quizItem.question_text}</p>
                                 <AceEditor
                                     mode="golang"

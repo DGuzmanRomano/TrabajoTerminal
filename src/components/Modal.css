@@ -1,20 +1,23 @@
-.modal-custom-size {
-  width: 80vw;    /* 80% of the viewport width */
-  max-width: 80vw;
-  height: 80vh; 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+/* Modal.css */
+
+/* Enforcing the background color for the modal */
+.modal-content {
+  background-color: darkblue !important;
 }
 
-
-.modal-custom-size .modal-content {
-  height: auto;
-  max-height: 100%;
-  overflow-y: auto;
+/* Customizing the size and behavior of the modal */
+.modal-custom-size {
+  width: 90% !important;  /* Adjust this if you want a different width */
+  max-width: 90% !important;
+  height: 80vh !important;
+  min-height: 80vh !important;
+  max-height: 80vh !important;
+  overflow-y: auto;  /* This will allow scroll inside the modal if content overflows */
 }
 
 .modal-dialog {
-  margin: 2% auto;
-  padding: 0;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

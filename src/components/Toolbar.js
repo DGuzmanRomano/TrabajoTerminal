@@ -10,6 +10,17 @@ const Toolbar = (props) => {
     const [selectedQuizId, setSelectedQuizId] = useState(null);
     const [selectedOptionName, setSelectedOptionName] = useState("");
 
+    const [quizQuestions, setQuizQuestions] = useState([]);
+
+const fetchQuizQuestions = async (topic) => {
+    try {
+        const response = await axios.get(`/api/getQuestionsByTopic?topic=${topic}`);
+        setQuizQuestions(response.data);
+    } catch (error) {
+        console.error("Error fetching quiz questions:", error);
+    }
+}
+
 
     const handleLectureClick = (lectureId) => {
         props.onLectureSelect(lectureId +1);
@@ -18,8 +29,10 @@ const Toolbar = (props) => {
     const handleOptionClick = (index, itemName) => {
         setSelectedQuizId(index + 1);
         setSelectedOptionName(itemName);
+        fetchQuizQuestions(itemName); // Fetch questions based on selected option
         setIsModalOpen(true);
     };
+    
     
     return (
         <div>

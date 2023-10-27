@@ -2,7 +2,7 @@
 
 /* Enforcing the background color for the modal */
 .modal-content {
-  background-color: darkblue !important;
+  background-color: rgb(93, 93, 139) !important;
 }
 
 /* Customizing the size and behavior of the modal */

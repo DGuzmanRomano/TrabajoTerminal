@@ -7,9 +7,28 @@ import 'ace-builds/src-noconflict/theme-monokai';
 const Quiz = ({ quizId }) => {
 
 
+    const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
+
+
+
     const [score, setScore] = useState(null);
     const [data, setData] = useState(null);
     const [userResponses, setUserResponses] = useState([]);
+    const [showFeedback, setShowFeedback] = useState(false);
+
+
+    const handleNextClick = () => {
+        if (activeQuestionIndex < data.length - 1) {
+            setActiveQuestionIndex(prevIndex => prevIndex + 1);
+        }
+    };
+    
+    const handlePrevClick = () => {
+        if (activeQuestionIndex > 0) {
+            setActiveQuestionIndex(prevIndex => prevIndex - 1);
+        }
+    };
+    
 
     const handleSubmitAll = () => {
         // Here, send the userResponses to the server for validation
@@ -19,6 +38,7 @@ const Quiz = ({ quizId }) => {
         .then(response => {
             // Set the score state variable with the result from the server
             setScore(response.data.correctCount);
+            setShowFeedback(true);
         })
         .catch(error => {
             console.error('Error validating answers:', error);
@@ -67,79 +87,71 @@ useEffect(() => {
 return (
     <div className="container mt-3">
         {data ? (
-            <div id="quizCarousel" className="carousel slide" data-ride="carousel" data-interval="false">
-                <div className="carousel-inner" style={{ padding: '0 50px' }}> 
-                    {/* Increased padding to push content inwards */}
-                    {data.map((quizItem, index) => (
-                        <div className={`carousel-item ${index === 0 ? 'active' : ''}`}>
-                                <p>{quizItem.question_text}</p>
-                                <AceEditor
-                                    mode="golang"
-                                    theme="monokai"
-                                    value={quizItem.code_snippet}
-                                    readOnly={true}
-                                    height="150px"
-                                    width="100%"
-                                />
-                                
-                                {quizItem.type === "multiple_choice" && quizItem.options.map((option, idx) => (
-                                    <button
-                                        key={idx}
-                                        className={`btn btn-block mt-3`}
-                                        onClick={() => handleOptionClick(quizItem.id, option.option_text)}
+            <div style={{ padding: '0 50px' }}> 
+                {/* Increased padding to push content inwards */}
+                
+                <div>
+                    <p>{data[activeQuestionIndex].question_text}</p>
+                    <AceEditor
+                        mode="golang"
+                        theme="monokai"
+                        value={data[activeQuestionIndex].code_snippet}
+                        readOnly={true}
+                        height="150px"
+                        width="100%"
+                    />
 
-                                    >
-                                        {option.option_text}
-                                    </button>
-                                ))}
-                                
-                                {quizItem.type === "true_false" && quizItem.options.map((option, idx) => (
-                                    <button
-                                        key={idx}
-                                        className={`btn btn-block mt-3`}
-                                        onClick={() => handleOptionClick(quizItem.id, option.option_text)}
+                    {data[activeQuestionIndex].type === "multiple_choice" && data[activeQuestionIndex].options.map((option, idx) => (
+                        <button
+                            key={idx}
+                            className={`btn btn-block mt-3`}
+                            onClick={() => handleOptionClick(data[activeQuestionIndex].id, option.option_text)}
+                        >
+                            {option.option_text}
+                        </button>
+                    ))}
 
-                                    >
-                                      {option.option_text}
-                                    </button>
-                                ))}
-                                
-                                {quizItem.type === "text_answer" && (
-                                    <input 
-                                        type="text"
-                                        className="form-control mt-3"
-                                        placeholder="Type your answer here"
-                                        onChange={(e) => handleTextChange(quizItem.id, e.target.value)}
-                                    />
-                                )}
-    
-                            </div>
-                        ))}
+                    {data[activeQuestionIndex].type === "true_false" && data[activeQuestionIndex].options.map((option, idx) => (
+                        <button
+                            key={idx}
+                            className={`btn btn-block mt-3`}
+                            onClick={() => handleOptionClick(data[activeQuestionIndex].id, option.option_text)}
+                        >
+                            {option.option_text}
+                        </button>
+                    ))}
 
-<div className="carousel-item">
-    _____________________________<button onClick={handleSubmitAll} className="btn btn-success">Submit All</button>
-    <div className="score">
-    {score !== null ? `Your score is: ${score}/${data.length}` : ""}
-</div>
-
-</div>
-
-
-                    </div>
-                    <a className="carousel-control-prev" href="#quizCarousel" role="button" data-slide="prev">
-                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span className="sr-only">Previous</span>
-                    </a>
-                    <a className="carousel-control-next" href="#quizCarousel" role="button" data-slide="next">
-                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span className="sr-only">Next</span>
-                    </a>
+                    {data[activeQuestionIndex].type === "text_answer" && (
+                        <input 
+                            type="text"
+                            className="form-control mt-3"
+                            placeholder="Type your answer here"
+                            onChange={(e) => handleTextChange(data[activeQuestionIndex].id, e.target.value)}
+                        />
+                    )}
                 </div>
-            ) : (
-                <p>Loading...</p>
-            )}
-        </div>
-    );
+
+                {activeQuestionIndex > 0 && (
+                    <button className="btn btn-primary" onClick={handlePrevClick}>Previous</button>
+                )}
+                {activeQuestionIndex < data.length - 1 ? (
+                    <button className="btn btn-primary" onClick={handleNextClick}>Next</button>
+                ) : (
+                    <div>
+                        <button onClick={handleSubmitAll} className="btn btn-success">Submit All</button>
+                        <div className="score">
+                            {score !== null ? `Your score is: ${score}/${data.length}` : ""}
+                        </div>
+                    </div>
+                )}
+
+            </div>
+        ) : (
+            <p>Loading...</p>
+        )}
+    </div>
+);
+
     
 };
 

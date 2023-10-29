@@ -64,7 +64,7 @@ app.get('/lecture/:id', (req, res) => {
 app.get('/quiz/all/:id', (req, res) => {
     const topicId = req.params.id;
 
-    // This SQL selects all questions for the given topic.
+    // Modify the query to select feedback column as well
     const query = `SELECT * FROM questions WHERE topic = ?`;
     db.query(query, [topicId], (err, quizResults) => {
         if (err) {
@@ -72,7 +72,6 @@ app.get('/quiz/all/:id', (req, res) => {
             return res.status(500).send('Database error.');
         }
 
-        // If quiz questions are found, fetch their options and send them all
         const allQuizzes = [];
         let completedQueries = 0;
 
@@ -100,6 +99,7 @@ app.get('/quiz/all/:id', (req, res) => {
 app.post('/quiz/validateAll', (req, res) => {
     const responses = req.body.responses;
     let correctCount = 0;
+    let feedback = [];
 
     const checkAnswers = responses.map((responseObj) => {
         return new Promise((resolve, reject) => {
@@ -113,10 +113,14 @@ app.post('/quiz/validateAll', (req, res) => {
                     reject(err);
                 } else {
                     const correctOptionText = results[0].option_text;
-                    console.log(`QuestionId: ${questionId}, UserAnswer: ${userAnswer}, CorrectAnswer: ${correctOptionText}`);
                     if (correctOptionText && userAnswer === correctOptionText) {
                         correctCount++;
                     }
+                    feedback.push({
+                        questionId: questionId,
+                        correctOption: correctOptionText,
+                        userOption: userAnswer
+                    });
                     resolve();
                 }
             });
@@ -124,7 +128,7 @@ app.post('/quiz/validateAll', (req, res) => {
     });
 
     Promise.all(checkAnswers).then(() => {
-        res.json({ correctCount });
+        res.json({ correctCount, feedback });
     }).catch(err => {
         console.error(err);
         res.status(500).send('Database error.');

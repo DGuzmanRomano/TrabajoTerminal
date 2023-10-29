@@ -14,9 +14,12 @@ const Quiz = ({ quizId }) => {
     const [score, setScore] = useState(null);
     const [data, setData] = useState(null);
     const [userResponses, setUserResponses] = useState([]);
+    const [correctAnswers, setCorrectAnswers] = useState([]);
     const [showFeedback, setShowFeedback] = useState(false);
-
-
+    const [quizData, setQuizData] = useState([]);
+    const [userAnswers, setUserAnswers] = useState({});
+    const [showResults, setShowResults] = useState(false);
+    
     const handleNextClick = () => {
         if (activeQuestionIndex < data.length - 1) {
             setActiveQuestionIndex(prevIndex => prevIndex + 1);
@@ -36,8 +39,8 @@ const Quiz = ({ quizId }) => {
             responses: userResponses
         })
         .then(response => {
-            // Set the score state variable with the result from the server
             setScore(response.data.correctCount);
+            setCorrectAnswers(response.data.correctAnswers); // Assuming your backend sends this
             setShowFeedback(true);
         })
         .catch(error => {
@@ -48,9 +51,15 @@ const Quiz = ({ quizId }) => {
 
     const handleOptionClick = (questionId, selectedOptionText) => {
         const newResponses = [...userResponses];
-        newResponses.push({ questionId, answer: selectedOptionText });
+        const existingResponse = newResponses.find(resp => resp.questionId === questionId);
+        if (existingResponse) {
+            existingResponse.answer = selectedOptionText;
+        } else {
+            newResponses.push({ questionId, answer: selectedOptionText });
+        }
         setUserResponses(newResponses);
     };
+    
     
     const handleTextChange = (questionId, textValue) => {
         const newResponses = [...userResponses];
@@ -145,14 +154,29 @@ return (
                     </div>
                 )}
 
-            </div>
-        ) : (
-            <p>Loading...</p>
-        )}
-    </div>
-);
-
-    
+                {showFeedback && 
+                    <div className="feedback-section">
+                        <h3>Feedback:</h3>
+                        {data.map((question, idx) => {
+                            const userResponse = userResponses.find(resp => resp.questionId === question.id);
+                            const correctAnswer = question.options.find(opt => opt.is_correct);
+                            return (
+                                <div key={idx}>
+                                    <p>Question {idx + 1}: {question.question_text}</p>
+                                    <p>Option selected: {userResponse && userResponse.answer}</p>
+                                    <p>Correct Answer: {correctAnswer && correctAnswer.option_text}</p>
+                                    <p>Explanation: {question.feedback}</p>
+                                </div>
+                            );
+                        })}
+                    </div>
+                }
+                </div>
+            ) : (
+                <p>Loading...</p>
+            )}
+        </div>
+    );
 };
 
 export default Quiz;

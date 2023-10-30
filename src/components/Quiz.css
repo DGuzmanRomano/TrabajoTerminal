@@ -1,60 +1,59 @@
-.quiz-container {
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    /* Remove or comment out the next line */
-    /* width: 500px; */
-}
-
-
-.quiz-option {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-top: 10px;
-    cursor: pointer;
-}
-
-
-
-.quiz-option-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-top: 10px;
-    cursor: pointer;
-    background-color: #129781;
-    text-align: left;
-}
-
-.quiz-option-button.selected {
-    background-color: #7003d6;
-    border-color: red;
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* This will create a responsive grid */
+    gap: 1rem; /* Gap between grid items */
+    margin-top: 1rem;
     
 }
 
-.quiz-option-button:hover {
-    background-color: #005a8e; /* A shade darker for hover state */
-}
-/* Adjusting the positioning of the carousel control arrows */
+.option-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF; /* Example blue color */
+    color: white;
+    font-size: 1rem;
+    transition: background-color 0.3s;
 
-.carousel-control-prev, .carousel-control-next {
-    z-index: 2;  /* Ensure they appear on top */
-    width: 5%;  /* Adjust the width as per requirement */
-}
-
-.carousel-control-prev {
-    left: 0;  /* Place the left arrow at the very left edge of the modal */
-}
-
-.carousel-control-next {
-    right: 0;  /* Place the right arrow at the very right edge of the modal */
+    /* Optional: Add some hover and focus styles for better interactivity */
+    &:hover, &:focus {
+        background-color: #0056b3; /* Darker blue on hover/focus */
+    }
 }
 
-/* Adjust the icons inside the controls if needed */
-.carousel-control-prev-icon, .carousel-control-next-icon {
-    background-color: rgba(0, 0, 0, 0.5); /* Give a background for better visibility, adjust color as needed */
-    padding: 10px;  /* Add some space around the arrow for better touch/click area */
+.btn-groupq {
+    display: flex;
+    justify-content: space-between;  /* This will space the divs out */
+    margin-top: 2rem;  /* Add some vertical space between options and the buttons */
+}
+
+.prev-button {
+     /* This makes the div take up space, pushing the other divs to the right */
+}
+
+.next-button {
+    text-align: right;
+   
+}
+
+.submit-all-button {
+  /* This makes the div take up space */
+    text-align: right;  /* Align the Submit All button to the right */
+     background-color: #00645c;  /* Dark blue */
+}
+
+
+
+
+/* Darker shade of blue for Next and Previous buttons */
+.prev-button .btn-dir, .next-button .btn-dir {
+    background-color: #00645c;  /* Dark blue */
+    color: rgb(233, 233, 233);
+    border-color: #0056b3;
+}
+
+/* For hover state */
+.prev-button .btn-dir:hover, .next-button .btn-dir:hover {
+    background-color: #004499;
+    border-color: #004499;
 }

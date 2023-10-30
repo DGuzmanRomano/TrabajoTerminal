@@ -1,23 +1,33 @@
-/* Modal.css */
-
-/* Enforcing the background color for the modal */
 .modal-content {
-  background-color: rgb(93, 93, 139) !important;
+  background-color: #1a2d4e !important;  /* Dark blue background color */
+  color: #f0f0f0;  /* Almost white text color */
 }
 
-/* Customizing the size and behavior of the modal */
-.modal-custom-size {
-  width: 90% !important;  /* Adjust this if you want a different width */
-  max-width: 90% !important;
-  height: 80vh !important;
-  min-height: 80vh !important;
-  max-height: 80vh !important;
-  overflow-y: auto;  /* This will allow scroll inside the modal if content overflows */
-}
 
 .modal-dialog {
   margin: auto;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.closeb {
+  color: rgb(255, 255, 255);  /* Change this to white if you prefer */
+  opacity: 1;  /* This ensures that the color is not faded out */
+  background-color: #ff0000;
+}
+
+.closeb:hover {
+  color: #ff0000;
+  background-color: rgb(255, 255, 255);
+  opacity: 1;
+}
+
+.modal-body {
+  overflow-y: auto;
+  max-height: calc(100vh - 150px);  /* Adjust this value based on your needs */
+}
+
+.closeb span {
+  font-size: 1.2rem;  /* Adjust this value as needed */
 }

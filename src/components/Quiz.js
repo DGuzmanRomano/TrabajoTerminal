@@ -3,6 +3,7 @@ import AceEditor from 'react-ace';
 import axios from 'axios';
 import 'ace-builds/src-noconflict/mode-golang';
 import 'ace-builds/src-noconflict/theme-monokai';
+import './Quiz.css'
 
 const Quiz = ({ quizId }) => {
 
@@ -42,6 +43,8 @@ const Quiz = ({ quizId }) => {
             setScore(response.data.correctCount);
             setCorrectAnswers(response.data.correctAnswers); // Assuming your backend sends this
             setShowFeedback(true);
+            setUserAnswers(userResponses);
+
         })
         .catch(error => {
             console.error('Error validating answers:', error);
@@ -97,38 +100,45 @@ return (
     <div className="container mt-3">
         {data ? (
             <div style={{ padding: '0 50px' }}> 
-                {/* Increased padding to push content inwards */}
-                
-                <div>
-                    <p>{data[activeQuestionIndex].question_text}</p>
-                    <AceEditor
-                        mode="golang"
-                        theme="monokai"
-                        value={data[activeQuestionIndex].code_snippet}
-                        readOnly={true}
-                        height="150px"
-                        width="100%"
-                    />
+               
+               {!showFeedback ? (
+                        <>
+                        <h4>Question {activeQuestionIndex + 1}: <h4>{data[activeQuestionIndex].question_text}</h4></h4>
 
-                    {data[activeQuestionIndex].type === "multiple_choice" && data[activeQuestionIndex].options.map((option, idx) => (
-                        <button
-                            key={idx}
-                            className={`btn btn-block mt-3`}
-                            onClick={() => handleOptionClick(data[activeQuestionIndex].id, option.option_text)}
-                        >
-                            {option.option_text}
-                        </button>
-                    ))}
+                            <AceEditor
+                                mode="golang"
+                                theme="monokai"
+                                value={data[activeQuestionIndex].code_snippet}
+                                readOnly={true}
+                                height="150px"
+                                width="100%"
+                            />
 
-                    {data[activeQuestionIndex].type === "true_false" && data[activeQuestionIndex].options.map((option, idx) => (
-                        <button
-                            key={idx}
-                            className={`btn btn-block mt-3`}
-                            onClick={() => handleOptionClick(data[activeQuestionIndex].id, option.option_text)}
-                        >
-                            {option.option_text}
-                        </button>
-                    ))}
+
+
+
+
+                    <div className="options-grid">
+                        {data[activeQuestionIndex].type === "multiple_choice" && data[activeQuestionIndex].options.map((option, idx) => (
+                            <button
+                                className="option-button"
+                                key={idx}
+                                onClick={() => handleOptionClick(data[activeQuestionIndex].id, option.option_text)}
+                            >
+                                {option.option_text}
+                            </button>
+                        ))}
+
+                        {data[activeQuestionIndex].type === "true_false" && data[activeQuestionIndex].options.map((option, idx) => (
+                            <button
+                                className="option-button"
+                                key={idx}
+                                onClick={() => handleOptionClick(data[activeQuestionIndex].id, option.option_text)}
+                            >
+                                {option.option_text}
+                            </button>
+                        ))}
+                    </div>
 
                     {data[activeQuestionIndex].type === "text_answer" && (
                         <input 
@@ -138,39 +148,71 @@ return (
                             onChange={(e) => handleTextChange(data[activeQuestionIndex].id, e.target.value)}
                         />
                     )}
-                </div>
+          
 
-                {activeQuestionIndex > 0 && (
-                    <button className="btn btn-primary" onClick={handlePrevClick}>Previous</button>
-                )}
-                {activeQuestionIndex < data.length - 1 ? (
-                    <button className="btn btn-primary" onClick={handleNextClick}>Next</button>
-                ) : (
-                    <div>
+
+
+
+
+
+
+
+
+
+
+          <div className="btn-groupq">
+                    {activeQuestionIndex > 0 && (
+                       <div className="prev-button">
+                       <button className="btn btn-dir" onClick={handlePrevClick}>Previous</button>
+                   </div>
+                    )}
+
+                <div className="ml-auto">
+                    {activeQuestionIndex < data.length - 1 ? (
+                        <div className="next-button">
+                        <button className="btn btn-dir" onClick={handleNextClick}>Next</button>
+                    </div>
+
+                    ) : (
+                        <div className="submit-all-button">
                         <button onClick={handleSubmitAll} className="btn btn-success">Submit All</button>
-                        <div className="score">
-                            {score !== null ? `Your score is: ${score}/${data.length}` : ""}
-                        </div>
                     </div>
-                )}
+                    )}
 
-                {showFeedback && 
-                    <div className="feedback-section">
-                        <h3>Feedback:</h3>
-                        {data.map((question, idx) => {
-                            const userResponse = userResponses.find(resp => resp.questionId === question.id);
-                            const correctAnswer = question.options.find(opt => opt.is_correct);
-                            return (
-                                <div key={idx}>
-                                    <p>Question {idx + 1}: {question.question_text}</p>
-                                    <p>Option selected: {userResponse && userResponse.answer}</p>
-                                    <p>Correct Answer: {correctAnswer && correctAnswer.option_text}</p>
-                                    <p>Explanation: {question.feedback}</p>
-                                </div>
-                            );
-                        })}
                     </div>
-                }
+                </div>
+            </>
+        ) : (
+            <div className="feedback-section">
+                            <h3>Feedback:</h3>
+
+
+
+
+
+                            {data.map((question, idx) => {
+                                const userResponse = userResponses.find(resp => resp.questionId === question.id);
+                                const correctAnswer = question.options.find(opt => opt.is_correct);
+                                return (
+                                    <div key={idx}>
+                                        <p>Question {idx + 1}: {question.question_text}</p>
+                                        <AceEditor
+                                            mode="golang"
+                                            theme="monokai"
+                                            value={question.code_snippet}
+                                            readOnly={true}
+                                            height="150px"
+                                            width="100%"
+                                        />
+                                        <p>Option selected: {userResponse && userResponse.answer}</p>
+                                        <p>Correct Answer: {correctAnswer && correctAnswer.option_text}</p>
+                                        <p>Explanation: {question.feedback}</p>
+                                    </div>
+                                );
+                            })}
+                 
+  </div>
+                    )}
                 </div>
             ) : (
                 <p>Loading...</p>

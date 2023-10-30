@@ -11,7 +11,7 @@ const Modal = ({ isOpen, onClose, content, title }) => {
                 <div className="modal-content">
                     <div className="modal-header">
                     <h5 className="modal-title">{title}</h5> {}
-                        <button type="button" className="close" onClick={onClose}>
+                        <button type="button" className="closeb" onClick={onClose}>
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>

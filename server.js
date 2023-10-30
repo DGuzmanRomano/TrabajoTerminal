@@ -148,3 +148,16 @@ app.get('/api/quiz', (req, res) => {
     });
   });
   
+
+
+  app.get('/api/topics', (req, res) => {
+    const query = 'SELECT topic_name FROM topics';
+    db.query(query, (err, results) => {
+        if(err) {
+            console.error(err);
+            return res.status(500).send('Database error.');
+        }
+        const topics = results.map(result => result.topic_name);
+        res.json(topics);
+    });
+});

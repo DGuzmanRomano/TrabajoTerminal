@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import './Toolbar.css'
 import DropdownButton from './DropdownButton';
 import Modal from './Modal'; 
 import Quiz from './Quiz';
@@ -9,8 +9,23 @@ const Toolbar = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedQuizId, setSelectedQuizId] = useState(null);
     const [selectedOptionName, setSelectedOptionName] = useState("");
-
+    const [topics, setTopics] = useState([]);
     const [quizQuestions, setQuizQuestions] = useState([]);
+
+    useEffect(() => {
+        const fetchTopics = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/api/topics');
+                console.log("Fetched Topics:", response.data); // Log this
+                setTopics(response.data);
+            } catch (error) {
+                console.error("Error fetching topics:", error);
+            }
+        };
+    
+        fetchTopics();
+    }, []);
+
 
 const fetchQuizQuestions = async (topic) => {
     try {
@@ -33,6 +48,7 @@ const fetchQuizQuestions = async (topic) => {
         setIsModalOpen(true);
     };
     
+
     
     return (
         <div>
@@ -48,24 +64,20 @@ const fetchQuizQuestions = async (topic) => {
                     <button type="button" className="btn btn-secondary">Button 2</button>
                 </div>
                 <div className="btn-group mr-2" role="group">
-                    <DropdownButton
-                        title="Lecciones"
-                        items={[
-                            'Variables y operadores',
-                            'Control de flujo',
-                            'Arreglos y cadenas',
-                            'Estructuras y funciones',
-                            'Recursividad'
-                        ]}
-                        onItemClick={handleLectureClick}
-                    />
+                <DropdownButton
+                    title="Lecciones"
+                    items={topics}
+                    onItemClick={handleLectureClick}
+                />
+
                 </div>
                 <div className="btn-group" role="group">
-                    <DropdownButton 
-                        title="Quiz"
-                        items={['Option 1', 'Option 2', 'Option 3']}
-                        onItemClick={(index, itemName) => handleOptionClick(index, itemName)}
-                    />
+                <DropdownButton 
+                    title="Quiz"
+                    items={topics}
+                    onItemClick={(index, itemName) => handleOptionClick(index, itemName)}
+                />
+
                 </div>
             </div>
 

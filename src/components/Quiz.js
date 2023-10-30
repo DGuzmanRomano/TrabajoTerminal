@@ -186,6 +186,7 @@ return (
             <div className="feedback-section">
                             <h3>Feedback:</h3>
 
+                            {showFeedback && <h4>{score}/{data.length} correct answers</h4>}
 
 
 
@@ -194,7 +195,8 @@ return (
                                 const userResponse = userResponses.find(resp => resp.questionId === question.id);
                                 const correctAnswer = question.options.find(opt => opt.is_correct);
                                 return (
-                                    <div key={idx}>
+                                    <div key={idx} style={{ backgroundColor: userResponse.answer==correctAnswer.option_text ? 'green' : 'red' }}>
+
                                         <p>Question {idx + 1}: {question.question_text}</p>
                                         <AceEditor
                                             mode="golang"
@@ -210,6 +212,10 @@ return (
                                     </div>
                                 );
                             })}
+                            
+
+
+
                  
   </div>
                     )}

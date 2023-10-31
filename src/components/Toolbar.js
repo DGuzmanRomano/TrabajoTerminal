@@ -10,7 +10,9 @@ const Toolbar = (props) => {
     const [selectedQuizId, setSelectedQuizId] = useState(null);
     const [selectedOptionName, setSelectedOptionName] = useState("");
     const [topics, setTopics] = useState([]);
-    const [quizQuestions, setQuizQuestions] = useState([]);
+    const [quizzes, setQuizzes] = useState([]);
+
+
 
     useEffect(() => {
         const fetchTopics = async () => {
@@ -27,63 +29,79 @@ const Toolbar = (props) => {
     }, []);
 
 
-const fetchQuizQuestions = async (topic) => {
-    try {
-        const response = await axios.get(`/api/getQuestionsByTopic?topic=${topic}`);
-        setQuizQuestions(response.data);
-    } catch (error) {
-        console.error("Error fetching quiz questions:", error);
-    }
-}
-
-
     const handleLectureClick = (lectureId) => {
         props.onLectureSelect(lectureId +1);
     };
 
-    const handleOptionClick = (index, itemName) => {
-        setSelectedQuizId(index + 1);
-        setSelectedOptionName(itemName);
-        fetchQuizQuestions(itemName); // Fetch questions based on selected option
+    
+
+    useEffect(() => {
+        const fetchQuizzes = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/api/quizzes');
+                console.log("Fetched Quizzes:", response.data);
+                setQuizzes(response.data);
+            } catch (error) {
+                console.error("Error fetching quizzes:", error);
+            }
+        };
+        
+        fetchQuizzes();
+    }, []);
+
+      
+    
+
+    const handleOptionClick = (quizId, quizName) => {
+        setSelectedQuizId(quizId);
+        setSelectedOptionName(quizName);
         setIsModalOpen(true);
     };
-    
 
     
     return (
         <div>
             {/* Header */}
-            <header className="bg-info p-3 text-white text-center">
-                Laboratorio Web para GoLang
-            </header>
-
+           
             {/* Toolbar */}
-            <div className="btn-toolbar p-3" role="toolbar">
-                <div className="btn-group mr-2" role="group">
-                    <button type="button" className="btn btn-primary" onClick={props.onExecute}>Execute</button>
-                    <button type="button" className="btn btn-secondary">Button 2</button>
-                </div>
-                <div className="btn-group mr-2" role="group">
-                <DropdownButton
-                    title="Lecciones"
-                    items={topics}
-                    onItemClick={handleLectureClick}
-                />
+            <div className="btn-toolbar p-3 justify-content-between" role="toolbar">
+                <div className="left-buttons">
+                    <div className="btn-group mr-2" role="group">
+                        <button type="button" className="btn btn-primary" onClick={props.onExecute}>Execute</button>
+                        <button type="button" className="btn btn-secondary">Button 2</button>
+                    </div>
+                    <div className="btn-group mr-2" role="group">
+                        <DropdownButton
+                            title="Topics"
+                            items={topics}
+                            onItemClick={handleLectureClick}
+                        />
+                    </div>
+                    <div className="btn-group" role="group">
+                    <DropdownButton 
+                        title="Quiz"
+                        items={quizzes} 
+                        onItemClick={(quiz) => handleOptionClick(quiz.quiz_id, quiz.quiz_name)}
+                    />
 
-                </div>
-                <div className="btn-group" role="group">
-                <DropdownButton 
-                    title="Quiz"
-                    items={topics}
-                    onItemClick={(index, itemName) => handleOptionClick(index, itemName)}
-                />
 
+
+                    </div>
+                </div>
+
+                {/* Login and Signup Buttons */}
+                <div className="right-buttons">
+                    <button className="btn btn-outline-primary mr-2" onClick={() => {
+                        // handle login logic here
+                    }}>Login</button>
+                    <button className="btn btn-primary" onClick={() => {
+                        // handle signup logic here
+                    }}>Sign Up</button>
                 </div>
             </div>
 
             {/* Modal */}
             <Modal isOpen={isModalOpen} title={selectedOptionName} onClose={() => setIsModalOpen(false)} content={<Quiz quizId={selectedQuizId} />} />
-
         </div>
     );
 };

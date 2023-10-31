@@ -85,6 +85,7 @@ useEffect(() => {
     if(quizId) {
         axios.get(`http://localhost:3001/quiz/all/${quizId}`)
             .then(response => {
+                console.log(response.data);
                 setData(response.data);
             })
             .catch(error => {
@@ -119,7 +120,7 @@ return (
 
 
                     <div className="options-grid">
-                        {data[activeQuestionIndex].type === "multiple_choice" && data[activeQuestionIndex].options.map((option, idx) => (
+                        {data[activeQuestionIndex].question_type === "multiple_choice" && data[activeQuestionIndex].options.map((option, idx) => (
                             <button
                                 className="option-button"
                                 key={idx}
@@ -129,7 +130,7 @@ return (
                             </button>
                         ))}
 
-                        {data[activeQuestionIndex].type === "true_false" && data[activeQuestionIndex].options.map((option, idx) => (
+                        {data[activeQuestionIndex].question_type === "true_false" && data[activeQuestionIndex].options.map((option, idx) => (
                             <button
                                 className="option-button"
                                 key={idx}
@@ -140,7 +141,7 @@ return (
                         ))}
                     </div>
 
-                    {data[activeQuestionIndex].type === "text_answer" && (
+                    {data[activeQuestionIndex].question_type === "text_answer" && (
                         <input 
                             type="text"
                             className="form-control mt-3"

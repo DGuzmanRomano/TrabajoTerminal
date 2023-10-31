@@ -62,11 +62,14 @@ app.get('/lecture/:id', (req, res) => {
 
 
 app.get('/quiz/all/:id', (req, res) => {
-    const topicId = req.params.id;
+    const quizId  = req.params.id;
 
     // Modify the query to select feedback column as well
-    const query = `SELECT * FROM questions WHERE topic = ?`;
-    db.query(query, [topicId], (err, quizResults) => {
+    const query = `SELECT questions.*
+    FROM questions
+    INNER JOIN quiz_question ON questions.id = quiz_question.question_id
+    WHERE quiz_question.quiz_id = ?;`;
+    db.query(query, [quizId ], (err, quizResults) => {
         if (err) {
             console.error(err);
             return res.status(500).send('Database error.');
@@ -161,3 +164,17 @@ app.get('/api/quiz', (req, res) => {
         res.json(topics);
     });
 });
+
+
+app.get('/api/quizzes', (req, res) => {
+    const query = 'SELECT quiz_id, quiz_name FROM quizzes';
+    db.query(query, (err, results) => {
+        if(err) {
+            console.error(err);
+            return res.status(500).send('Database error.');
+        }
+        res.json(results);
+    });
+});
+
+

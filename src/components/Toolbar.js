@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Toolbar.css'
 import DropdownButton from './DropdownButton';
+import TopicsDropdownButton from './TopicsDropdownButton';
 import Modal from './Modal'; 
 import Quiz from './Quiz';
 import axios from 'axios';
@@ -71,7 +72,7 @@ const Toolbar = (props) => {
                         <button type="button" className="btn btn-secondary">Button 2</button>
                     </div>
                     <div className="btn-group mr-2" role="group">
-                        <DropdownButton
+                        <TopicsDropdownButton
                             title="Topics"
                             items={topics}
                             onItemClick={handleLectureClick}

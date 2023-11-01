@@ -149,7 +149,7 @@ return (
                             onChange={(e) => handleTextChange(data[activeQuestionIndex].id, e.target.value)}
                         />
                     )}
-          
+
 
 
 
@@ -195,9 +195,10 @@ return (
                             {data.map((question, idx) => {
                                 const userResponse = userResponses.find(resp => resp.questionId === question.id);
                                 const correctAnswer = question.options.find(opt => opt.is_correct);
-                                return (
-                                    <div key={idx} style={{ backgroundColor: userResponse.answer==correctAnswer.option_text ? 'green' : 'red' }}>
 
+                            const isSelectedAnswerCorrect = userResponse?.answer === correctAnswer.option_text;
+                                return (
+                                    <div key={idx} style={{ backgroundColor: isSelectedAnswerCorrect ? 'green' : 'red' }}>
                                         <p>Question {idx + 1}: {question.question_text}</p>
                                         <AceEditor
                                             mode="golang"
@@ -207,7 +208,7 @@ return (
                                             height="150px"
                                             width="100%"
                                         />
-                                        <p>Option selected: {userResponse && userResponse.answer}</p>
+                                        <p>Option selected: {userResponse ? userResponse.answer : " "}</p>
                                         <p>Correct Answer: {correctAnswer && correctAnswer.option_text}</p>
                                         <p>Explanation: {question.feedback}</p>
                                     </div>

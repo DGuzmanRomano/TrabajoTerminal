@@ -6,7 +6,6 @@ const { exec } = require('child_process');
 
 const app = express();
 const PORT = 3001;
-const codeController = require('./src/controllers/CodeController');
 const mysql = require('mysql2')
 
 const db = mysql.createConnection({
@@ -26,14 +25,6 @@ db.connect((err) => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Enable CORS for all routes (For development purposes only, adjust for production)
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    next();
-});
-
-app.post('/execute', codeController.executeCode);
 
 app.listen(PORT, () => {
     console.log(`Server started on http://localhost:${PORT}`);
@@ -56,9 +47,6 @@ app.get('/lecture/:id', (req, res) => {
         }
     });
 });
-
-
-
 
 
 app.get('/quiz/all/:id', (req, res) => {

@@ -37,7 +37,7 @@
 }
 
 .submit-all-button {
-  /* This makes the div take up space */
+  /* This makes the dtake up space */ 
     text-align: right;  /* Align the Submit All button to the right */
      background-color: #00645c;  /* Dark blue */
 }

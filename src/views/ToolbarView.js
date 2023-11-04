@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './Toolbar.css'
-import DropdownButton from './DropdownButton';
-import TopicsDropdownButton from './TopicsDropdownButton';
-import Modal from './Modal';
-import Quiz from './Quiz';
+import '../styles/Toolbar.css'
+import DropdownButton from '../components/DropdownButton';
+import TopicsDropdownButton from '../components/TopicsDropdownButton';
+import Modal from '../components/Modal';
+import Quiz from '../components/Quiz';
 import { fetchTopics } from '../controllers/TopicsController'; // Import the controller function
 import { fetchQuizzes } from '../controllers/QuizzesController'; // Import the controller function
 

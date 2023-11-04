@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
-import Toolbar from './components/Toolbar';
+import Toolbar from './views/ToolbarView';
+
 import CodeEditor from './components/CodeEditor';
 import LectureView from './views/LectureView';
 import OutputPanel from './components/OutputPanel';

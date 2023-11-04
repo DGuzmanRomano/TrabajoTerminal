@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import './Toolbar.css'
 import DropdownButton from './DropdownButton';
 import TopicsDropdownButton from './TopicsDropdownButton';
-import Modal from './Modal'; 
+import Modal from './Modal';
 import Quiz from './Quiz';
-import axios from 'axios';
+import { fetchTopics } from '../controllers/TopicsController'; // Import the controller function
+import { fetchQuizzes } from '../controllers/QuizzesController'; // Import the controller function
 
 const Toolbar = (props) => {
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedQuizId, setSelectedQuizId] = useState(null);
     const [selectedOptionName, setSelectedOptionName] = useState("");
@@ -16,41 +18,33 @@ const Toolbar = (props) => {
 
 
     useEffect(() => {
-        const fetchTopics = async () => {
-            try {
-                const response = await axios.get('http://localhost:3001/api/topics');
-                console.log("Fetched Topics:", response.data); // Log this
-                setTopics(response.data);
-            } catch (error) {
+        fetchTopics()
+            .then(data => {
+                console.log('Topics:', data);
+                setTopics(data);
+            })
+            .catch(error => {
                 console.error("Error fetching topics:", error);
-            }
-        };
-    
-        fetchTopics();
+            });
     }, []);
+    
+
+    useEffect(() => {
+        fetchQuizzes()
+            .then(setQuizzes)
+            .catch(error => {
+                console.error("Error fetching quizzes:", error);
+            });
+    }, []);
+      
+
+
 
 
     const handleLectureClick = (lectureId) => {
         props.onLectureSelect(lectureId +1);
     };
 
-    
-
-    useEffect(() => {
-        const fetchQuizzes = async () => {
-            try {
-                const response = await axios.get('http://localhost:3001/api/quizzes');
-                console.log("Fetched Quizzes:", response.data);
-                setQuizzes(response.data);
-            } catch (error) {
-                console.error("Error fetching quizzes:", error);
-            }
-        };
-        
-        fetchQuizzes();
-    }, []);
-
-      
     
 
     const handleOptionClick = (quizId, quizName) => {

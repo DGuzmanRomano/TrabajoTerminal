@@ -1,8 +1,8 @@
 const express = require('express');
 const fs = require('fs');
 const bodyParser = require('body-parser');
+const cors = require('cors'); // Require the cors package
 const { exec } = require('child_process');
-
 
 const app = express();
 const PORT = 3001;
@@ -20,7 +20,7 @@ db.connect((err) => {
     console.log('Connected to the MySQL database.');
 });
 
-
+app.use(cors());
 // To handle POST request data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

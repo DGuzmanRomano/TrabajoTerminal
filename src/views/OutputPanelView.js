@@ -4,7 +4,7 @@ import '../styles/OutputPanel.css';
 const OutputPanel = ({ output }) => {
   return (
     <div className="output-panel container-fluid mt-3">
-      <h3>Execution Output</h3>
+      <p>Execution Output</p>
       <pre>{output}</pre>
     </div>
   );

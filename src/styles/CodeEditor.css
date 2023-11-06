@@ -1,3 +1,10 @@
 .ace_editor {
     background-color: #1E1E1E;
+    width: 100% !important; /* Force the editor to fill the width */
+    height: 100% !important; /* Force the editor to fill the height of its parent */
 }
+
+  .code-editor-container {
+    height: 100%; /* Fill the height of the parent */
+    width: 100%; /* Fill the width of the parent */
+  }

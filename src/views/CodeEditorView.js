@@ -2,17 +2,19 @@
 
 import React from 'react';
 import AceEditor from 'react-ace';
+import '../styles/CodeEditor.css'
 
 import 'ace-builds/src-noconflict/mode-golang';
 import 'ace-builds/src-noconflict/theme-monokai';
 
 const CodeEditorView = ({ code, setCode }) => {
     return (
+        <div className="code-editor-container">
         <AceEditor
             mode="golang"
             theme="monokai"
             name="codeEditor"
-            onChange={newCode => setCode(newCode)}
+            onChange={setCode}
             fontSize={14}
             showPrintMargin={true}
             showGutter={true}
@@ -26,6 +28,7 @@ const CodeEditorView = ({ code, setCode }) => {
                 tabSize: 2,
             }}
         />
+         </div>
     );
 };
 

@@ -1,20 +1,5 @@
 .output-panel {
-    background-color: #0b1518;
-    padding: 10px;
-    box-sizing: border-box;
-    border-top: 1px solid #E0E0E0;
-}
-
-
-.output-panel h3 {
-    font-size: 1.25rem;
-    margin-bottom: 10px;
-}
-
-
-.output-panel pre {
-    overflow-x: auto; /* Ensure horizontal scroll if output is too wide */
-    max-height: 150px; /* Limit height of the output area */
-    overflow-y: auto; /* Scroll vertically if output exceeds the max height */
+ 
+  color: aliceblue;
 }
 

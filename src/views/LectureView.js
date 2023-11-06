@@ -9,12 +9,12 @@ const LectureView = ({ lectureId }) => {
     // You might want to handle the error state here as well
 
     return (
-        <div className="card go-tutorial">
-            <div className="card-body">
-                <div dangerouslySetInnerHTML={{ __html: content }} className="text-muted" />
-            </div>
+        <div className="lecture-view-container card go-tutorial">
+          <div className="card-body">
+            <div dangerouslySetInnerHTML={{ __html: content }} className="text-muted" />
+          </div>
         </div>
-    );
+      );
 }
 
 export default LectureView;

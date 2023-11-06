@@ -1,16 +1,43 @@
-.content .row > div {
-    height: calc((100vh - 100px - 100px) * 0.90);
-    /* Adjust YOUR_TOOLBAR_HEIGHT and YOUR_OUTPUT_PANEL_HEIGHT based on your actual measurements. The '0.75' multiplier is to allocate 75% of the remaining space for these panels and leave 25% for the output panel. Adjust as needed. */
-    overflow: auto; /* Allow for scrolling if the content exceeds the box size. */
-}
+/*App.css*/
+.content {
+    height: 80vh; 
+    overflow: hidden; /* This will prevent any additional scrolling on the content div itself */
 
-.output-panel {
-    height: calc((100vh - 100px) * 0.25);
-}
+    flex: 1; /* This will make the content take up the remaining space */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Equal width and full height for the code editor and lecture view */
+  .content .col-md-6 {
+    height: 100%;
+    overflow-y: auto; /* Enables scrolling */
+    padding: 0; /* Remove padding if necessary, or adjust as needed */
+  }
+  
+  /* Styles for the output container */
+  .output-container {
+    height: 20vh;
+    overflow-y: auto;
+    flex-shrink: 0; /* This prevents the output container from shrinking */
+  }
+/* Ensure the container-fluid doesn't add unwanted space */
+.container-fluid {
+    padding: 0; /* Remove padding if necessary */
+  }
+  .row.h-100 {
+    height: 70vh; /* vh is the viewport height */
 
-
+    flex: 1; /* This will allow the row to expand to fill available content space */
+  min-height: 0; /* This helps to deal with an overflow issue in flex containers */
+  }
+  
 .App {
     background-color: #074468;
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Make the app fill the full viewport height */
+    overflow: hidden; /* Prevent overflow to avoid the vertical scrollbar */
 }
 
 .toolbar {

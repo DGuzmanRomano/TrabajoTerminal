@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import Toolbar from './views/ToolbarView';
-
+import './styles/OutputPanel.css';
 import LectureView from './views/LectureView';
 import OutputPanel from './views/OutputPanelView';
 
@@ -42,18 +42,17 @@ function App() {
         <div className="App">
            <Toolbar onLectureSelect={setSelectedLecture} onExecute={() => handleExecute(code)} />
     
-            <div className="content container-fluid">
-                <div className="row">
-                    <div className="col-md-6 h-100">
-                    <CodeEditorController onExecute={handleExecute} code={code} setCode={setCode} />
-
+           <div className="content container-fluid">
+                <div className="row h-100">
+                    <div className="col-md-6">
+                        <CodeEditorController onExecute={handleExecute} code={code} setCode={setCode} />
                     </div>
-                    <div className="col-md-6 h-100">
+                    <div className="col-md-6">
                         <LectureView lectureId={selectedLecture} /> 
                     </div>
                 </div>
             </div>
-    
+
             <div className="output-container">
                 <OutputPanel output={output} />
             </div>

@@ -4,6 +4,7 @@ import Toolbar from './views/ToolbarView';
 import './styles/OutputPanel.css';
 import LectureView from './views/LectureView';
 import OutputPanel from './views/OutputPanelView';
+import { Resizable } from 're-resizable';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
@@ -44,9 +45,14 @@ function App() {
     
            <div className="content container-fluid">
                 <div className="row h-100">
+
+
                     <div className="col-md-6">
                         <CodeEditorController onExecute={handleExecute} code={code} setCode={setCode} />
                     </div>
+
+
+
                     <div className="col-md-6">
                         <LectureView lectureId={selectedLecture} /> 
                     </div>

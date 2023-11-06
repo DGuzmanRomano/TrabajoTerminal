@@ -1,13 +1,17 @@
 import React from 'react';
 import '../styles/OutputPanel.css';  
 
+
+// OutputPanel component (React)
 const OutputPanel = ({ output }) => {
   return (
-    <div className="output-panel container-fluid mt-3">
-      <p>Execution Output</p>
-      <pre>{output}</pre>
+    <div className="output-panel">
+      <div className="output-header">Execution Output</div>
+      <div className="output-content">
+        <pre>{output}</pre>
+      </div>
     </div>
   );
-}
+};
 
 export default OutputPanel;

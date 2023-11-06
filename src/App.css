@@ -3,6 +3,7 @@
     height: 80vh; 
     overflow: hidden; /* This will prevent any additional scrolling on the content div itself */
 
+    
     flex: 1; /* This will make the content take up the remaining space */
     display: flex;
     flex-direction: column;

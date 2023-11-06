@@ -3,7 +3,7 @@ import './App.css';
 import Toolbar from './views/ToolbarView';
 
 import LectureView from './views/LectureView';
-import OutputPanel from './components/OutputPanel';
+import OutputPanel from './views/OutputPanelView';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';

@@ -2,24 +2,36 @@ import React, { useState } from 'react';
 import './App.css';
 import Toolbar from './views/ToolbarView';
 
-import CodeEditor from './components/CodeEditor';
 import LectureView from './views/LectureView';
 import OutputPanel from './components/OutputPanel';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
-import { executeCode } from './controllers/CodeExecutionController'; // This would be your new controller
+import CodeEditorController from './controllers/CodeEditorController';
 
 function App() {
     const [code, setCode] = useState('');
     const [selectedLecture, setSelectedLecture] = useState(null);
     const [output, setOutput] = useState('');
 
-    const handleExecute = async () => {
+    const handleExecute = async (codeToExecute) => {
+        const requestBody = { content: codeToExecute };
         try {
-            const response = await executeCode(code);
-            setOutput(response.output);
+            const response = await fetch('http://localhost:3001/execute', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const result = await response.json();
+            setOutput(result.output);
         } catch (error) {
             console.error('Error executing code:', error);
             setOutput(error.message);
@@ -28,15 +40,16 @@ function App() {
 
     return (
         <div className="App">
-            <Toolbar onLectureSelect={setSelectedLecture} onExecute={handleExecute} />
+           <Toolbar onLectureSelect={setSelectedLecture} onExecute={() => handleExecute(code)} />
     
             <div className="content container-fluid">
                 <div className="row">
                     <div className="col-md-6 h-100">
-                        <CodeEditor value={code} onChange={setCode} />
+                    <CodeEditorController onExecute={handleExecute} code={code} setCode={setCode} />
+
                     </div>
                     <div className="col-md-6 h-100">
-                        <LectureView lectureId={selectedLecture} /> {/* Updated component name */}
+                        <LectureView lectureId={selectedLecture} /> 
                     </div>
                 </div>
             </div>

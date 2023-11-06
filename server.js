@@ -1,12 +1,18 @@
 const express = require('express');
 const fs = require('fs');
 const bodyParser = require('body-parser');
-const cors = require('cors'); // Require the cors package
-const { exec } = require('child_process');
+const cors = require('cors');
+const mysql = require('mysql2')
+const codeExecutionRoute = require('./CodeExecution.js'); // Update with correct path
+
 
 const app = express();
-const PORT = 3001;
-const mysql = require('mysql2')
+
+
+app.use(cors()); // Use CORS
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -20,15 +26,21 @@ db.connect((err) => {
     console.log('Connected to the MySQL database.');
 });
 
-app.use(cors());
+
+
+
 // To handle POST request data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.post('/execute', codeExecutionRoute.executeCode);
 
+
+const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Server started on http://localhost:${PORT}`);
 });
+
 
 
 app.get('/lecture/:id', (req, res) => {
@@ -40,6 +52,7 @@ app.get('/lecture/:id', (req, res) => {
             console.error(err);
             return res.status(500).send('Database error.');
         }
+
         if (results.length > 0) {
             res.json(results[0].text);
         } else {

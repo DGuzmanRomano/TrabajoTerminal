@@ -12,6 +12,7 @@ const app = express();
 app.use(cors()); // Use CORS
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 
 
 const db = mysql.createConnection({
@@ -28,10 +29,6 @@ db.connect((err) => {
 
 
 
-
-// To handle POST request data
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/execute', codeExecutionRoute.executeCode);
 
@@ -65,7 +62,6 @@ app.get('/lecture/:id', (req, res) => {
 app.get('/quiz/all/:id', (req, res) => {
     const quizId  = req.params.id;
 
-    // Modify the query to select feedback column as well
     const query = `SELECT questions.*
     FROM questions
     INNER JOIN quiz_question ON questions.id = quiz_question.question_id
@@ -99,45 +95,13 @@ app.get('/quiz/all/:id', (req, res) => {
 });
 
 
-
-app.post('/quiz/validateAll', (req, res) => {
-    const responses = req.body.responses;
-    let correctCount = 0;
-    let feedback = [];
-
-    const checkAnswers = responses.map((responseObj) => {
-        return new Promise((resolve, reject) => {
-            const questionId = responseObj.questionId;
-            const userAnswer = responseObj.answer;
-
-            const query = 'SELECT option_text FROM options WHERE question_id = ? AND is_correct = 1';
-
-            db.query(query, [questionId], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    const correctOptionText = results[0].option_text;
-                    if (correctOptionText && userAnswer === correctOptionText) {
-                        correctCount++;
-                    }
-                    feedback.push({
-                        questionId: questionId,
-                        correctOption: correctOptionText,
-                        userOption: userAnswer
-                    });
-                    resolve();
-                }
-            });
-        });
-    });
-
-    Promise.all(checkAnswers).then(() => {
-        res.json({ correctCount, feedback });
-    }).catch(err => {
-        console.error(err);
-        res.status(500).send('Database error.');
-    });
+app.post('/quiz/validateAll', async (req, res) => {
+   
 });
+
+
+
+
 
 
 app.get('/api/quiz', (req, res) => {

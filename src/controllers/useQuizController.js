@@ -37,14 +37,13 @@ const useQuizController = (quizId) => {
     setActiveQuestionIndex((prevIndex) => Math.max(prevIndex - 1, 0));
   }, []);
 
-  // Submit all answers
+
+
   const handleSubmitAll = useCallback(async () => {
-    // Submit the user responses and get the result
-    const result = await submitQuizAnswers(userResponses);
-    // Set the score based on the response from the server
-    setScore(result.score);
-    setShowFeedback(true);
+    console.log('Submitting responses:', userResponses);
+      setShowFeedback(true);
   }, [userResponses]);
+  
 
 
 

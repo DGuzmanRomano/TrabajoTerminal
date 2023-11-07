@@ -1,35 +1,54 @@
 // components/CodeEditorView.js
 
-import React from 'react';
-import AceEditor from 'react-ace';
 import '../styles/CodeEditor.css'
+import Editor from '@monaco-editor/react';
 
-import 'ace-builds/src-noconflict/mode-golang';
-import 'ace-builds/src-noconflict/theme-monokai';
+import React from 'react';
+import MonacoEditor from 'react-monaco-editor';
+import '../styles/CodeEditor.css';
+
+// You don't need to import modes and themes as you did with Ace Editor; they are included in the Monaco build.
 
 const CodeEditorView = ({ code, setCode }) => {
-    return (
-        <div className="code-editor-container">
-        <AceEditor
-            mode="golang"
-            theme="monokai"
-            name="codeEditor"
-            onChange={setCode}
-            fontSize={14}
-            showPrintMargin={true}
-            showGutter={true}
-            highlightActiveLine={true}
-            value={code}
-            setOptions={{
-                enableBasicAutocompletion: true,
-                enableLiveAutocompletion: true,
-                enableSnippets: true,
-                showLineNumbers: true,
-                tabSize: 2,
-            }}
-        />
-         </div>
-    );
+  // Options for the Monaco Editor
+  const options = {
+    selectOnLineNumbers: true,
+    roundedSelection: false,
+    readOnly: false,
+    cursorStyle: 'line',
+    automaticLayout: true,
+    theme: 'vs-dark', // Monaco's equivalent theme to Ace's monokai
+    fontSize: 14,
+    showPrintMargin: true, // Not directly available in Monaco, handled through options
+    lineNumbersMinChars: true,
+    renderLineHighlight: 'all',
+    tabSize: 2,
+    // Enable basic autocompletion, live autocompletion and snippets
+    // These features require the respective providers to be configured in Monaco
+    quickSuggestions: true,
+    minimap: { enabled: false }, // To hide the minimap
+    scrollBeyondLastLine: false, // To prevent scrolling beyond the last line
+    fixedOverflowWidgets: true, // To fix widgets overflow behavior
+  };
+
+  // Handle editor change
+  const handleEditorChange = (newValue, e) => {
+    setCode(newValue);
+  };
+
+  return (
+    <div className="code-editor-container">
+      <Editor
+        width="100%"
+        //height="400px" // Set a fixed height or manage via CSS
+        language="go"
+        theme="vs-dark"
+        value={code}
+        options={options}
+        onChange={handleEditorChange}
+      />
+    </div>
+  );
 };
 
 export default CodeEditorView;

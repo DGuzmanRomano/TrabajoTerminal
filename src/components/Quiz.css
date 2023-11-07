@@ -1,0 +1,62 @@
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.option-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF; /* Example blue color */
+    color: white;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+
+    /* Optional: Add some hover and focus styles for better interactivity */
+    &:hover, &:focus {
+        background-color: #0056b3; /* Darker blue on hover/focus */
+    }
+}
+
+.btn-groupq {
+    display: flex;
+    justify-content: space-between;
+    font-size: larger;
+    margin-top: 2rem;
+}
+
+.prev-button {
+    background-color: #00645c;  /* Dark blue */
+    color: rgb(233, 233, 233);
+    border-color: #0056b3;
+}
+
+.next-button {
+    flex-grow: 1;
+    text-align: right; /* align text to the right for next/submit button */
+}
+
+.submit-all-button {
+  /* This makes the dtake up space */ 
+    text-align: right;  /* Align the Submit All button to the right */
+     background-color: #53cc0d;  /* Dark blue */
+}
+
+
+
+
+/* Darker shade of blue for Next and Previous buttons */
+.prev-button .btn-dir, .next-button .btn-dir {
+    background-color: #00645c;  /* Dark blue */
+    color: rgb(233, 233, 233);
+    border-color: #0056b3;
+}
+
+/* For hover state */
+.prev-button .btn-dir:hover, .next-button .btn-dir:hover {
+    background-color: #004499;
+    border-color: #004499;
+}

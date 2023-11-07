@@ -145,3 +145,56 @@ app.get('/api/quizzes', (req, res) => {
 
 
 
+app.post('/submit-quiz', async (req, res) => {
+    const { quizId, userResponses } = req.body; // assuming your payload contains these
+
+    try {
+        const questions = await getQuestionsWithAnswers(quizId);
+        const score = calculateScore(questions, userResponses);
+        res.json({ score });
+    } catch (error) {
+        console.error('Error submitting quiz:', error);
+        res.status(500).send('Error submitting quiz');
+    }
+});
+
+async function getQuestionsWithAnswers(quizId) {
+    const [questions] = await db.promise().query(`
+        SELECT q.id, q.question_text, q.question_type, q.code_snippet, q.feedback, 
+               o.option_text, o.is_correct 
+        FROM questions q
+        JOIN options o ON q.id = o.question_id
+        WHERE q.id = ? AND o.is_correct = 1
+    `, [quizId]);
+
+    return questions;
+}
+
+function calculateScore(questions, userResponses) {
+    let score = 0;
+
+    // We iterate over the user responses
+    userResponses.forEach(userResponse => {
+        // Find the question that matches the current user response
+        const question = questions.find(q => q.id.toString() === userResponse.questionId);
+
+        // If it's a multiple-choice question, compare option_text
+        if (question && question.question_type === 'multiple_choice') {
+            // Check if the answer is an object with option_text (for MCQs)
+            if (userResponse.answer.option_text && userResponse.answer.option_text === question.option_text) {
+                score++;
+            }
+        }
+        // For text answers, just compare the answer strings
+        else if (question && question.question_type === 'text_answer') {
+            // Check if the answer is a string (for text answers)
+            if (userResponse.answer === question.option_text) {
+                score++;
+            }
+        }
+    });
+
+    return score;
+}
+
+

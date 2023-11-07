@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { fetchQuizData, submitQuizAnswers } from '../models/QuizModel'
-
+import axios from 'axios';
 
 const useQuizController = (quizId) => {
   // State for the current index, user responses, and score could be managed here
@@ -40,9 +40,25 @@ const useQuizController = (quizId) => {
 
 
   const handleSubmitAll = useCallback(async () => {
-    console.log('Submitting responses:', userResponses);
-      setShowFeedback(true);
-  }, [userResponses]);
+    setShowFeedback(true);
+
+    try {
+        const userAnswers = Object.keys(userResponses).map(questionId => ({
+            questionId: questionId,
+            answer: userResponses[questionId]
+        }));
+
+        const result = await axios.post(`http://localhost:3001/submit-quiz`, {
+            quizId,
+            userResponses: userAnswers
+        });
+
+        setScore(result.data.score);
+    } catch (error) {
+        console.error('There was an issue submitting the quiz:', error);
+    }
+}, [quizId, userResponses]);
+
   
 
 

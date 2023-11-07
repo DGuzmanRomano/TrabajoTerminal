@@ -1,0 +1,244 @@
+/*
+SQLyog Community v13.1.8 (64 bit)
+MySQL - 8.0.29 : Database - tt
+*********************************************************************
+*/
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`tt` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+USE `tt`;
+
+/*Table structure for table `lectures` */
+
+DROP TABLE IF EXISTS `lectures`;
+
+CREATE TABLE `lectures` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `text` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `lectures` */
+
+insert  into `lectures`(`id`,`text`) values 
+(1,'<h2>Go: For Loop</h2>\r\n            <p>\r\n                In Go, the basic for loop has three components: init, condition, and post:\r\n            </p>\r\n            <pre>\r\n                <code>\r\n                    for init; condition; post &#123; <br />\r\n                    &nbsp;&nbsp;// code to be executed <br />\r\n                    &#125;\r\n                </code>\r\n            </pre>\r\n            <p>\r\n                For more information, visit the official Go documentation.\r\n            </p>'),
+(2,'<h2>Go: For Loop</h2>\r\n            <p>\r\n                In Go, the basic for loop has three components: init, condition, and post:\r\n            </p>\r\n            <pre>\r\n                <code>\r\n                    for init; condition; post &#123; <br />\r\n                    &nbsp;&nbsp;// code to be executed <br />\r\n                    &#125;\r\n                </code>\r\n            </pre>\r\n            <p>\r\n                For more information, visit the official Go documentation.\r\n            </p>\r\n<h2>Go: For Loop</h2>\r\n            <p>\r\n                In Go, the basic for loop has three components: init, condition, and post:\r\n            </p>\r\n            <pre>\r\n                <code>\r\n                    for init; condition; post &#123; <br />\r\n                    &nbsp;&nbsp;// code to be executed <br />\r\n                    &#125;\r\n                </code>\r\n            </pre>\r\n            <p>\r\n                For more information, visit the official Go documentation.\r\n            </p>\r\n<h2>Go: For Loop</h2>\r\n            <p>\r\n                In Go, the basic for loop has three components: init, condition, and post:\r\n            </p>\r\n            <pre>\r\n                <code>\r\n                    for init; condition; post &#123; <br />\r\n                    &nbsp;&nbsp;// code to be executed <br />\r\n                    &#125;\r\n                </code>\r\n            </pre>\r\n            <p>\r\n                For more information, visit the official Go documentation.\r\n            </p>\r\n<h2>Go: For Loop</h2>\r\n            <p>\r\n                In Go, the basic for loop has three components: init, condition, and post:\r\n            </p>\r\n            <pre>\r\n                <code>\r\n                    for init; condition; post &#123; <br />\r\n                    &nbsp;&nbsp;// code to be executed <br />\r\n                    &#125;\r\n                </code>\r\n            </pre>\r\n            <p>\r\n                For more information, visit the official Go documentation.\r\n            </p>\r\n<h2>Go: For Loop</h2>\r\n            <p>\r\n                In Go, the basic for loop has three components: init, condition, and post:\r\n            </p>\r\n            <pre>\r\n                <code>\r\n                    for init; condition; post &#123; <br />\r\n                    &nbsp;&nbsp;// code to be executed <br />\r\n                    &#125;\r\n                </code>\r\n            </pre>\r\n            <p>\r\n                For more information, visit the official Go documentation.\r\n            </p>'),
+(3,'wwwwwwwwwwww');
+
+/*Table structure for table `options` */
+
+DROP TABLE IF EXISTS `options`;
+
+CREATE TABLE `options` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `question_id` int NOT NULL,
+  `option_text` text NOT NULL,
+  `is_correct` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `question_id` (`question_id`),
+  CONSTRAINT `options_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `options` */
+
+insert  into `options`(`id`,`question_id`,`option_text`,`is_correct`) values 
+(1,1,'var',1),
+(2,1,'let',0),
+(3,1,'const',0),
+(4,1,'def',0),
+(5,2,'let',0),
+(6,2,'const',1),
+(7,2,'var',0),
+(8,2,'define',0),
+(9,3,'string',0),
+(10,3,'list',0),
+(11,3,'int',1),
+(12,3,'float64',0),
+(13,4,'True',1),
+(14,4,'False',0),
+(15,5,'True',0),
+(16,5,'False',1),
+(17,6,'True',1),
+(18,6,'False',0),
+(19,7,'var',1),
+(20,8,'const',1),
+(21,9,'panic',1);
+
+/*Table structure for table `professors` */
+
+DROP TABLE IF EXISTS `professors`;
+
+CREATE TABLE `professors` (
+  `professor_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`professor_id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `professors` */
+
+insert  into `professors`(`professor_id`,`name`,`email`) values 
+(1,'Professor A','prof.a@email.com'),
+(2,'Professor B','prof.b@email.com');
+
+/*Table structure for table `questions` */
+
+DROP TABLE IF EXISTS `questions`;
+
+CREATE TABLE `questions` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `question_text` text NOT NULL,
+  `question_type` enum('multiple_choice','true_false','text_answer') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `code_snippet` text,
+  `topic` int DEFAULT NULL,
+  `feedback` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `questions` */
+
+insert  into `questions`(`id`,`question_text`,`question_type`,`code_snippet`,`topic`,`feedback`) values 
+(1,'Given the code snippet, which keyword is missing to declare a variable in Go?','multiple_choice','??? x = 10',1,'the var are declared as alksdjfasfasdfasd\r\nconst is for a constant\r\nsdfasfas dfas\r\nnsodfs is flsdafskj '),
+(2,'In the code snippet, which keyword is missing to declare a constant in Go?','multiple_choice','??? PI = 3.14',2,'the var are declared as alksdjfasfasdfasd\r\nconst is for a constant\r\nsdfasfas dfas\r\nnsodfs is flsdafskj '),
+(3,'Based on the code snippet, which data type should replace the `???` placeholder?','multiple_choice','var data ???',3,'the var are declared as alksdjfasfasdfasd\r\nconst is for a constant\r\nsdfasfas dfas\r\nnsodfs is flsdafskj '),
+(4,'The code snippet demonstrates an example of a method in Go.','true_false','type Person struct {\n   Name string\n}\n\nfunc (p Person) Speak() {\n   fmt.Println(\"Hello, my name is\", p.Name)\n}',1,'truee, the sanfod andfsidfansd '),
+(5,'The code snippet will compile without any errors in Go.','true_false','var x int\nx = \"Hello\"',2,'truee, the sanfod andfsidfansd '),
+(6,'Based on the Go compiler behavior, the code snippet will cause a compilation error due to an unused variable.','true_false','func main() {\n   x := 5\n}',3,'truee, the sanfod andfsidfansd '),
+(7,'Fill in the missing keyword to declare a variable in Go:','text_answer','??? x = 10',1,'the missing is var \r\nas var is a alskjdfhalsdfjasldfkjasldfasd'),
+(8,'Complete the code snippet with the appropriate keyword to declare a constant in Go:','text_answer','??? PI = 3.14',2,'the missing is var \r\nas var is a alskjdfhalsdfjasldfkjasldfasd'),
+(9,'Provide the correct keyword to handle the following error in Go:','text_answer','file, err := os.Open(\"filename.txt\")\nif err != nil {\n   ??? err\n}',3,'the missing is var \r\nas var is a alskjdfhalsdfjasldfkjasldfasd');
+
+/*Table structure for table `quiz_question` */
+
+DROP TABLE IF EXISTS `quiz_question`;
+
+CREATE TABLE `quiz_question` (
+  `quiz_id` int NOT NULL,
+  `question_id` int NOT NULL,
+  PRIMARY KEY (`quiz_id`,`question_id`),
+  KEY `question_id` (`question_id`),
+  CONSTRAINT `quiz_question_ibfk_1` FOREIGN KEY (`quiz_id`) REFERENCES `quizzes` (`quiz_id`),
+  CONSTRAINT `quiz_question_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `quiz_question` */
+
+insert  into `quiz_question`(`quiz_id`,`question_id`) values 
+(1,1),
+(2,1),
+(1,2),
+(2,5),
+(1,7),
+(1,8);
+
+/*Table structure for table `quiz_responses` */
+
+DROP TABLE IF EXISTS `quiz_responses`;
+
+CREATE TABLE `quiz_responses` (
+  `response_id` int NOT NULL AUTO_INCREMENT,
+  `student_id` int DEFAULT NULL,
+  `questions_id` int DEFAULT NULL,
+  `answers` text,
+  PRIMARY KEY (`response_id`),
+  KEY `student_id` (`student_id`),
+  KEY `questions_id` (`questions_id`),
+  CONSTRAINT `quiz_responses_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`),
+  CONSTRAINT `quiz_responses_ibfk_2` FOREIGN KEY (`questions_id`) REFERENCES `questions` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `quiz_responses` */
+
+/*Table structure for table `quizzes` */
+
+DROP TABLE IF EXISTS `quizzes`;
+
+CREATE TABLE `quizzes` (
+  `quiz_id` int NOT NULL AUTO_INCREMENT,
+  `topic_id` int DEFAULT NULL,
+  `professor_id` int DEFAULT NULL,
+  `quiz_name` text,
+  PRIMARY KEY (`quiz_id`),
+  KEY `topic_id` (`topic_id`),
+  KEY `professor_id` (`professor_id`),
+  CONSTRAINT `quizzes_ibfk_1` FOREIGN KEY (`topic_id`) REFERENCES `topics` (`topic_id`),
+  CONSTRAINT `quizzes_ibfk_2` FOREIGN KEY (`professor_id`) REFERENCES `professors` (`professor_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `quizzes` */
+
+insert  into `quizzes`(`quiz_id`,`topic_id`,`professor_id`,`quiz_name`) values 
+(1,1,1,'Hola mundo!'),
+(2,1,1,'Qiz1\r\n'),
+(3,3,2,'Quiz 2');
+
+/*Table structure for table `student_quiz_status` */
+
+DROP TABLE IF EXISTS `student_quiz_status`;
+
+CREATE TABLE `student_quiz_status` (
+  `student_id` int NOT NULL,
+  `quiz_id` int NOT NULL,
+  `quiz_status` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`student_id`,`quiz_id`),
+  KEY `quiz_id` (`quiz_id`),
+  CONSTRAINT `student_quiz_status_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`),
+  CONSTRAINT `student_quiz_status_ibfk_2` FOREIGN KEY (`quiz_id`) REFERENCES `quizzes` (`quiz_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `student_quiz_status` */
+
+/*Table structure for table `students` */
+
+DROP TABLE IF EXISTS `students`;
+
+CREATE TABLE `students` (
+  `student_id` int NOT NULL AUTO_INCREMENT,
+  `professor_id` int DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`student_id`),
+  UNIQUE KEY `email` (`email`),
+  KEY `professor_id` (`professor_id`),
+  CONSTRAINT `students_ibfk_1` FOREIGN KEY (`professor_id`) REFERENCES `professors` (`professor_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `students` */
+
+insert  into `students`(`student_id`,`professor_id`,`name`,`email`) values 
+(1,1,'Student 1','student1@email.com'),
+(2,1,'Student 2','student2@email.com'),
+(3,2,'Student 3','student3@email.com');
+
+/*Table structure for table `topics` */
+
+DROP TABLE IF EXISTS `topics`;
+
+CREATE TABLE `topics` (
+  `topic_id` int NOT NULL AUTO_INCREMENT,
+  `topic_name` text NOT NULL,
+  PRIMARY KEY (`topic_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `topics` */
+
+insert  into `topics`(`topic_id`,`topic_name`) values 
+(1,'Variables y operadores'),
+(2,'Control de flujo'),
+(3,'Arreglos y cadenas'),
+(4,'Estructuras y funciones'),
+(5,'Recursividad');
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

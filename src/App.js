@@ -4,7 +4,6 @@ import Toolbar from './views/ToolbarView';
 import './styles/OutputPanel.css';
 import LectureView from './views/LectureView';
 import OutputPanel from './views/OutputPanelView';
-import { Resizable } from 're-resizable';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';

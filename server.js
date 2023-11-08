@@ -3,7 +3,7 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql2')
-const codeExecutionRoute = require('./CodeExecution.js'); // Update with correct path
+const codeExecutionRoute = require('./CodeExecution.js'); 
 
 
 const app = express();
@@ -141,6 +141,42 @@ app.get('/api/quizzes', (req, res) => {
         res.json(results);
     });
 });
+
+
+app.get('/api/examples', (req, res) => {
+    const query = 'SELECT title FROM examples';
+    db.query(query, (err, results) => {
+        if(err) {
+            console.error(err);
+            return res.status(500).send('Database error.');
+        }
+        res.json(results);
+    });
+});
+
+
+app.get('/api/examples/:id', (req, res) => {
+    const query = 'SELECT * FROM examples WHERE id_example = ?';
+    db.query(query, [req.params.id], (err, results) => {
+        if(err) {
+            console.error(err);
+            return res.status(500).send('Database error.');
+        }
+        res.json(results[0]);
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -88,7 +88,7 @@ const renderFeedback = () => (
                     <div className="question-section">
                         <h4>Question {activeQuestionIndex + 1}</h4>
                         <p>{data[activeQuestionIndex].question_text}</p>
-                        <p>{data[activeQuestionIndex].code_snippet}</p>
+                      
                       
                         <div className="monaco-editor-container" style={{ height: '150px', width: '100%' }}>
                         <Editor 

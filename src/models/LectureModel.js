@@ -1,8 +1,4 @@
-// LectureModel.js
 class LectureModel {
-
-
-
 
     static getLectureById(db, lectureId) {
       return new Promise((resolve, reject) => {
@@ -15,11 +11,6 @@ class LectureModel {
         });
       });
     }
-
-
-
-
-
 
 
   }

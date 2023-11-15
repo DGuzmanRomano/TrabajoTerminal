@@ -22,13 +22,13 @@ const Quiz = ({ quizId }) => {
     } = useQuizController(quizId);
 
     if (!data || data.length === 0) {
-        return <p>No questions found for the selected quiz.</p>;
+        return <p>No se encontrar preguntas.</p>;
     }
 
     // Render the feedback section
 const renderFeedback = () => (
     <div className="feedback-section">
-        <h3>Quiz Results:</h3>
+        <h3>Resultados:</h3>
         <div className="feedback-list">
             {data.map((question, index) => {
 
@@ -51,7 +51,7 @@ const renderFeedback = () => (
                 return (
 
                     <div key={question.id} className="feedback-item" style={{ backgroundColor: backgroundColor }}>
-                        <p>Question {index + 1}: {question.question_text}</p>
+                        <p>Pregunta {index + 1}: {question.question_text}</p>
                         {question.code_snippet && (
                             <Editor 
                                 width="100%"
@@ -68,14 +68,14 @@ const renderFeedback = () => (
                                 }}
                             />
                         )}
-                        <p>User answer: {userAnswer}</p>
-                        <p>Correct answer: {correctAnswer}</p>
-                        <p>Feedback: {questionFeedback}</p>
+                        <p>Su respuesta: {userAnswer}</p>
+                        <p>Respuesta correcta: {correctAnswer}</p>
+                        <p>Explicación: {questionFeedback}</p>
                     </div>
                 );
             })}
         </div>
-        <p>Your Score: {score}</p>
+        <p>Puntuación: {score}</p>
     </div>
 );
 
@@ -136,13 +136,13 @@ const renderFeedback = () => (
 
                         <div className="btn-groupq">
                                 {activeQuestionIndex > 0 && (
-                                <button className="prev-button btn-dir" onClick={handlePrevClick}>Previous</button>
+                                <button className="prev-button btn-dir" onClick={handlePrevClick}>Anterior</button>
                                 )}
                                 <div className="next-button">
                                 {activeQuestionIndex < data.length - 1 ? (
-                                    <button className="btn-dir" onClick={handleNextClick}>Next</button>
+                                    <button className="btn-dir" onClick={handleNextClick}>Siguiente</button>
                                 ) : (
-                        <button className="submit-all-button btn-dir" onClick={handleSubmitAll}>Submit All</button>
+                        <button className="submit-all-button btn-dir" onClick={handleSubmitAll}>Enviar respuestas</button>
                         )}
                     </div>
                     </div>

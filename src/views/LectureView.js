@@ -1,13 +1,11 @@
-// GoTutorial.js
 import React from 'react';
 import '../styles/GoTutorial.css';
-import useLecture from '../controllers/useLecture'; // Assuming the hook is in the same directory
+import useLecture from '../controllers/useLecture'; 
 
 const LectureView = ({ lectureId }) => {
     const { content, error } = useLecture(lectureId);
 
-    // You might want to handle the error state here as well
-
+ 
     return (
         <div className="lecture-view-container card go-tutorial">
           <div className="card-body">

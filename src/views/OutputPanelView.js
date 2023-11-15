@@ -6,7 +6,7 @@ import '../styles/OutputPanel.css';
 const OutputPanel = ({ output }) => {
   return (
     <div className="output-panel">
-      <div className="output-header">Execution Output</div>
+      <div className="output-header">Output</div>
       <div className="output-content">
         <pre>{output}</pre>
       </div>

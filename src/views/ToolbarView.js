@@ -62,9 +62,11 @@ const Toolbar = (props) => {
         props.onLectureSelect(lectureId +1);
     };
 
-   const handleExampleClick = (example) => {
-               fetchExampleById(example.id_example)
+    const handleExampleClick = (example) => {
+        console.log("Clicked example:", example); // Ensure this logs the expected ID
+        fetchExampleById(example.id_example)
             .then(data => {
+                console.log("Data fetched for example:", data); // What is logged here?
                 setSelectedExample(data);
                 setIsExampleModalOpen(true);
             })
@@ -72,6 +74,9 @@ const Toolbar = (props) => {
                 console.error("Error fetching example details:", error);
             });
     };
+
+    
+    
 
     const handleOptionClick = (quizId, quizName) => {
         setSelectedQuizId(quizId);
@@ -85,14 +90,12 @@ const Toolbar = (props) => {
     
     return (
         <div>
-            {/* Header */}
-           
-            {/* Toolbar */}
+         
             <div className="btn-toolbar p-3 justify-content-between" role="toolbar">
                 <div className="left-buttons">
                     <div className="btn-group mr-2" role="group">
-                        <button type="button" className="btn btn-primary" onClick={props.onExecute}>Execute</button>
-                        <button type="button" className="btn btn-secondary">Button 2</button>
+                        <button type="button" className="btn btn-primary" onClick={props.onExecute}>Ejecutar</button>
+                        <button type="button" className="btn btn-secondary">Archivo</button>
                     </div>
 
 

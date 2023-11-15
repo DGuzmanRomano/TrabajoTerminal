@@ -13,7 +13,7 @@ const ExampleView = ({ example }) => {
     <div>
       <h2>{example.title}</h2>
       <pre>{example.code_example}</pre>
-      <button onClick={() => copyToClipboard(example.code_example)}>Copy Code</button>
+      <button onClick={() => copyToClipboard(example.code_example)}>Copiar</button>
       <p>{example.description}</p>
     </div>
   );

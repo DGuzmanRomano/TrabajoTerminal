@@ -1,17 +1,16 @@
-
 .go-tutorial {
-    background-color: #FAFAFA;
-   border: 1px solid #E0E0E0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #747474; /* Gray background */
+  color: rgb(182, 0, 0); /* White text for contrast */
+  
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 100%; /* Full height of its parent */
+  overflow-y: auto; /* Enables vertical scrolling */
+  margin-bottom: 0; /* Remove any additional margin if it's there */
 }
 
-.go-tutorial {
-    height: 100%; /* Full height of its parent */
-    overflow-y: auto; /* Enables vertical scrolling */
-    margin-bottom: 0; /* Remove any additional margin if it's there */
-  }
-  
-  .lecture-view-container {
-    height: 100%; /* Fill the height of the parent */
-    width: 100%; /* Fill the width of the parent */
-  }
+.lecture-view-container {
+  height: 100%; /* Fill the height of the parent */
+  width: 100%; /* Fill the width of the parent */
+}
+
+

@@ -102,7 +102,7 @@ const Toolbar = (props) => {
 
                     <div className="btn-group mr-2" role="group">
                         <ExamplesDropdownButton
-                            title="Examples"
+                            title="Ejemplos"
                             items={examples}
                             onItemClick={handleExampleClick }
                         />
@@ -110,7 +110,7 @@ const Toolbar = (props) => {
 
                     <div className="btn-group mr-2" role="group">
                         <TopicsDropdownButton
-                            title="Topics"
+                            title="Lecciones"
                             items={topics}
                             onItemClick={handleLectureClick}
                         />
@@ -120,7 +120,7 @@ const Toolbar = (props) => {
 
                     <div className="btn-group" role="group">
                     <DropdownButton 
-                        title="Quiz"
+                        title="Cuestionario"
                         items={quizzes} 
                         onItemClick={(quiz) => handleOptionClick(quiz.quiz_id, quiz.quiz_name)}
                     />

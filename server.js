@@ -14,13 +14,22 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
-
+/*
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'd',
     password: 'qazwsx123456',
     database: 'tt'
 });
+*/
+
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'rdguzmanromano',
+    password: '123456',
+    database: 'tt'
+});
+
 
 db.connect((err) => {
     if(err) throw err;

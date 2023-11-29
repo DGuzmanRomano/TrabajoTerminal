@@ -1,27 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Toolbar.css'
-import DropdownButton from '../components/DropdownButton';
+
 import TopicsDropdownButton from '../components/TopicsDropdownButton';
-import ExamplesDropdownButton from '../components/ExamplesDropdownButton';
+import QuizDropdownButton from '../components/QuizDropdownButton';
 import Modal from '../components/Modal';
 import Quiz from '../components/Quiz';
 import { fetchTopics } from '../controllers/TopicsController'; 
-import { fetchExamples } from '../controllers/ExamplesController'; 
-import { fetchExampleById } from '../controllers/ExamplesController'; 
 import { fetchQuizzes } from '../controllers/QuizzesController'; 
-import ExampleView from  '../views/ExampleView'
+import ExamplesDropdownButton from '../components/ExamplesDropdownButton'; // Import the new component
+
+import logo from '../gopher.png';
+
 
 const Toolbar = (props) => {
 
-    const [isExampleModalOpen, setIsExampleModalOpen] = useState(false);
     const [isQuizModalOpen, setIsQuizModalOpen] = useState(false);
     const [selectedQuizId, setSelectedQuizId] = useState(null);
     const [selectedOptionName, setSelectedOptionName] = useState("");
     const [topics, setTopics] = useState([]);
     const [quizzes, setQuizzes] = useState([]);
-    const [examples, setExamples] = useState([]);
-    const [selectedExample, setSelectedExample] = useState(null);
-
+    const [exampleTitles, setExampleTitles] = useState([]);
 
 
     useEffect(() => {
@@ -46,37 +44,14 @@ const Toolbar = (props) => {
       
 
 
-    useEffect(() => {
-        fetchExamples()
-        .then(data => {
-            setExamples(data);
-        })
-        .catch(error => {
-            console.error("Error fetching topics:", error);
-        });
-}, []); 
-    
+
+
 
 
     const handleLectureClick = (lectureId) => {
         props.onLectureSelect(lectureId +1);
     };
 
-    const handleExampleClick = (example) => {
-        console.log("Clicked example:", example); // Ensure this logs the expected ID
-        fetchExampleById(example.id_example)
-            .then(data => {
-                console.log("Data fetched for example:", data); // What is logged here?
-                setSelectedExample(data);
-                setIsExampleModalOpen(true);
-            })
-            .catch(error => {
-                console.error("Error fetching example details:", error);
-            });
-    };
-
-    
-    
 
     const handleOptionClick = (quizId, quizName) => {
         setSelectedQuizId(quizId);
@@ -84,7 +59,9 @@ const Toolbar = (props) => {
         setIsQuizModalOpen(true); 
     };
 
-    
+    const handleExampleClick = (title) => {
+        console.log("Selected example title:", title);
+    };
     
 
     
@@ -97,16 +74,15 @@ const Toolbar = (props) => {
                         <button type="button" className="btn btn-primary" onClick={props.onExecute}>Ejecutar</button>
                         <button type="button" className="btn btn-secondary">Archivo</button>
                     </div>
-
-
-
+       
                     <div className="btn-group mr-2" role="group">
-                        <ExamplesDropdownButton
-                            title="Ejemplos"
-                            items={examples}
-                            onItemClick={handleExampleClick }
-                        />
-                    </div>
+            <ExamplesDropdownButton // Add the new ExamplesDropdownButton here
+                title="Examples"
+                items={exampleTitles}
+                onItemClick={handleExampleClick}
+            />
+        </div>
+
 
                     <div className="btn-group mr-2" role="group">
                         <TopicsDropdownButton
@@ -119,7 +95,7 @@ const Toolbar = (props) => {
 
 
                     <div className="btn-group" role="group">
-                    <DropdownButton 
+                    <QuizDropdownButton 
                         title="Cuestionario"
                         items={quizzes} 
                         onItemClick={(quiz) => handleOptionClick(quiz.quiz_id, quiz.quiz_name)}
@@ -129,6 +105,8 @@ const Toolbar = (props) => {
 
                     </div>
                 </div>
+<div className="gopher" >   <img src={logo} alt="Logo" style={{ marginRight: 'auto' }} />  </div>
+               
 
                 {/* Login and Signup Buttons */}
                 <div className="right-buttons">
@@ -149,13 +127,7 @@ const Toolbar = (props) => {
             onClose={() => setIsQuizModalOpen(false)}
             content={<Quiz quizId={selectedQuizId} />}
         />
-        <Modal
-            isOpen={isExampleModalOpen}
-            title={selectedExample?.title}
-            onClose={() => setIsExampleModalOpen(false)}
-        >
-            <ExampleView example={selectedExample} />
-        </Modal>
+       
     </div>
 );
 };

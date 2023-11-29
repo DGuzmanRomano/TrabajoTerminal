@@ -14,22 +14,20 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
-/*
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'd',
     password: 'qazwsx123456',
     database: 'tt'
 });
-*/
 
+/*
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'rdguzmanromano',
     password: '123456',
     database: 'tt'
-});
-
+});*/
 
 db.connect((err) => {
     if(err) throw err;
@@ -159,9 +157,11 @@ app.get('/api/examples', (req, res) => {
             console.error(err);
             return res.status(500).send('Database error.');
         }
-        res.json(results);
+        const titles = results.map(result => result.title);
+        res.json(titles);
     });
 });
+
 
 
 app.get('/api/examples/:id', (req, res) => {

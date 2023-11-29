@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 
-const DropdownButton = ({ title, items, onItemClick }) => {
+const QuizDropdownButton = ({ title, items, onItemClick }) => {
 
     return (
         <Dropdown>
@@ -22,4 +22,4 @@ const DropdownButton = ({ title, items, onItemClick }) => {
     );
 };
 
-export default DropdownButton;
+export default QuizDropdownButton;

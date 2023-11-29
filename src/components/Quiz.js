@@ -22,7 +22,7 @@ const Quiz = ({ quizId }) => {
     } = useQuizController(quizId);
 
     if (!data || data.length === 0) {
-        return <p>No se encontrar preguntas.</p>;
+        return <p>No se encontraron preguntas.</p>;
     }
 
     // Render the feedback section
@@ -32,14 +32,14 @@ const renderFeedback = () => (
         <div className="feedback-list">
             {data.map((question, index) => {
 
-                const userAnswer = userResponses[question.id]?.option_text || "No answer provided";
+                const userAnswer = userResponses[question.id]?.option_text || "";
                 const correctOption = question.options.find(o => o.is_correct);
                 const correctAnswer = correctOption ? correctOption.option_text : "No correct answer";
                 const questionFeedback = question.feedback || "No feedback provided";
                 
 
                 const userResponse = userResponses[question.id];
-                const userAnswerText = userResponse ? (userResponse.option_text || userResponse) : "No answer provided";
+                const userAnswerText = userResponse ? (userResponse.option_text || userResponse) : "";
                 const isCorrect = question.options.some((o) => (o.option_text === userAnswerText && o.is_correct));
 
 
@@ -75,7 +75,7 @@ const renderFeedback = () => (
                 );
             })}
         </div>
-        <p>Puntuación: {score}</p>
+       {/*<p>Puntuación: {score}</p>*/ }
     </div>
 );
 
@@ -86,7 +86,7 @@ const renderFeedback = () => (
                 <>
                
                     <div className="question-section">
-                        <h4>Question {activeQuestionIndex + 1}</h4>
+                        <h4>Pregunta {activeQuestionIndex + 1}</h4>
                         <p>{data[activeQuestionIndex].question_text}</p>
                       
                       

@@ -8,29 +8,30 @@ exports.executeCode = (req, res) => {
     if (!userCode) {
         return res.status(400).send('No code content provided');
     }
+
     // Save the code to a file
     const filePath = `userCode-${Date.now()}.go`;
     fs.writeFileSync(filePath, userCode);
 
-    // Run the Go code directly
+    // Run the Go code
     exec(`go run ${filePath}`, (error, stdout, stderr) => {
-        // Use fs.unlink to delete the file asynchronously after code execution
+        // Delete the file after execution
         fs.unlink(filePath, (err) => {
             if (err) {
                 console.error(`Failed to delete file ${filePath}`, err.message);
-                // Decide how you want to handle this error. It might be benign, but could indicate permissions issues
             }
         });
-
+    
+        if (stderr) {
+            console.error("Compilation error:", stderr);
+            return res.status(500).json({ error: 'Compilation failed', details: stderr });
+        }
+    
         if (error) {
-            console.error("Server-side error:", error.message); // Log the error server-side
+            console.error("Server-side error:", error.message);
             return res.status(500).json({ error: 'Failed to run code', details: error.message });
         }
-
-        if (stderr) {
-            res.status(500).json({ error: stderr });
-        } else {
-            res.status(200).json({ output: stdout });
-        }
+    
+        res.status(200).json({ output: stdout });
     });
 };

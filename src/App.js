@@ -26,17 +26,19 @@ function App() {
                 body: JSON.stringify(requestBody),
             });
     
+            const result = await response.json();
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(result.details || `HTTP error! status: ${response.status}`);
             }
     
-            const result = await response.json();
             setOutput(result.output);
         } catch (error) {
             console.error('Error executing code:', error);
             setOutput(error.message);
         }
     };
+    
+    
 
     return (
         <div className="App">

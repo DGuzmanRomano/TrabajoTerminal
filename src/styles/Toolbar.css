@@ -57,3 +57,9 @@
 .left-buttons, .right-buttons {
     display: inline-block;
 }
+
+
+.gopher {
+    height: 50px; /* Adjust the size as necessary */
+    /* additional styling for the logo if needed */
+}

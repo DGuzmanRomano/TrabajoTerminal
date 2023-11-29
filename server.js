@@ -243,3 +243,16 @@ function calculateScore(questions, userResponses) {
 }
 
 
+
+
+
+app.get('/examples', (req, res) => {
+    const query = "SELECT example_id, example_code, example_title, example_description FROM examples";
+    db.query(query, (err, results) => {
+        if (err) {
+            res.status(500).send('Error fetching examples from database');
+            return;
+        }
+        res.json(results);
+    });
+});

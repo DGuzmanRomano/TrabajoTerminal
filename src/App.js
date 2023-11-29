@@ -10,6 +10,9 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 import CodeEditorController from './controllers/CodeEditorController';
 
+
+
+
 function App() {
     const [code, setCode] = useState('');
     const [selectedLecture, setSelectedLecture] = useState(null);

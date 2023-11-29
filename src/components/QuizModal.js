@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import './Modal.css'; 
 
-const Modal = ({ isOpen, onClose, content, title }) => {
+const QuizModal = ({ isOpen, onClose, content, title }) => {
     if (!isOpen) return null;
 
     return (
@@ -24,4 +24,4 @@ const Modal = ({ isOpen, onClose, content, title }) => {
     );
 };
 
-export default Modal;
+export default QuizModal;

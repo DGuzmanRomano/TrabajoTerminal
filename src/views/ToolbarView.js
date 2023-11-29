@@ -3,11 +3,13 @@ import '../styles/Toolbar.css'
 
 import TopicsDropdownButton from '../components/TopicsDropdownButton';
 import QuizDropdownButton from '../components/QuizDropdownButton';
-import Modal from '../components/Modal';
+import QuizModal from '../components/QuizModal';
 import Quiz from '../components/Quiz';
 import { fetchTopics } from '../controllers/TopicsController'; 
 import { fetchQuizzes } from '../controllers/QuizzesController'; 
 import ExamplesDropdownButton from '../components/ExamplesDropdownButton'; // Import the new component
+import ExampleModal from '../components/ExampleModal'; // Import your modal component
+
 
 import logo from '../gopher.png';
 
@@ -20,6 +22,11 @@ const Toolbar = (props) => {
     const [topics, setTopics] = useState([]);
     const [quizzes, setQuizzes] = useState([]);
     const [exampleTitles, setExampleTitles] = useState([]);
+    const [isExampleModalOpen, setIsExampleModalOpen] = useState(false);
+    const [currentExampleCode, setCurrentExampleCode] = useState("");
+
+
+
 
 
     useEffect(() => {
@@ -44,6 +51,18 @@ const Toolbar = (props) => {
       
 
 
+    
+useEffect(() => {
+    fetch('http://localhost:3001/examples') // Replace with your server URL
+        .then(response => response.json())
+        .then(data => {
+            setExampleTitles(data);
+        })
+        .catch(error => {
+            console.error("Error fetching examples:", error);
+        });
+}, []);
+
 
 
 
@@ -59,10 +78,10 @@ const Toolbar = (props) => {
         setIsQuizModalOpen(true); 
     };
 
-    const handleExampleClick = (title) => {
-        console.log("Selected example title:", title);
+    const handleExampleClick = (exampleCode) => {
+        setCurrentExampleCode(exampleCode); // Set the example code in state
+        setIsExampleModalOpen(true); // Open the modal
     };
-    
 
     
     return (
@@ -76,12 +95,16 @@ const Toolbar = (props) => {
                     </div>
        
                     <div className="btn-group mr-2" role="group">
-            <ExamplesDropdownButton // Add the new ExamplesDropdownButton here
-                title="Examples"
-                items={exampleTitles}
-                onItemClick={handleExampleClick}
-            />
-        </div>
+                    <ExamplesDropdownButton
+                        title="Ejemplos"
+                        items={exampleTitles}
+                        onItemClick={handleExampleClick} // Pass the new handler here
+                    />
+                </div>
+
+               
+
+
 
 
                     <div className="btn-group mr-2" role="group">
@@ -120,8 +143,13 @@ const Toolbar = (props) => {
             </div>
 
             {/* Modal */}
+             <ExampleModal
+                isOpen={isExampleModalOpen}
+                content={currentExampleCode}
+                onClose={() => setIsExampleModalOpen(false)}
+            />
              
-        <Modal
+        <QuizModal
             isOpen={isQuizModalOpen}
             title={selectedOptionName}
             onClose={() => setIsQuizModalOpen(false)}

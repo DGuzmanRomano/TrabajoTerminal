@@ -256,3 +256,33 @@ app.get('/examples', (req, res) => {
         res.json(results);
     });
 });
+
+
+
+app.post('/login', (req, res) => {
+    const { email, password } = req.body;
+
+    // This query will check if there's a user with the given email and password
+    const query = `
+        SELECT user_name, user_role FROM users 
+        WHERE user_email = ? AND user_password = ?
+    `;
+
+    // Execute the query
+    db.execute(query, [email, password], (err, results, fields) => {
+        if (err) {
+            // Handle error
+            console.error('Error during database query', err);
+            return res.status(500).json({ success: false, message: 'Internal server error' });
+        }
+
+        // If results array is not empty, login is successful
+        if (results.length > 0) {
+            const user = results[0];
+            return res.json({ success: true, name: user.user_name, role: user.user_role });
+        } else {
+            // No user found with the given email and password
+            return res.status(401).json({ success: false, message: 'Incorrect email or password' });
+        }
+    });
+});

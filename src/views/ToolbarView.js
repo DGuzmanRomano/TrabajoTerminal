@@ -9,7 +9,7 @@ import { fetchTopics } from '../controllers/TopicsController';
 import { fetchQuizzes } from '../controllers/QuizzesController'; 
 import ExamplesDropdownButton from '../components/ExamplesDropdownButton'; // Import the new component
 import ExampleModal from '../components/ExampleModal'; // Import your modal component
-
+import LoginModal from '../components/LoginModal';
 
 import logo from '../gopher.png';
 
@@ -24,7 +24,7 @@ const Toolbar = (props) => {
     const [exampleTitles, setExampleTitles] = useState([]);
     const [isExampleModalOpen, setIsExampleModalOpen] = useState(false);
     const [currentExampleCode, setCurrentExampleCode] = useState("");
-
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
 
 
@@ -65,6 +65,31 @@ useEffect(() => {
 
 
 
+const handleLogin = (email, password) => {
+    fetch('http://localhost:3001/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log(`User: ${data.name}, Role: ${data.role}`);
+            setIsLoginModalOpen(false);
+        } else {
+            // Handle login failure
+        }
+    })
+    .catch(error => {
+        console.error('Error during login:', error);
+    });
+};
+
+
+
+
+
+
 
 
     const handleLectureClick = (lectureId) => {
@@ -83,6 +108,7 @@ useEffect(() => {
         setIsExampleModalOpen(true); // Open the modal
     };
 
+   
     
     return (
         <div>
@@ -98,7 +124,7 @@ useEffect(() => {
                     <ExamplesDropdownButton
                         title="Ejemplos"
                         items={exampleTitles}
-                        onItemClick={handleExampleClick} // Pass the new handler here
+                        onItemClick={handleExampleClick} 
                     />
                 </div>
 
@@ -131,14 +157,17 @@ useEffect(() => {
 <div className="gopher" >   <img src={logo} alt="Logo" style={{ marginRight: 'auto' }} />  </div>
                
 
-                {/* Login and Signup Buttons */}
+                {/* Login Button */}
                 <div className="right-buttons">
-                    <button className="btn btn-outline-primary mr-2" onClick={() => {
-                        // handle login logic here
-                    }}>Login</button>
-                    <button className="btn btn-primary" onClick={() => {
-                        // handle signup logic here
-                    }}>Sign Up</button>
+
+                <button className="btn btn-outline-primary mr-2" onClick={() => {
+                    console.log('Login button clicked');
+                    setIsLoginModalOpen(true);
+                    console.log('After clicking login:', isLoginModalOpen);
+                }}>Login</button>
+              
+
+
                 </div>
             </div>
 
@@ -148,7 +177,14 @@ useEffect(() => {
                 content={currentExampleCode}
                 onClose={() => setIsExampleModalOpen(false)}
             />
-             
+
+             <LoginModal
+                isOpen={isLoginModalOpen}
+                onClose={() => setIsLoginModalOpen(false)}
+                onLogin={handleLogin}
+            />
+
+
         <QuizModal
             isOpen={isQuizModalOpen}
             title={selectedOptionName}

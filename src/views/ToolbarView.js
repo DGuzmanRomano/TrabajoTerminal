@@ -95,9 +95,12 @@ const handleLogin = (email, password) => {
 
 
 
-    const handleLectureClick = (lectureId) => {
-        props.onLectureSelect(lectureId +1);
-    };
+const handleLectureClick = (lectureId) => {
+    props.onLectureSelect(lectureId + 1); // This will now call handleLectureSelection in App.js
+};
+
+
+
 
 
     const handleOptionClick = (quizId, quizName) => {

@@ -51,12 +51,20 @@ function App() {
     const handleProfessorAction = (actionType) => {
         if (actionType === 'action1') {
             // Handle action 1
-            setLectureContent('Action 1');
+            setLectureContent('createLecture');
+
+
         } else if (actionType === 'action2') {
             // Handle action 2
             // ...additional logic for action 2
         }
         // Add more cases for other actions as needed
+    };
+    
+
+    const handleLectureSelection = (lectureId) => {
+        setSelectedLecture(lectureId);
+        setLectureContent(''); // Reset the content when a lecture is selected
     };
     
 
@@ -66,9 +74,9 @@ function App() {
             <div className="App">
             <Toolbar 
                 user={user} 
-                onLectureSelect={setSelectedLecture} 
+                onLectureSelect={handleLectureSelection} // Pass this new function to Toolbar
                 onExecute={() => handleExecute(code)} 
-                onProfessorAction={handleProfessorAction} // Make sure this is correctly passed
+                onProfessorAction={handleProfessorAction}
             />
                 
                 <div className="content container-fluid">

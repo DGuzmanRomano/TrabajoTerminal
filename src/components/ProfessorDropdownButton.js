@@ -1,20 +1,23 @@
 // ProfessorDropdownButton.js
 import React from 'react';
+import { Dropdown } from 'react-bootstrap';
 
 const ProfessorDropdownButton = ({ title }) => {
     return (
-        <div className="btn-group">
-            <button type="button" className="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <Dropdown>
+            <Dropdown.Toggle variant="secondary" id="dropdown-professor">
                 {title}
-            </button>
-            <ul className="dropdown-menu">
-                {/* Add dropdown items specific to the professor */}
-                <li><button className="dropdown-item" type="button">Action 1</button></li>
-                <li><button className="dropdown-item" type="button">Action 2</button></li>
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+                <Dropdown.Item href="#action1">Action 1</Dropdown.Item>
+                <Dropdown.Item href="#action2">Action 2</Dropdown.Item>
                 {/* ... other actions */}
-            </ul>
-        </div>
+            </Dropdown.Menu>
+        </Dropdown>
     );
 };
 
 export default ProfessorDropdownButton;
+
+// StudentDropdownButton.js would be similar with its own items

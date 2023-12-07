@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import '../styles/Toolbar.css'
 
 import TopicsDropdownButton from '../components/TopicsDropdownButton';
@@ -10,6 +10,11 @@ import { fetchQuizzes } from '../controllers/QuizzesController';
 import ExamplesDropdownButton from '../components/ExamplesDropdownButton'; // Import the new component
 import ExampleModal from '../components/ExampleModal'; // Import your modal component
 import LoginModal from '../components/LoginModal';
+
+
+import ProfessorDropdownButton from '../components/ProfessorDropdownButton'; // Import the new component
+
+import UserContext from '../components/UserContext';
 
 import logo from '../gopher.png';
 
@@ -26,7 +31,7 @@ const Toolbar = (props) => {
     const [currentExampleCode, setCurrentExampleCode] = useState("");
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-
+    const { user, setUser } = useContext(UserContext);
 
 
     useEffect(() => {
@@ -76,6 +81,7 @@ const handleLogin = (email, password) => {
         if (data.success) {
             console.log(`User: ${data.name}, Role: ${data.role}`);
             setIsLoginModalOpen(false);
+            setUser({ name: data.name, role: data.role }); // set the user in the context
         } else {
             // Handle login failure
         }
@@ -160,12 +166,29 @@ const handleLogin = (email, password) => {
                 {/* Login Button */}
                 <div className="right-buttons">
 
-                <button className="btn btn-outline-primary mr-2" onClick={() => {
-                    console.log('Login button clicked');
-                    setIsLoginModalOpen(true);
-                    console.log('After clicking login:', isLoginModalOpen);
-                }}>Login</button>
+
+                {user && user.role === 'professor' && (
+            <>
+                <span className="navbar-text welcome-message">
+                    Welcome, Professor {user.name}
+                </span>
+
+                <ProfessorDropdownButton
+                    title="Professor Actions"
+                    // ... additional props you might need
+                />
+            </>
+        )}
+
+
+
+
+                <button className="btn btn-outline-primary mr-2" 
+                onClick={() => setIsLoginModalOpen(true)}>
+                    Login</button>
               
+
+
 
 
                 </div>

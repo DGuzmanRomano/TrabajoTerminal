@@ -83,9 +83,9 @@ const handleLogin = (email, password) => {
         if (data.success) {
             console.log(`User: ${data.name}, Role: ${data.role}`);
             setIsLoginModalOpen(false);
-            setUser({ name: data.name, role: data.role }); // set the user in the context
+            setUser({ name: data.name, role: data.role }); 
         } else {
-            // Handle login failure
+           
         }
     })
     .catch(error => {
@@ -125,7 +125,7 @@ const handleLogin = (email, password) => {
             </span>
             <ProfessorDropdownButton
                 title="Professor Actions"
-                // ... additional props or handlers
+                onAction={props.onProfessorAction} 
             />
         </>
     );

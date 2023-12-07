@@ -21,6 +21,7 @@ function App() {
     const [selectedLecture, setSelectedLecture] = useState(null);
     const [output, setOutput] = useState('');
     const [user, setUser] = useState(null);
+    const [lectureContent, setLectureContent] = useState('');
 
 
     const handleExecute = async (codeToExecute) => {
@@ -47,15 +48,28 @@ function App() {
     };
 
     
+    const handleProfessorAction = (actionType) => {
+        if (actionType === 'action1') {
+            // Handle action 1
+            setLectureContent('Action 1');
+        } else if (actionType === 'action2') {
+            // Handle action 2
+            // ...additional logic for action 2
+        }
+        // Add more cases for other actions as needed
+    };
+    
+
 
     return (
         <UserContext.Provider value={{ user, setUser }}>
             <div className="App">
-                <Toolbar 
-                    user={user} 
-                    onLectureSelect={setSelectedLecture} 
-                    onExecute={() => handleExecute(code)} 
-                />
+            <Toolbar 
+                user={user} 
+                onLectureSelect={setSelectedLecture} 
+                onExecute={() => handleExecute(code)} 
+                onProfessorAction={handleProfessorAction} // Make sure this is correctly passed
+            />
                 
                 <div className="content container-fluid">
                     <div className="row h-100">
@@ -63,7 +77,7 @@ function App() {
                             <CodeEditorController onExecute={handleExecute} code={code} setCode={setCode} />
                         </div>
                         <div className="col-md-6">
-                            <LectureView lectureId={selectedLecture} /> 
+                        <LectureView lectureId={selectedLecture} content={lectureContent} /> {/* Pass content to LectureView */}
                         </div>
                     </div>
                 </div>

@@ -1,8 +1,7 @@
-// ProfessorDropdownButton.js
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 
-const ProfessorDropdownButton = ({ title }) => {
+const ProfessorDropdownButton = ({ title, onAction }) => {
     return (
         <Dropdown>
             <Dropdown.Toggle variant="secondary" id="dropdown-professor">
@@ -10,8 +9,9 @@ const ProfessorDropdownButton = ({ title }) => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-                <Dropdown.Item href="#action1">Action 1</Dropdown.Item>
-                <Dropdown.Item href="#action2">Action 2</Dropdown.Item>
+                <Dropdown.Item onClick={() => onAction('action1')}>Action 1</Dropdown.Item>
+
+                <Dropdown.Item onClick={() => onAction('action2')}>Action 2</Dropdown.Item>
                 {/* ... other actions */}
             </Dropdown.Menu>
         </Dropdown>
@@ -19,5 +19,3 @@ const ProfessorDropdownButton = ({ title }) => {
 };
 
 export default ProfessorDropdownButton;
-
-// StudentDropdownButton.js would be similar with its own items

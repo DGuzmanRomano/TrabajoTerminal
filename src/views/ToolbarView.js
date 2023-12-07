@@ -7,12 +7,14 @@ import QuizModal from '../components/QuizModal';
 import Quiz from '../components/Quiz';
 import { fetchTopics } from '../controllers/TopicsController'; 
 import { fetchQuizzes } from '../controllers/QuizzesController'; 
-import ExamplesDropdownButton from '../components/ExamplesDropdownButton'; // Import the new component
-import ExampleModal from '../components/ExampleModal'; // Import your modal component
+import ExamplesDropdownButton from '../components/ExamplesDropdownButton';
+import ExampleModal from '../components/ExampleModal'; 
 import LoginModal from '../components/LoginModal';
 
 
-import ProfessorDropdownButton from '../components/ProfessorDropdownButton'; // Import the new component
+import ProfessorDropdownButton from '../components/ProfessorDropdownButton'; 
+import StudentDropdownButton from '../components/StudentDropdownButton'; 
+
 
 import UserContext from '../components/UserContext';
 
@@ -93,11 +95,6 @@ const handleLogin = (email, password) => {
 
 
 
-
-
-
-
-
     const handleLectureClick = (lectureId) => {
         props.onLectureSelect(lectureId +1);
     };
@@ -114,7 +111,42 @@ const handleLogin = (email, password) => {
         setIsExampleModalOpen(true); // Open the modal
     };
 
-   
+    const handleLogout = () => {
+        // Perform any additional logout operations you may need
+        setUser(null); // Clear the user from the context
+    };
+
+
+
+    const professorControls = user && user.role === 'professor' && (
+        <>
+            <span className="navbar-text welcome-message">
+                Welcome, Professor {user.name}
+            </span>
+            <ProfessorDropdownButton
+                title="Professor Actions"
+                // ... additional props or handlers
+            />
+        </>
+    );
+
+    // Welcome message and dropdown for students
+    const studentControls = user && user.role === 'student' && (
+        <>
+            <span className="navbar-text welcome-message">
+                Welcome, Student {user.name}
+            </span>
+            <StudentDropdownButton
+                title="Student Actions"
+                // ... additional props or handlers
+            />
+        </>
+    );
+
+
+
+
+
     
     return (
         <div>
@@ -160,39 +192,29 @@ const handleLogin = (email, password) => {
 
                     </div>
                 </div>
-<div className="gopher" >   <img src={logo} alt="Logo" style={{ marginRight: 'auto' }} />  </div>
+                    <div className="gopher" >  
+                     <img src={logo} alt="Logo" 
+                     style={{ marginRight: 'auto' }} /> 
+                      </div>
                
 
                 {/* Login Button */}
                 <div className="right-buttons">
-
-
-                {user && user.role === 'professor' && (
-            <>
-                <span className="navbar-text welcome-message">
-                    Welcome, Professor {user.name}
-                </span>
-
-                <ProfessorDropdownButton
-                    title="Professor Actions"
-                    // ... additional props you might need
-                />
-            </>
-        )}
-
-
-
-
-                <button className="btn btn-outline-primary mr-2" 
-                onClick={() => setIsLoginModalOpen(true)}>
-                    Login</button>
-              
-
-
-
-
-                </div>
+                {professorControls || studentControls} {/* Render based on the role */}
+                {user ? (
+                    // Render Logout button when user is logged in
+                    <button className="btn btn-outline-primary mr-2" onClick={handleLogout}>
+                        Logout
+                    </button>
+                ) : (
+                    // Render Login button when no user is logged in
+                    <button className="btn btn-outline-primary mr-2" onClick={() => setIsLoginModalOpen(true)}>
+                        Login
+                    </button>
+                )}
             </div>
+
+           </div>
 
             {/* Modal */}
              <ExampleModal

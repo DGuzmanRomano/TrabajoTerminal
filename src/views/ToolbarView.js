@@ -83,7 +83,7 @@ const handleLogin = (email, password) => {
         if (data.success) {
             console.log(`User: ${data.name}, Role: ${data.role}`);
             setIsLoginModalOpen(false);
-            setUser({ name: data.name, role: data.role }); 
+            setUser({ id: data.id, name: data.name, role: data.role });
         } else {
            
         }

@@ -5,7 +5,6 @@ const cors = require('cors');
 const mysql = require('mysql2')
 const codeExecutionRoute = require('./CodeExecution.js'); 
 
-
 const app = express();
 
 
@@ -179,17 +178,6 @@ app.get('/api/examples/:id', (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 app.post('/submit-quiz', async (req, res) => {
     const { quizId, userResponses } = req.body; // assuming your payload contains these
 
@@ -264,7 +252,7 @@ app.post('/login', (req, res) => {
 
     // This query will check if there's a user with the given email and password
     const query = `
-        SELECT user_name, user_role FROM users 
+        SELECT id_user, user_name, user_role FROM users 
         WHERE user_email = ? AND user_password = ?
     `;
 
@@ -279,10 +267,39 @@ app.post('/login', (req, res) => {
         // If results array is not empty, login is successful
         if (results.length > 0) {
             const user = results[0];
-            return res.json({ success: true, name: user.user_name, role: user.user_role });
-        } else {
+            return res.json({
+                success: true,
+                id: user.id_user,  // Include the user's ID
+                name: user.user_name,
+                role: user.user_role
+            });
+        }
+        
+        
+        else {
             // No user found with the given email and password
             return res.status(401).json({ success: false, message: 'Incorrect email or password' });
         }
     });
 });
+
+const addLecture = (req, res) => {
+    const { title, text, authorId } = req.body; 
+
+    const query = `
+        INSERT INTO lectures (lecture_title, text, author_id)
+        VALUES (?, ?, ?)
+    `;
+
+    db.execute(query, [title, text, authorId], (err, results) => {
+        if (err) {
+            console.error('Error adding lecture to the database:', err);
+            return res.status(500).json({ success: false, message: 'Internal server error' });
+        }
+
+        res.json({ success: true, message: 'Lecture added successfully', lectureId: results.insertId });
+    });
+};
+
+app.post('/add-lecture', addLecture);
+

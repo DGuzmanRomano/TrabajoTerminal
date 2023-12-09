@@ -115,17 +115,19 @@ const handleAddQuestion = () => {
 
 
 const handleQuestionSubmit = async () => {
+    console.log("Submitting questions:", questions);
+
     let isValid = true;
     let validationErrors = [];
 
     // Validate each question-answer pair
-    questions.forEach(({ question, answer }, index) => {
+    questions.forEach(({ question, type, answer, correctAnswer }, index) => {
         if (!question.trim()) {
             validationErrors[index] = { ...validationErrors[index], question: 'Question is required.' };
             isValid = false;
         }
 
-        if (!answer.trim()) {
+        if (type === 'text' && !answer.trim()) {
             validationErrors[index] = { ...validationErrors[index], answer: 'Answer is required.' };
             isValid = false;
         }
@@ -138,12 +140,48 @@ const handleQuestionSubmit = async () => {
         return; // Stop the function if validation fails
     }
 
+
+
+
+    const formattedQuestions = questions.map(q => {
+        if (q.type === 'text') {
+            return {
+                question: q.question,
+                type: q.type,
+                answers: [{ text: q.answer, is_correct: 1 }]
+            };
+        } else {
+            return {
+                question: q.question,
+                type: q.type,
+                answers: [
+                    { text: 'true', is_correct: q.correctAnswer === 'true' ? 1 : 0 },
+                    { text: 'false', is_correct: q.correctAnswer === 'false' ? 1 : 0 }
+                ]
+            };
+        }
+    });
+
+
+
+
+
+
+
+
+
+
     try {
         const response = await fetch('http://localhost:3001/add-question', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ questions }) // Ensure this is an array of question-answer pairs
+            body: JSON.stringify({ questions: formattedQuestions })
         });
+
+        console.log("Formatted questions being sent:", formattedQuestions); // Log the formatted questions
+
+        
+  console.log("Response status:", response.status);
 
         if (!response.ok) {
             throw new Error('Failed to submit questions');
@@ -207,24 +245,41 @@ const handleQuestionSubmit = async () => {
                     )}
 
 
-                   {questions.map((q, index) => (
-                        <div key={index}>
-                            <div>
-                                <p>Question {index + 1}:</p>
-                                <input type="text" value={q.question} onChange={(e) => handleQuestionChange(index, 'question', e.target.value)} />
-                                {questionValidation[index] && <div className="text-danger">{questionValidation[index]}</div>}
-                            </div>
-                            <div>
-                                <p>Answer {index + 1}:</p>
-                                <textarea value={q.answer} onChange={(e) => handleQuestionChange(index, 'answer', e.target.value)} />
-                                {answerValidation[index] && <div className="text-danger">{answerValidation[index]}</div>}
-                            </div>
-                        </div>
-                    ))}
+        {questions.map((q, index) => (
+            <div key={index}>
+                <div>
+                    <p>Question {index + 1}:</p>
+                    <input type="text" value={q.question} onChange={(e) => handleQuestionChange(index, 'question', e.target.value)} />
+                    <select value={q.type} onChange={(e) => handleQuestionChange(index, 'type', e.target.value)}>
+                        <option value="text">Text</option>
+                        <option value="true_false">True / False</option>
+                    </select>
+                </div>
+                {q.type === 'text' && (
+                    <div>
+                        <p>Answer:</p>
+                        <textarea value={q.answer} onChange={(e) => handleQuestionChange(index, 'answer', e.target.value)} />
+                    </div>
+                )}
+                {q.type === 'true_false' && (
+                    <div>
+                        <p>Correct Answer:</p>
+                        <label>
+                            <input type="radio" value="true" checked={q.correctAnswer === 'true'} onChange={(e) => handleQuestionChange(index, 'correctAnswer', 'true')} />
+                            True
+                        </label>
+                        <label>
+                            <input type="radio" value="false" checked={q.correctAnswer === 'false'} onChange={(e) => handleQuestionChange(index, 'correctAnswer', 'false')} />
+                            False
+                        </label>
+                    </div>
+                )}
+            </div>
+        ))}
 
 
 
-                    
+
                     <button onClick={handleAddQuestion}>Add Question</button>
                     <button onClick={handleQuestionSubmit}>Submit Questions</button>
                 </div>

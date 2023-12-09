@@ -316,24 +316,25 @@ app.post('/add-lecture', addLecture);
 
 
 
-
-
 app.post('/add-question', async (req, res) => {
     const { questions } = req.body;
 
     try {
-        for (const { question, answer } of questions) {
-            const questionResult = await db.promise().execute(
+        for (const { question, type, answers } of questions) {
+            // Insert the question and get the result
+            const [questionResult] = await db.promise().execute(
                 'INSERT INTO questions (question_text) VALUES (?)',
                 [question]
             );
+            const questionId = questionResult.insertId;
 
-            const questionId = questionResult[0].insertId;
-
-            await db.promise().execute(
-                'INSERT INTO options (option_text, question_id) VALUES (?, ?)',
-                [answer, questionId]
-            );
+            // Insert answers
+            for (const { text, is_correct } of answers) {
+                await db.promise().execute(
+                    'INSERT INTO options (option_text, question_id, is_correct) VALUES (?, ?, ?)',
+                    [text, questionId, is_correct]
+                );
+            }
         }
 
         res.json({ success: true, message: 'Questions and answers submitted successfully' });

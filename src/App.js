@@ -55,8 +55,8 @@ function App() {
 
 
         } else if (actionType === 'action2') {
-            // Handle action 2
-            // ...additional logic for action 2
+            
+            setLectureContent('createQuestion');
         }
         // Add more cases for other actions as needed
     };

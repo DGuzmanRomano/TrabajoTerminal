@@ -15,6 +15,18 @@ const LectureView = ({ lectureId, content }) => {
     const [textValidation, setTextValidation] = useState('');
     
 
+    const [question, setQuestion] = useState('');
+    const [answer, setAnswer] = useState('');
+    const [questionValidation, setQuestionValidation] = useState('');
+    const [answerValidation, setAnswerValidation] = useState('');
+
+    const [questions, setQuestions] = useState([{ 
+        question: '', 
+        type: 'text', // 'text' or 'true_false'
+        answer: '', 
+        correctAnswer: 'true' // Only used for 'true_false' type 
+    }]);
+    
 
     const handleLectureSubmit = async () => {
 
@@ -77,6 +89,87 @@ const LectureView = ({ lectureId, content }) => {
 
 
 
+
+
+
+
+  const handleQuestionChange = (index, key, value) => {
+    const newQuestions = questions.map((q, i) => {
+        if (i === index) {
+            return { ...q, [key]: value };
+        }
+        return q;
+    });
+    setQuestions(newQuestions);
+};
+
+const handleAddQuestion = () => {
+    setQuestions([...questions, { question: '', answer: '' }]);
+};
+
+
+
+
+
+
+
+
+const handleQuestionSubmit = async () => {
+    let isValid = true;
+    let validationErrors = [];
+
+    // Validate each question-answer pair
+    questions.forEach(({ question, answer }, index) => {
+        if (!question.trim()) {
+            validationErrors[index] = { ...validationErrors[index], question: 'Question is required.' };
+            isValid = false;
+        }
+
+        if (!answer.trim()) {
+            validationErrors[index] = { ...validationErrors[index], answer: 'Answer is required.' };
+            isValid = false;
+        }
+    });
+
+    if (!isValid) {
+        // Update state to display validation errors
+        setQuestionValidation(validationErrors.map(error => error?.question || ''));
+        setAnswerValidation(validationErrors.map(error => error?.answer || ''));
+        return; // Stop the function if validation fails
+    }
+
+    try {
+        const response = await fetch('http://localhost:3001/add-question', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ questions }) // Ensure this is an array of question-answer pairs
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to submit questions');
+        }
+
+        const result = await response.json();
+        console.log(result.message); // Or handle this in the UI
+
+        // Reset form or update UI as needed
+        setQuestions([{ question: '', answer: '' }]);
+        setShowSuccess(true);
+        setTimeout(() => setShowSuccess(false), 3000);
+    } catch (error) {
+        console.error('Error submitting questions:', error);
+        // Handle error in the UI
+        setShowSuccess(false);
+    }
+};
+
+
+
+
+
+
+
+
     if (content === 'createLecture') {
         return (
             <div className="lecture-view-container card go-tutorial">
@@ -102,6 +195,45 @@ const LectureView = ({ lectureId, content }) => {
         );
         
     }
+
+    else if (content === 'createQuestion') {
+        return (
+            <div className="question-view-container card go-tutorial">
+                <div className="card-body">
+                    {showSuccess && (
+                        <div className="alert alert-success" role="alert">
+                            Questions submitted successfully!
+                        </div>
+                    )}
+
+
+                   {questions.map((q, index) => (
+                        <div key={index}>
+                            <div>
+                                <p>Question {index + 1}:</p>
+                                <input type="text" value={q.question} onChange={(e) => handleQuestionChange(index, 'question', e.target.value)} />
+                                {questionValidation[index] && <div className="text-danger">{questionValidation[index]}</div>}
+                            </div>
+                            <div>
+                                <p>Answer {index + 1}:</p>
+                                <textarea value={q.answer} onChange={(e) => handleQuestionChange(index, 'answer', e.target.value)} />
+                                {answerValidation[index] && <div className="text-danger">{answerValidation[index]}</div>}
+                            </div>
+                        </div>
+                    ))}
+
+
+
+                    
+                    <button onClick={handleAddQuestion}>Add Question</button>
+                    <button onClick={handleQuestionSubmit}>Submit Questions</button>
+                </div>
+            </div>
+        );
+    }
+
+
+
     else {
     return (
       <div className="lecture-view-container card go-tutorial">
@@ -120,20 +252,3 @@ const LectureView = ({ lectureId, content }) => {
 };
 
 export default LectureView;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

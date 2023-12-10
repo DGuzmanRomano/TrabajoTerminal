@@ -1,8 +1,10 @@
 import React, { useState, useContext } from 'react';
-
 import '../styles/GoTutorial.css';
 import useLecture from '../controllers/useLecture'; 
 import UserContext from '../components/UserContext';
+import MonacoEditor from '@monaco-editor/react';
+
+
 
 const LectureView = ({ lectureId, content }) => {
     const { content: fetchedContent, error } = useLecture(lectureId);
@@ -19,13 +21,35 @@ const LectureView = ({ lectureId, content }) => {
     const [answer, setAnswer] = useState('');
     const [questionValidation, setQuestionValidation] = useState('');
     const [answerValidation, setAnswerValidation] = useState('');
+    const [quizName, setQuizName] = useState('');
 
-    const [questions, setQuestions] = useState([{ 
+
+
+    const handleCodeSnippetChange = (questionIndex, value) => {
+        const newQuestions = [...questions];
+        newQuestions[questionIndex].codeSnippet = value;
+        setQuestions(newQuestions);
+    };
+    
+    const handleFeedbackChange = (questionIndex, value) => {
+        const newQuestions = [...questions];
+        newQuestions[questionIndex].feedback = value;
+        setQuestions(newQuestions);
+    };
+    
+
+
+
+
+    const [questions, setQuestions] = useState([{
         question: '', 
-        type: 'text', // 'text' or 'true_false'
-        answer: '', 
-        correctAnswer: 'true' // Only used for 'true_false' type 
+        type: 'text', // 'text', 'true_false', or 'multiple_choice'
+        codeSnippet: '', // For the code snippet
+        options: ['', '', '', ''], // Four options for multiple-choice
+        correctOption: 0, // Index of the correct option
+        feedback: '' // For the feedback or explanation
     }]);
+    
     
 
     const handleLectureSubmit = async () => {
@@ -91,8 +115,6 @@ const LectureView = ({ lectureId, content }) => {
 
 
 
-
-
   const handleQuestionChange = (index, key, value) => {
     const newQuestions = questions.map((q, i) => {
         if (i === index) {
@@ -103,11 +125,43 @@ const LectureView = ({ lectureId, content }) => {
     setQuestions(newQuestions);
 };
 
+
+
+
+
+
+
+
+
 const handleAddQuestion = () => {
-    setQuestions([...questions, { question: '', answer: '' }]);
+    setQuestions([
+        ...questions,
+        {
+            question: '', 
+            type: 'text', // Default to 'text'
+            answer: '', // For text and true/false questions
+            options: ['', '', '', ''], // Four options for multiple-choice
+            correctOption: 0 // Index of the correct option for multiple-choice
+        }
+    ]);
 };
 
 
+
+
+const handleOptionChange = (questionIndex, optionIndex, value) => {
+    const newQuestions = [...questions];
+    newQuestions[questionIndex].options[optionIndex] = value;
+    setQuestions(newQuestions);
+};
+
+
+
+const handleCorrectOptionChange = (questionIndex, optionIndex) => {
+    const newQuestions = [...questions];
+    newQuestions[questionIndex].correctOption = optionIndex;
+    setQuestions(newQuestions);
+};
 
 
 
@@ -144,13 +198,16 @@ const handleQuestionSubmit = async () => {
 
 
     const formattedQuestions = questions.map(q => {
+
+
+        
         if (q.type === 'text') {
             return {
                 question: q.question,
                 type: q.type,
                 answers: [{ text: q.answer, is_correct: 1 }]
             };
-        } else {
+        } else if(q.type == 'true_false') {
             return {
                 question: q.question,
                 type: q.type,
@@ -160,14 +217,19 @@ const handleQuestionSubmit = async () => {
                 ]
             };
         }
+        else  if (q.type === 'multiple_choice') {
+            return {
+                question: q.question,
+                type: q.type,
+                answers: q.options.map((option, index) => ({
+                    text: option,
+                    is_correct: index === q.correctOption ? 1 : 0
+                }))
+            };
+        }
+
+
     });
-
-
-
-
-
-
-
 
 
 
@@ -200,6 +262,16 @@ const handleQuestionSubmit = async () => {
         setShowSuccess(false);
     }
 };
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -244,6 +316,10 @@ const handleQuestionSubmit = async () => {
                         </div>
                     )}
 
+        <div>
+            <p>Quiz Name:</p>
+            <input type="text" value={quizName} onChange={(e) => setQuizName(e.target.value)} />
+        </div>
 
         {questions.map((q, index) => (
             <div key={index}>
@@ -253,8 +329,21 @@ const handleQuestionSubmit = async () => {
                     <select value={q.type} onChange={(e) => handleQuestionChange(index, 'type', e.target.value)}>
                         <option value="text">Text</option>
                         <option value="true_false">True / False</option>
+                        <option value="multiple_choice">Multiple Choice</option> {/* Add this line */}
                     </select>
                 </div>
+
+                <div>
+
+                <p>Code Snippet:</p>
+                <MonacoEditor
+                    height="200px"
+                    language="javascript"
+                    value={q.codeSnippet}
+                    onChange={(value) => handleCodeSnippetChange(index, value)}
+                />
+            </div>
+
                 {q.type === 'text' && (
                     <div>
                         <p>Answer:</p>
@@ -274,6 +363,41 @@ const handleQuestionSubmit = async () => {
                         </label>
                     </div>
                 )}
+
+                    {q.type === 'multiple_choice' && (
+                        <div>
+                            {q.options.map((option, optionIndex) => (
+                                <div key={optionIndex}>
+                                    <input 
+                                        type="text"
+                                        value={option}
+                                        onChange={(e) => handleOptionChange(index, optionIndex, e.target.value)}
+                                    />
+                                </div>
+                            ))}
+                            <p>Select Correct Option:</p>
+                            {q.options.map((option, optionIndex) => (
+                                <label key={optionIndex}>
+                                    <input 
+                                        type="radio" 
+                                        name={`correctOption-${index}`} 
+                                        checked={q.correctOption === optionIndex}
+                                        onChange={() => handleCorrectOptionChange(index, optionIndex)}
+                                    />
+                                    Option {optionIndex + 1}
+                                </label>
+                            ))}
+                        </div>
+                    )}
+
+                <div>
+                    <p>Feedback:</p>
+                    <textarea 
+                        value={q.feedback} 
+                        onChange={(e) => handleFeedbackChange(index, e.target.value)} 
+                    />
+                </div>
+
             </div>
         ))}
 

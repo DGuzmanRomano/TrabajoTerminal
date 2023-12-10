@@ -312,37 +312,33 @@ app.post('/add-lecture', addLecture);
 
 
 
-
-
 app.post('/add-question', async (req, res) => {
-    const { quizName, questions } = req.body;
 
-    console.log("Received quizName:", quizName);
-    console.log("Received questions:", questions);
+    console.log("Request body:", req.body);
+
+    const { quizName, professorId, questions } = req.body;
 
     try {
+        // Insert the quiz and get its ID
         const [quizResult] = await db.promise().execute(
-            'INSERT INTO quizzes (quiz_name) VALUES (?)',
-            [quizName]
+            'INSERT INTO quizzes (quiz_name, author_id) VALUES (?, ?)',
+            [quizName, professorId] // Include professorId here
         );
         const quizId = quizResult.insertId;
-        console.log("Inserted quiz with ID:", quizId);
 
-        for (const { question, type: questionType, codeSnippet, feedback, answers } of questions) {
-            console.log("Inserting question:", question);
-            console.log("Question type:", questionType);
-            console.log("Code snippet:", codeSnippet);
-            console.log("Feedback:", feedback);
-
+        for (const { question, type, codeSnippet, feedback, answers } of questions) {
+            console.log("Inserting question:", {question, type, codeSnippet, feedback, quizId});
+        
             const [questionResult] = await db.promise().execute(
                 'INSERT INTO questions (question_text, question_type, code_snippet, feedback, quiz_id) VALUES (?, ?, ?, ?, ?)',
-                [question, questionType, codeSnippet, feedback, quizId]
+                [question, type, codeSnippet, feedback, quizId] // Use 'type' here instead of 'questionType'
             );
             const questionId = questionResult.insertId;
-            console.log("Inserted question with ID:", questionId);
 
+            // Insert answers
             for (const { text, is_correct } of answers) {
-                console.log("Inserting answer:", text, "with is_correct:", is_correct);
+                console.log("Inserting answer:", {text, questionId, is_correct}); // Add this line
+
                 await db.promise().execute(
                     'INSERT INTO options (option_text, question_id, is_correct) VALUES (?, ?, ?)',
                     [text, questionId, is_correct]

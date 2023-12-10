@@ -230,8 +230,10 @@ const handleQuestionSubmit = async () => {
 
     const quizData = {
         quizName: quizName,
+        professorId: user.id, 
         questions: formattedQuestions
     };
+    
 
     try {
         const response = await fetch('http://localhost:3001/add-question', {

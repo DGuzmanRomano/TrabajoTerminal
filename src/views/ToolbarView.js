@@ -11,7 +11,7 @@ import ExamplesDropdownButton from '../components/ExamplesDropdownButton';
 import ExampleModal from '../components/ExampleModal'; 
 import LoginModal from '../components/LoginModal';
 
-
+import ScoresModal from '../components/ScoresModal';
 import ProfessorDropdownButton from '../components/ProfessorDropdownButton'; 
 import StudentDropdownButton from '../components/StudentDropdownButton'; 
 
@@ -34,6 +34,16 @@ const Toolbar = (props) => {
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
     const { user, setUser } = useContext(UserContext);
+
+    const [isScoresModalOpen, setIsScoresModalOpen] = useState(false);
+
+    const handleStudentDropdownAction = (action) => {
+        if (action === 'action1') {
+            setIsScoresModalOpen(true); // Assuming this is your state for controlling ScoresModal visibility
+        }
+        // Handle other actions if necessary
+    };
+
 
 
     useEffect(() => {
@@ -141,11 +151,11 @@ const handleLectureClick = (lectureId) => {
             </span>
             <StudentDropdownButton
                 title="Student Actions"
-                // ... additional props or handlers
+                onActionSelect={handleStudentDropdownAction}
+                
             />
         </>
     );
-
 
 
 
@@ -240,6 +250,12 @@ const handleLectureClick = (lectureId) => {
             content={<Quiz quizId={selectedQuizId} />}
         />
        
+       <ScoresModal
+            isOpen={isScoresModalOpen}
+            onClose={() => setIsScoresModalOpen(false)}
+            scores={10}
+        />
+
     </div>
 );
 };

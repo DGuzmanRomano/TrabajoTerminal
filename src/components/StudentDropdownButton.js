@@ -1,25 +1,20 @@
-// ProfessorDropdownButton.js
+// StudentDropdownButton.js
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 
-const StudentDropdownButton = ({ title }) => {
+const StudentDropdownButton = ({ title, onActionSelect }) => {
     return (
         <Dropdown>
-            <Dropdown.Toggle variant="secondary" id="dropdown-professor">
+            <Dropdown.Toggle variant="secondary" id="dropdown-student">
                 {title}
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-                <Dropdown.Item href="#action1">Action 1</Dropdown.Item>
-                <Dropdown.Item href="#action2">Action 2</Dropdown.Item>
-                
+                <Dropdown.Item onClick={() => onActionSelect('action1')}>Action 1</Dropdown.Item>
+                {/* Add more items here if needed */}
             </Dropdown.Menu>
         </Dropdown>
     );
 };
 
 export default StudentDropdownButton;
-
-
-
-

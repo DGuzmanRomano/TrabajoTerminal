@@ -264,18 +264,6 @@ const handleQuestionSubmit = async () => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     if (content === 'createLecture') {
         return (
             <div className="lecture-view-container card go-tutorial">

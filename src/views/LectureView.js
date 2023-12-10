@@ -196,54 +196,49 @@ const handleQuestionSubmit = async () => {
 
 
 
-
     const formattedQuestions = questions.map(q => {
-
-
+        let answers = [];
         
-        if (q.type === 'text') {
-            return {
-                question: q.question,
-                type: q.type,
-                answers: [{ text: q.answer, is_correct: 1 }]
-            };
-        } else if(q.type == 'true_false') {
-            return {
-                question: q.question,
-                type: q.type,
-                answers: [
+        switch (q.type) {
+            case 'text':
+                answers.push({ text: q.answer, is_correct: 1 });
+                break;
+            case 'true_false':
+                answers = [
                     { text: 'true', is_correct: q.correctAnswer === 'true' ? 1 : 0 },
                     { text: 'false', is_correct: q.correctAnswer === 'false' ? 1 : 0 }
-                ]
-            };
-        }
-        else  if (q.type === 'multiple_choice') {
-            return {
-                question: q.question,
-                type: q.type,
-                answers: q.options.map((option, index) => ({
+                ];
+                break;
+            case 'multiple_choice':
+                answers = q.options.map((option, index) => ({
                     text: option,
                     is_correct: index === q.correctOption ? 1 : 0
-                }))
-            };
+                }));
+                break;
+            default:
+                console.log("Unhandled question type:", q.type);
         }
 
-
+        return {
+            question: q.question,
+            type: q.type,
+            codeSnippet: q.codeSnippet,
+            feedback: q.feedback,
+            answers: answers
+        };
     });
 
-
+    const quizData = {
+        quizName: quizName,
+        questions: formattedQuestions
+    };
 
     try {
         const response = await fetch('http://localhost:3001/add-question', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ questions: formattedQuestions })
+            body: JSON.stringify(quizData)
         });
-
-        console.log("Formatted questions being sent:", formattedQuestions); // Log the formatted questions
-
-        
-  console.log("Response status:", response.status);
 
         if (!response.ok) {
             throw new Error('Failed to submit questions');
@@ -253,12 +248,11 @@ const handleQuestionSubmit = async () => {
         console.log(result.message); // Or handle this in the UI
 
         // Reset form or update UI as needed
-        setQuestions([{ question: '', answer: '' }]);
+        setQuestions([{ question: '', type: 'text', options: ['', '', '', ''], correctOption: 0, codeSnippet: '', feedback: '' }]);
         setShowSuccess(true);
         setTimeout(() => setShowSuccess(false), 3000);
     } catch (error) {
         console.error('Error submitting questions:', error);
-        // Handle error in the UI
         setShowSuccess(false);
     }
 };

@@ -315,19 +315,34 @@ app.post('/add-lecture', addLecture);
 
 
 app.post('/add-question', async (req, res) => {
-    const { questions } = req.body;
+    const { quizName, questions } = req.body;
+
+    console.log("Received quizName:", quizName);
+    console.log("Received questions:", questions);
 
     try {
-        for (const { question, answers } of questions) {
-            // Insert the question and get the result
+        const [quizResult] = await db.promise().execute(
+            'INSERT INTO quizzes (quiz_name) VALUES (?)',
+            [quizName]
+        );
+        const quizId = quizResult.insertId;
+        console.log("Inserted quiz with ID:", quizId);
+
+        for (const { question, type: questionType, codeSnippet, feedback, answers } of questions) {
+            console.log("Inserting question:", question);
+            console.log("Question type:", questionType);
+            console.log("Code snippet:", codeSnippet);
+            console.log("Feedback:", feedback);
+
             const [questionResult] = await db.promise().execute(
-                'INSERT INTO questions (question_text) VALUES (?)',
-                [question]
+                'INSERT INTO questions (question_text, question_type, code_snippet, feedback, quiz_id) VALUES (?, ?, ?, ?, ?)',
+                [question, questionType, codeSnippet, feedback, quizId]
             );
             const questionId = questionResult.insertId;
+            console.log("Inserted question with ID:", questionId);
 
-            // Insert answers
             for (const { text, is_correct } of answers) {
+                console.log("Inserting answer:", text, "with is_correct:", is_correct);
                 await db.promise().execute(
                     'INSERT INTO options (option_text, question_id, is_correct) VALUES (?, ?, ?)',
                     [text, questionId, is_correct]

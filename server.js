@@ -49,7 +49,7 @@ app.listen(PORT, () => {
 app.get('/lecture/:id', (req, res) => {
     const lectureId = req.params.id;
 
-    const query = 'SELECT text FROM lectures WHERE id = ?';
+    const query = 'SELECT lecture_text FROM lectures WHERE lecture_id = ?';
     db.query(query, [lectureId], (err, results) => {
         if(err) {
             console.error(err);
@@ -57,7 +57,7 @@ app.get('/lecture/:id', (req, res) => {
         }
 
         if (results.length > 0) {
-            res.json(results[0].text);
+            res.json(results[0].lecture_text);
         } else {
             res.status(404).send('Lecture not found.');
         }
@@ -160,7 +160,6 @@ app.get('/api/examples', (req, res) => {
         res.json(titles);
     });
 });
-
 
 
 app.get('/api/examples/:id', (req, res) => {
@@ -287,7 +286,7 @@ const addLecture = (req, res) => {
     const { title, text, authorId } = req.body; 
 
     const query = `
-        INSERT INTO lectures (lecture_title, text, author_id)
+        INSERT INTO lectures (lecture_title, lecture_text, author_id)
         VALUES (?, ?, ?)
     `;
 

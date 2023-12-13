@@ -64,8 +64,9 @@ function App() {
 
     const handleLectureSelection = (lectureId) => {
         setSelectedLecture(lectureId);
-        setLectureContent(''); // Reset the content when a lecture is selected
+        setLectureContent(''); // Reset content state if needed
     };
+    
     
 
 

@@ -3,8 +3,10 @@ import '../styles/GoTutorial.css';
 import useLecture from '../controllers/useLecture'; 
 import UserContext from '../components/UserContext';
 import MonacoEditor from '@monaco-editor/react';
+import ReactQuill from 'react-quill'; // Make sure to import ReactQuill
+import 'react-quill/dist/quill.snow.css';
 
-
+import '../styles/RightPanel.css';  
 
 const LectureView = ({ lectureId, content }) => {
     const { content: fetchedContent, error } = useLecture(lectureId);
@@ -264,31 +266,30 @@ const handleQuestionSubmit = async () => {
 
 
 
-    if (content === 'createLecture') {
-        return (
-            <div className="lecture-view-container card go-tutorial">
-                <div className="card-body">
-                    {showSuccess && (
-                        <div className="alert alert-success" role="alert">
-                            Lecture submitted successfully!
-                        </div>
-                    )}
-                    <div>
-                        <p>Write a lecture title:</p>
-                        <input type="text" value={lectureTitle} onChange={(e) => setLectureTitle(e.target.value)} />
-                        {titleValidation && <div className="text-danger">{titleValidation}</div>}
+if (content === 'createLecture') {
+    return (
+        <div className="lecture-view-container card go-tutorial">
+            <div className="card-body">
+                {showSuccess && (
+                    <div className="alert alert-success" role="alert">
+                        Leccion añadida exitosamente!
                     </div>
-                    <div>
-                        <p>Lecture content:</p>
-                        <textarea value={lectureText} onChange={(e) => setLectureText(e.target.value)} />
-                        {textValidation && <div className="text-danger">{textValidation}</div>}
-                    </div>
-                    <button onClick={handleLectureSubmit}>Submit</button>
+                )}
+                <div>
+                    <p>Escribe el titulo de la Lección:</p>
+                    <input type="text" value={lectureTitle} onChange={(e) => setLectureTitle(e.target.value)} />
+                    {titleValidation && <div className="text-danger">{titleValidation}</div>}
                 </div>
+                <div>
+                    <p>Contenido:</p>
+                    <ReactQuill value={lectureText} onChange={setLectureText} />
+                    {textValidation && <div className="text-danger">{textValidation}</div>}
+                </div>
+                <button onClick={handleLectureSubmit}>Enviar</button>
             </div>
-        );
-        
-    }
+        </div>
+    );
+}
 
     else if (content === 'createQuestion') {
         return (
@@ -296,54 +297,57 @@ const handleQuestionSubmit = async () => {
                 <div className="card-body">
                     {showSuccess && (
                         <div className="alert alert-success" role="alert">
-                            Questions submitted successfully!
+                            Cuestionario añadido exitosamente!
                         </div>
                     )}
 
         <div>
-            <p>Quiz Name:</p>
+            <p>Nombre del cuestionario:</p>
             <input type="text" value={quizName} onChange={(e) => setQuizName(e.target.value)} />
         </div>
 
         {questions.map((q, index) => (
             <div key={index}>
                 <div>
-                    <p>Question {index + 1}:</p>
+                    <p>Pregunta {index + 1}:</p>
                     <input type="text" value={q.question} onChange={(e) => handleQuestionChange(index, 'question', e.target.value)} />
                     <select value={q.type} onChange={(e) => handleQuestionChange(index, 'type', e.target.value)}>
-                        <option value="text">Text</option>
-                        <option value="true_false">True / False</option>
-                        <option value="multiple_choice">Multiple Choice</option> {/* Add this line */}
+                        <option value="text">Texto</option>
+                        <option value="true_false">Verdadero / Falso</option>
+                        <option value="multiple_choice">Opción múltiple</option> {/* Add this line */}
                     </select>
                 </div>
 
                 <div>
 
-                <p>Code Snippet:</p>
+                <p>Código:</p>
                 <MonacoEditor
                     height="200px"
-                    language="javascript"
+                    
+                    language="go"
+                    theme="vs-dark"
                     value={q.codeSnippet}
                     onChange={(value) => handleCodeSnippetChange(index, value)}
+                    className="monaco-editor-container" 
                 />
             </div>
 
                 {q.type === 'text' && (
                     <div>
-                        <p>Answer:</p>
+                        <p>Respuesta:</p>
                         <textarea value={q.answer} onChange={(e) => handleQuestionChange(index, 'answer', e.target.value)} />
                     </div>
                 )}
                 {q.type === 'true_false' && (
                     <div>
-                        <p>Correct Answer:</p>
+                        <p>Respuesta Correcta:</p>
                         <label>
                             <input type="radio" value="true" checked={q.correctAnswer === 'true'} onChange={(e) => handleQuestionChange(index, 'correctAnswer', 'true')} />
-                            True
+                            Verdadero
                         </label>
                         <label>
                             <input type="radio" value="false" checked={q.correctAnswer === 'false'} onChange={(e) => handleQuestionChange(index, 'correctAnswer', 'false')} />
-                            False
+                            Falso
                         </label>
                     </div>
                 )}
@@ -359,7 +363,7 @@ const handleQuestionSubmit = async () => {
                                     />
                                 </div>
                             ))}
-                            <p>Select Correct Option:</p>
+                            <p>Seleccione la opción correcta:</p>
                             {q.options.map((option, optionIndex) => (
                                 <label key={optionIndex}>
                                     <input 
@@ -368,14 +372,14 @@ const handleQuestionSubmit = async () => {
                                         checked={q.correctOption === optionIndex}
                                         onChange={() => handleCorrectOptionChange(index, optionIndex)}
                                     />
-                                    Option {optionIndex + 1}
+                                    Opción {optionIndex + 1}
                                 </label>
                             ))}
                         </div>
                     )}
 
                 <div>
-                    <p>Feedback:</p>
+                    <p>Retroalimentación:</p>
                     <textarea 
                         value={q.feedback} 
                         onChange={(e) => handleFeedbackChange(index, e.target.value)} 
@@ -388,8 +392,8 @@ const handleQuestionSubmit = async () => {
 
 
 
-                    <button onClick={handleAddQuestion}>Add Question</button>
-                    <button onClick={handleQuestionSubmit}>Submit Questions</button>
+                    <button onClick={handleAddQuestion}>Añadir otra pregunta</button>
+                    <button onClick={handleQuestionSubmit}>Enviar Cuestionario</button>
                 </div>
             </div>
         );
@@ -398,13 +402,16 @@ const handleQuestionSubmit = async () => {
 
 
     else {
+
+        
     return (
       <div className="lecture-view-container card go-tutorial">
         <div className="card-body">
 
         {content ? 
-            <div className="text-muted">{content}</div> : // Manually set content
-            <div dangerouslySetInnerHTML={{ __html: fetchedContent }} className="text-muted" /> // Fetched content
+            <div className="text-muted">{content}</div> : 
+            <div className="card-body" dangerouslySetInnerHTML={{ __html: fetchedContent }}></div> 
+          
           }
 
         </div>

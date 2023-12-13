@@ -1,0 +1,215 @@
+/* RightPanel.css */
+/* RightPanel.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* This ensures padding does not affect the overall dimensions */
+}
+/* Main content background */
+.lecture-view-container {
+    background-color: #ffffff;
+    color: #DEF3FF;
+    border-radius: 4px;
+    overflow: auto; /* Scrollbar will appear here if the content overflows */
+}
+
+
+/* Ensure padding is applied */
+.lecture-view-container .card-body {
+    padding: 15px;
+    overflow: auto; /* Allow scrolling within the card body */
+    height: 100%; 
+}
+
+
+/* Card body styling */
+.card-body {
+    background-color:  #1e1e1e; /* Consistent with the main background */
+    color: #DEF3FF; /* Maintain readability with light text */
+}
+
+/* Targeting the HTML tags within the component to ensure they get styled */
+.lecture-view-container h1,
+.lecture-view-container h2,
+.lecture-view-container h3
+{
+    color: #84C3E8; /* Light text color for readability */
+}
+
+
+.lecture-view-container p{
+
+    color: #ffffff;
+    line-height: 1.6; 
+}
+
+.lecture-view-container code {
+    
+    background-color:#5f5f5f; /* Dark background for code elements */
+    color:#ffffff; /* Light text color for readability */
+    padding: 2px 4px; /* Padding inside inline code elements */
+    border-radius: 3px; /* Rounded corners for inline code elements */
+}
+
+.lecture-view-container pre code {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border-radius: 0;
+}
+
+/* Styles for code blocks */
+.lecture-view-container pre {
+    background-color: #333; /* Dark background for code blocks */
+    color: #F5F5F5; /* Light text color for code */
+    padding: 10px; /* Padding inside code blocks */
+    border-radius: 4px; /* Rounded corners for code blocks */
+    overflow-x: auto; /* Horizontal scrolling for overflow */
+    white-space: pre-wrap; /* Ensures code wraps and respects indentation */
+    word-break: break-all; /* Prevents long lines from breaking layout */
+}
+
+
+
+
+
+
+
+
+
+/* Button styling */
+button {
+    background-color: #074569; /* Principal color for buttons */
+    color: #F5F5F5; /* Light text for readability */
+    border: none; /* Remove default border */
+    padding: 10px 20px; /* Padding inside the buttons */
+    margin: 5px; /* Spacing around buttons */
+    border-radius: 4px; /* Optional: rounded corners for buttons */
+    cursor: pointer; /* Change cursor to indicate clickable */
+}
+
+
+
+button:hover {
+    background-color: #063e55; /* Slightly darker shade for hover state */
+}
+
+
+/* Select styling */
+select {
+    background-color: #ffffff; /* White background for dropdown */
+    color: #333333; /* Dark text color for contrast */
+    border: 1px solid #cccccc; /* Subtle border */
+    padding: 5px; /* Padding inside the select box */
+    margin-bottom: 10px; /* Space below select box */
+}
+
+/* Styling for success alert messages */
+.alert-success {
+    background-color: #3E7EA8; /* Light accent color for success messages */
+    color: #F5F5F5; /* Light text color for readability */
+    padding: 10px; /* Padding inside the alert box */
+    border-radius: 4px; /* Optional: rounded corners for the alert box */
+    margin-bottom: 15px; /* Space below the alert box */
+}
+
+/* Text color for muted text */
+.text-muted {
+    color: #F5F5F5; /* Light text color for readability */
+}
+
+
+
+
+
+
+/* Custom styles for ReactQuill toolbar */
+.ql-toolbar.ql-snow {
+    color: white; /* This will set the toolbar icons to white */
+    background: #333; /* Optional: if you also want to change the toolbar background */
+}
+
+/* Changing the color of the buttons inside the toolbar to white */
+.ql-toolbar.ql-snow .ql-picker-label,
+.ql-toolbar.ql-snow .ql-picker-item,
+.ql-toolbar.ql-snow button {
+    color: white;
+}
+
+/* If you want to change the color of the tooltips as well */
+.ql-snow .ql-tooltip {
+    color: white;
+    background: #333;
+}
+
+/* To ensure dropdowns in the toolbar match the dark theme */
+.ql-snow .ql-stroke {
+    stroke: white;
+}
+
+.ql-snow .ql-fill,
+.ql-snow .ql-stroke.ql-fill {
+    fill: white;
+}
+
+/* Custom styles for ReactQuill dropdown */
+.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+    background-color: #333; /* Dark background for dropdown */
+    color: white; /* White text color for dropdown items */
+}
+
+/* Style for the options within the dropdown */
+.ql-snow .ql-picker.ql-expanded .ql-picker-options .ql-picker-item {
+    color: white; /* White text color for readability */
+}
+
+/* Hover state for the options within the dropdown */
+.ql-snow .ql-picker.ql-expanded .ql-picker-options .ql-picker-item:hover {
+    background-color: #555; /* Slightly lighter background for hover state */
+}
+
+
+/* RightPanel.css */
+
+/* Ensure the background color is consistent */
+.question-view-container {
+    background-color: #1e1e1e; /* Set the background color to match the Monaco Editor */
+}
+
+/* Add margin to the Monaco Editor container */
+.monaco-editor-container {
+    margin: 10px 0; /* Adjust the value as needed for top and bottom margin */
+    border: 3px solid #585858; /* If you want a border around the editor */
+    background-color: #1e1e1e; /* Set the background color to match the container */
+}
+
+/* If the Monaco Editor does not have a specific class, target the element more generally */
+.react-monaco-editor-container .monaco-editor .monaco-editor-background,
+.react-monaco-editor-container .monaco-editor,
+.react-monaco-editor-container .monaco-editor .margin {
+    background-color: #1e1e1e; /* Ensure the editor matches the desired background color */
+    color: #fdfdfd; /* Ensure the text is the color you want */
+}
+
+/* Adjust textarea to fill width and have consistent background */
+.question-view-container textarea {
+    width: calc(100% - 30px); /* Adjust width to account for padding */
+    background-color: #2b2b2b; /* Set your preferred background color */
+    color: white; /* Text color */
+    margin: 10px 0; /* Space above and below the textarea */
+    padding: 15px; /* Padding inside the textarea */
+    border: 1px solid #6d6c6c; /* Subtle border */
+    border-radius: 4px; /* Rounded corners */
+}
+
+/* Rest of the styles */
+/* Input and Textarea styling */
+input[type="text"],
+textarea {
+    background-color: #2b2b2b; /* Set your preferred background color */
+    color: white; /* Text color */
+    margin: 1px 0; /* Space above and below the textarea */
+    padding: 5px; /* Padding inside the inputs */
+    margin-bottom: 10px; /* Space between inputs */
+    width: 100%; 
+}

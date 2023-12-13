@@ -13,12 +13,12 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
     return (
         <Modal show={isOpen} onHide={onClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Login</Modal.Title>
+                <Modal.Title>Inicio de Sesión</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label>Email:</label> {/* Updated label */}
+                        <label>Correo:</label> {/* Updated label */}
                         <input
                             type="email" // Changed 'text' to 'email' for proper validation
                             className="form-control"
@@ -28,7 +28,7 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Password:</label>
+                        <label>Contraseña:</label>
                         <input
                             type="password"
                             className="form-control"
@@ -38,7 +38,7 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
                         />
                     </div>
                     <button type="submit" className="btn btn-primary">
-                        Login
+                        Ingresar
                     </button>
                 </form>
             </Modal.Body>

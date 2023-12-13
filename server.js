@@ -46,6 +46,59 @@ app.listen(PORT, () => {
 
 
 
+////////////////////////LECTURAS///////////////////////
+
+
+app.get('/api/lectures', (req, res) => {
+    const query = 'SELECT lecture_id, lecture_title FROM lectures WHERE author_id = 1';
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Database error.');
+        }
+        res.json(results); 
+    });
+});
+
+
+
+app.get('/api/user-lectures', (req, res) => {
+    const userId = req.query.userId;
+    const userRole = req.query.userRole; // Add a parameter to determine the user role
+
+    // Query for fetching lectures for professors
+    let query = `
+    SELECT DISTINCT lecture_id, lecture_title FROM lectures
+    WHERE author_id = 1 OR author_id = ?
+    
+    `;
+
+    // If the user is a student, modify the query
+    if (userRole === 'student') {
+        query = `
+            SELECT DISTINCT l.lecture_id, l.lecture_title
+            FROM lectures l
+            JOIN students s ON l.author_id = s.professor_id
+            WHERE l.author_id = 1 OR s.student_id = ?
+        `;
+    }
+
+    // Execute the query
+    db.query(query, [userId], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Database error.');
+        }
+        res.json(results);
+    });
+});
+
+
+
+
+
+
+
 app.get('/lecture/:id', (req, res) => {
     const lectureId = req.params.id;
 
@@ -63,6 +116,43 @@ app.get('/lecture/:id', (req, res) => {
         }
     });
 });
+
+
+
+
+
+////////////////////////////////////////////////////
+
+
+
+
+app.post('/api/submit-feedback', (req, res) => {
+    console.log('Received feedback:', req.body);
+
+    const { userId, questionId, userAnswer } = req.body;
+
+    const query = `
+        INSERT INTO quiz_responses (student_id, questions_id, answers)
+        VALUES (?, ?, ?)
+    `;
+
+    db.query(query, [userId, questionId, userAnswer], (err, results) => {
+        if (err) {
+            console.error('Error submitting feedback to the database:', err);
+            return res.status(500).send('Error submitting feedback.');
+        }
+
+        console.log('Feedback submission to the database successful:', results);
+        res.status(200).send('Feedback submitted successfully.');
+    });
+});
+
+
+
+
+
+
+
 
 
 app.get('/quiz/all/:id', (req, res) => {
@@ -124,17 +214,6 @@ app.get('/api/quiz', (req, res) => {
   
 
 
-  app.get('/api/topics', (req, res) => {
-    const query = 'SELECT topic_name FROM topics';
-    db.query(query, (err, results) => {
-        if(err) {
-            console.error(err);
-            return res.status(500).send('Database error.');
-        }
-        const topics = results.map(result => result.topic_name);
-        res.json(topics);
-    });
-});
 
 
 app.get('/api/quizzes', (req, res) => {
@@ -245,18 +324,22 @@ app.get('/examples', (req, res) => {
 });
 
 
-
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
-    // This query will check if there's a user with the given email and password
+    // This query will check both students and professors tables
     const query = `
-        SELECT id_user, user_name, user_role FROM users 
-        WHERE user_email = ? AND user_password = ?
+        SELECT student_id AS id_user, student_name AS user_name, 'student' AS user_role 
+        FROM students 
+        WHERE student_email = ? AND student_password = ?
+        UNION
+        SELECT professor_id AS id_user, professor_name AS user_name, 'professor' AS user_role 
+        FROM professors 
+        WHERE professor_email = ? AND professor_password = ?
     `;
 
     // Execute the query
-    db.execute(query, [email, password], (err, results, fields) => {
+    db.execute(query, [email, password, email, password], (err, results, fields) => {
         if (err) {
             // Handle error
             console.error('Error during database query', err);
@@ -268,19 +351,22 @@ app.post('/login', (req, res) => {
             const user = results[0];
             return res.json({
                 success: true,
-                id: user.id_user,  // Include the user's ID
+                id: user.id_user,
                 name: user.user_name,
                 role: user.user_role
             });
-        }
-        
-        
-        else {
+        } else {
             // No user found with the given email and password
             return res.status(401).json({ success: false, message: 'Incorrect email or password' });
         }
     });
 });
+
+
+
+
+
+
 
 const addLecture = (req, res) => {
     const { title, text, authorId } = req.body; 

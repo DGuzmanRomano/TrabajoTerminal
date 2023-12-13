@@ -23,6 +23,10 @@ import logo from '../gopher.png';
 
 const Toolbar = (props) => {
 
+    const [selectedLectureId, setSelectedLectureId] = useState(null);
+
+    const [lectureData, setLectureData] = useState([]);
+
     const [isQuizModalOpen, setIsQuizModalOpen] = useState(false);
     const [selectedQuizId, setSelectedQuizId] = useState(null);
     const [selectedOptionName, setSelectedOptionName] = useState("");
@@ -37,26 +41,36 @@ const Toolbar = (props) => {
 
     const [isScoresModalOpen, setIsScoresModalOpen] = useState(false);
 
+
+
+    
+
     const handleStudentDropdownAction = (action) => {
         if (action === 'action1') {
-            setIsScoresModalOpen(true); // Assuming this is your state for controlling ScoresModal visibility
+            setIsScoresModalOpen(true); 
         }
-        // Handle other actions if necessary
+     
     };
 
-
-
     useEffect(() => {
-        fetchTopics()
-            .then(data => {
-                console.log('Topics:', data);
-                setTopics(data);
-            })
-            .catch(error => {
-                console.error("Error fetching topics:", error);
-            });
-    }, []);
-    
+        let endpoint ='http://localhost:3001/api/lectures';
+
+        if (user) {
+            // If user is logged in, change endpoint to fetch user-specific lectures
+            endpoint = `http://localhost:3001/api/user-lectures?userId=${user.id}&userRole=${user.role}`;
+        }
+        fetch(endpoint)
+        .then(response => response.json())
+        .then(data => {
+            setLectureData(data);
+        })
+        .catch(error => {
+            console.error("Error fetching lectures:", error);
+        });
+}, [user]);
+
+
+
 
     useEffect(() => {
         fetchQuizzes()
@@ -94,8 +108,10 @@ const handleLogin = (email, password) => {
             console.log(`User: ${data.name}, Role: ${data.role}`);
             setIsLoginModalOpen(false);
             setUser({ id: data.id, name: data.name, role: data.role });
-        } else {
            
+        } else {
+            // Handle login failure
+            console.error('Login failed:', data.message);
         }
     })
     .catch(error => {
@@ -105,8 +121,10 @@ const handleLogin = (email, password) => {
 
 
 
-const handleLectureClick = (lectureId) => {
-    props.onLectureSelect(lectureId + 1); // This will now call handleLectureSelection in App.js
+
+const handleLectureClick = (lectureId, lectureTitle) => {
+    setSelectedLectureId(lectureId);
+    
 };
 
 
@@ -134,10 +152,10 @@ const handleLectureClick = (lectureId) => {
     const professorControls = user && user.role === 'professor' && (
         <>
             <span className="navbar-text welcome-message">
-                Welcome, Professor {user.name}
+                Bienvenido, profesor {user.name}
             </span>
             <ProfessorDropdownButton
-                title="Professor Actions"
+                title="Menú de profesor"
                 onAction={props.onProfessorAction} 
             />
         </>
@@ -147,10 +165,10 @@ const handleLectureClick = (lectureId) => {
     const studentControls = user && user.role === 'student' && (
         <>
             <span className="navbar-text welcome-message">
-                Welcome, Student {user.name}
+                Bienvenido,  {user.name}
             </span>
             <StudentDropdownButton
-                title="Student Actions"
+                title="Menú de estudiante"
                 onActionSelect={handleStudentDropdownAction}
                 
             />
@@ -185,11 +203,13 @@ const handleLectureClick = (lectureId) => {
 
 
                     <div className="btn-group mr-2" role="group">
-                        <TopicsDropdownButton
-                            title="Lecciones"
-                            items={topics}
-                            onItemClick={handleLectureClick}
-                        />
+                    <TopicsDropdownButton
+                        title="Lecciones"
+                        items={lectureData.map(lecture => lecture.lecture_title)}
+                        itemIds={lectureData.map(lecture => lecture.lecture_id)}
+                        onItemClick={props.onLectureSelect}
+                    />
+
                     </div>
 
 
@@ -217,12 +237,12 @@ const handleLectureClick = (lectureId) => {
                 {user ? (
                     // Render Logout button when user is logged in
                     <button className="btn btn-outline-primary mr-2" onClick={handleLogout}>
-                        Logout
+                        Salir
                     </button>
                 ) : (
                     // Render Login button when no user is logged in
                     <button className="btn btn-outline-primary mr-2" onClick={() => setIsLoginModalOpen(true)}>
-                        Login
+                        Ingresar
                     </button>
                 )}
             </div>

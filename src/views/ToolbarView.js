@@ -5,7 +5,6 @@ import TopicsDropdownButton from '../components/TopicsDropdownButton';
 import QuizDropdownButton from '../components/QuizDropdownButton';
 import QuizModal from '../components/QuizModal';
 import Quiz from '../components/Quiz';
-import { fetchTopics } from '../controllers/TopicsController'; 
 import { fetchQuizzes } from '../controllers/QuizzesController'; 
 import ExamplesDropdownButton from '../components/ExamplesDropdownButton';
 import ExampleModal from '../components/ExampleModal'; 
@@ -177,6 +176,33 @@ const handleLectureClick = (lectureId, lectureTitle) => {
 
 
 
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const content = e.target.result;
+                props.onFileSelect(content); // Pass the file content to the parent component
+            };
+            reader.readAsText(file);
+        }
+    };
+    
+
+    const handleSaveFile = () => {
+        const blob = new Blob([props.code], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'codigo.go'; 
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
+
+
 
     
     return (
@@ -186,7 +212,13 @@ const handleLectureClick = (lectureId, lectureTitle) => {
                 <div className="left-buttons">
                     <div className="btn-group mr-2" role="group">
                         <button type="button" className="btn btn-primary" onClick={props.onExecute}>Ejecutar</button>
-                        <button type="button" className="btn btn-secondary">Archivo</button>
+
+
+                        <button type="button" className="btn btn-secondary" onClick={() => document.getElementById('fileInput').click()}>Archivo</button>
+                        <input type="file" id="fileInput" accept=".go" style={{ display: 'none' }} onChange={handleFileChange} />
+
+
+                        <button type="button" className="btn btn-secondary" onClick={handleSaveFile}>Guardar</button>
                     </div>
        
                     <div className="btn-group mr-2" role="group">
@@ -226,9 +258,13 @@ const handleLectureClick = (lectureId, lectureTitle) => {
                     </div>
                 </div>
                     <div className="gopher" >  
-                     <img src={logo} alt="Logo" 
-                     style={{ marginRight: 'auto' }} /> 
+                    
+                    
+
+
                       </div>
+
+
                
 
                 {/* Login Button */}

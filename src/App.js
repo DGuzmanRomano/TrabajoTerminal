@@ -68,6 +68,9 @@ function App() {
     };
     
     
+const handleFileSelect = (fileContent) => {
+    setCode(fileContent); // Update the code state with the file content
+};
 
 
     return (
@@ -75,9 +78,14 @@ function App() {
             <div className="App">
             <Toolbar 
                 user={user} 
-                onLectureSelect={handleLectureSelection} // Pass this new function to Toolbar
+                onLectureSelect={handleLectureSelection} 
                 onExecute={() => handleExecute(code)} 
                 onProfessorAction={handleProfessorAction}
+                onFileSelect={handleFileSelect}
+
+                code={code}
+
+
             />
                 
                 <div className="content container-fluid">

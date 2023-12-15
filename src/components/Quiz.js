@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import UserContext from './UserContext'; 
+
 import Editor from '@monaco-editor/react';
 import './Quiz.css';
 import useQuizController from '../controllers/useQuizController'; 
 
+
+
+
+
+
 const Quiz = ({ quizId }) => {
+    const { user } = useContext(UserContext); 
+
     const {
         state: {
             data,
@@ -19,7 +28,7 @@ const Quiz = ({ quizId }) => {
             handleOptionClick,
             handleTextChange,
         },
-    } = useQuizController(quizId);
+    } = useQuizController(quizId, user);
 
     if (!data || data.length === 0) {
         return <p>No se encontraron preguntas.</p>;

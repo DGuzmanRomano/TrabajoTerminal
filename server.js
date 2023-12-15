@@ -257,17 +257,43 @@ app.get('/api/examples/:id', (req, res) => {
 
 
 app.post('/submit-quiz', async (req, res) => {
-    const { quizId, userResponses } = req.body; // assuming your payload contains these
+    const { quizId, userResponses, studentId } = req.body;
 
     try {
         const questions = await getQuestionsWithAnswers(quizId);
-        const score = calculateScore(questions, userResponses);
+
+        // Fetch total number of questions for this quiz
+        const totalQuestionsQuery = 'SELECT COUNT(*) AS total FROM questions WHERE quiz_id = ?';
+        const [totalQuestionsResult] = await db.promise().query(totalQuestionsQuery, [quizId]);
+        const totalQuestions = totalQuestionsResult[0].total;
+
+        const score = calculateScore(questions, userResponses, totalQuestions);
+
+        // Insert responses if the user is a student
+        if (studentId) {
+            await Promise.all(userResponses.map(response => {
+                const { questionId, answer } = response;
+                const responseQuery = 'INSERT INTO quiz_responses (question_id, question_answer, quiz_id, student_id) VALUES (?, ?, ?, ?)';
+                return db.promise().query(responseQuery, [questionId, typeof answer === 'object' ? answer.option_text : answer, quizId, studentId]);
+            }));
+
+            // Insert/update quiz status and score
+            const quizStatusQuery = 'INSERT INTO quiz_status (student_id, quiz_id, quiz_status, quiz_score) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE quiz_status = ?, quiz_score = ?';
+            await db.promise().query(quizStatusQuery, [studentId, quizId, 1, score, 1, score]);
+        }
+
         res.json({ score });
+        
     } catch (error) {
         console.error('Error submitting quiz:', error);
         res.status(500).send('Error submitting quiz');
     }
 });
+
+
+
+
+
 
 async function getQuestionsWithAnswers(quizId) {
     const [questions] = await db.promise().query(`
@@ -281,8 +307,12 @@ async function getQuestionsWithAnswers(quizId) {
     return questions;
 }
 
-function calculateScore(questions, userResponses) {
+
+
+
+function calculateScore(questions, userResponses, totalQuestions) {
     let score = 0;
+    let correctAnswers = 0;
 
     // We iterate over the user responses
     userResponses.forEach(userResponse => {
@@ -305,8 +335,31 @@ function calculateScore(questions, userResponses) {
         }
     });
 
-    return score;
+    let scorePercentage = (correctAnswers / totalQuestions) * 100;
+    return Math.round(scorePercentage); // Round to nearest integer
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

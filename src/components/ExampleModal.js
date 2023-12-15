@@ -20,17 +20,17 @@ const ExampleModal = ({ isOpen, content, title, onClose }) => {
     return (
         <Modal show={isOpen} onHide={onClose} size="lg">
             <Modal.Header closeButton>
-                <Modal.Title>{title || 'Example Code'}</Modal.Title> {/* Use the passed title */}
+                <Modal.Title>{title || 'Código de Ejemplo'}</Modal.Title> {/* Use the passed title */}
             </Modal.Header>
             <Modal.Body>
                 <div className="d-flex justify-content-end">
                     <button className="btn btn-primary mb-2" onClick={handleCopyToClipboard}>
-                        Copy to Clipboard
+                        Copiar
                     </button>
                 </div>
                 {showAlert && (
                     <div className="alert alert-success" role="alert">
-                        Copied to clipboard!
+                        Copiado al portapapeles!
                     </div>
                 )}
                 <Editor
@@ -47,7 +47,7 @@ const ExampleModal = ({ isOpen, content, title, onClose }) => {
                     }}
                 /> </Modal.Body>
                 <Modal.Footer>
-                    <button className="btn btn-secondary" onClick={onClose}>Close</button>
+                    <button className="btn btn-secondary" onClick={onClose}>Cerrar</button>
                 </Modal.Footer>
             </Modal>
         );

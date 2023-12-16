@@ -126,35 +126,6 @@ app.get('/lecture/:id', (req, res) => {
 
 
 
-app.post('/api/submit-feedback', (req, res) => {
-    console.log('Received feedback:', req.body);
-
-    const { userId, questionId, userAnswer } = req.body;
-
-    const query = `
-        INSERT INTO quiz_responses (student_id, questions_id, answers)
-        VALUES (?, ?, ?)
-    `;
-
-    db.query(query, [userId, questionId, userAnswer], (err, results) => {
-        if (err) {
-            console.error('Error submitting feedback to the database:', err);
-            return res.status(500).send('Error submitting feedback.');
-        }
-
-        console.log('Feedback submission to the database successful:', results);
-        res.status(200).send('Feedback submitted successfully.');
-    });
-});
-
-
-
-
-
-
-
-
-
 app.get('/quiz/all/:id', (req, res) => {
     const quizId  = req.params.id;
 
@@ -269,13 +240,23 @@ app.post('/submit-quiz', async (req, res) => {
 
         const score = calculateScore(questions, userResponses, totalQuestions);
 
+
         // Insert responses if the user is a student
         if (studentId) {
             await Promise.all(userResponses.map(response => {
                 const { questionId, answer } = response;
-                const responseQuery = 'INSERT INTO quiz_responses (question_id, question_answer, quiz_id, student_id) VALUES (?, ?, ?, ?)';
+                const responseQuery = `
+                    INSERT INTO quiz_responses (question_id, question_answer, quiz_id, student_id)
+                    VALUES (?, ?, ?, ?)
+                    ON DUPLICATE KEY UPDATE
+                    question_answer = VALUES(question_answer), quiz_id = VALUES(quiz_id)`;
                 return db.promise().query(responseQuery, [questionId, typeof answer === 'object' ? answer.option_text : answer, quizId, studentId]);
             }));
+
+
+
+
+
 
             // Insert/update quiz status and score
             const quizStatusQuery = 'INSERT INTO quiz_status (student_id, quiz_id, quiz_status, quiz_score) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE quiz_status = ?, quiz_score = ?';
@@ -294,53 +275,76 @@ app.post('/submit-quiz', async (req, res) => {
 
 
 
-
 async function getQuestionsWithAnswers(quizId) {
-    const [questions] = await db.promise().query(`
+    const queryString = `
         SELECT q.id, q.question_text, q.question_type, q.code_snippet, q.feedback, 
                o.option_text, o.is_correct 
         FROM questions q
         JOIN options o ON q.id = o.question_id
-        WHERE q.id = ? AND o.is_correct = 1
-    `, [quizId]);
-
+        WHERE q.quiz_id = ? AND o.is_correct = 1
+    `;
+    const [questions] = await db.promise().query(queryString, [quizId]);
+    console.log("Questions fetched from DB:", questions);
     return questions;
 }
 
 
 
-
 function calculateScore(questions, userResponses, totalQuestions) {
-    let score = 0;
-    let correctAnswers = 0;
+    let correctCount = 0;
 
-    // We iterate over the user responses
     userResponses.forEach(userResponse => {
-        // Find the question that matches the current user response
-        const question = questions.find(q => q.id.toString() === userResponse.questionId);
+        const question = questions.find(q => q.id.toString() === userResponse.questionId.toString());
 
-        // If it's a multiple-choice question, compare option_text
-        if (question && question.question_type === 'multiple_choice') {
-            // Check if the answer is an object with option_text (for MCQs)
-            if (userResponse.answer.option_text && userResponse.answer.option_text === question.option_text) {
-                score++;
-            }
+        if (!question) {
+            console.log('Question not found, skipping...');
+            return;
         }
-        // For text answers, just compare the answer strings
-        else if (question && question.question_type === 'text_answer') {
-            // Check if the answer is a string (for text answers)
-            if (userResponse.answer === question.option_text) {
-                score++;
-            }
+
+        let userAnswer = userResponse.answer;
+        if (typeof userAnswer === 'object' && userAnswer.option_text !== undefined) {
+            userAnswer = userAnswer.option_text;
+        }
+
+        // Handle multiple choice and true/false questions
+        if ((question.question_type === 'multiple_choice' || question.question_type === 'true_false') && 
+            userAnswer === question.option_text) {
+            correctCount++;
+        }
+        // Handle text answer questions
+        else if (question.question_type === 'text_answer' && 
+                 userAnswer.toLowerCase().trim() === question.option_text.toLowerCase().trim()) {
+            correctCount++;
         }
     });
 
-    let scorePercentage = (correctAnswers / totalQuestions) * 100;
+    let scorePercentage = (correctCount / totalQuestions) * 100;
     return Math.round(scorePercentage); // Round to nearest integer
 }
 
 
 
+
+
+
+
+app.get('/user-quizzes/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const query = `
+            SELECT qz.quiz_id, qz.quiz_name, qs.quiz_score
+            FROM quizzes qz
+            JOIN quiz_status qs ON qz.quiz_id = qs.quiz_id
+            WHERE qs.student_id = ?
+        `;
+        const [quizzes] = await db.promise().query(query, [userId]);
+        res.json(quizzes);
+    } catch (error) {
+        console.error('Error fetching user quizzes:', error);
+        res.status(500).send('Error fetching user quizzes');
+    }
+});
 
 
 

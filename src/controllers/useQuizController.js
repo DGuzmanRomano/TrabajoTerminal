@@ -12,20 +12,23 @@ const useQuizController = (quizId, user) => {
   const [data, setData] = useState([]);
 
   // Handle when the user selects an option for a question
-  const handleOptionClick = useCallback((questionId, optionId) => {
-    setUserResponses((prevResponses) => ({
-      ...prevResponses,
-      [questionId]: optionId,
+  const handleOptionClick = (questionId, option) => {
+    setUserResponses(prevResponses => ({
+        ...prevResponses,
+        [questionId]: { option_text: option.option_text }, // Store in an object for multiple-choice
     }));
-  }, []);
+};
+
 
   // Handle text change for text-based answers
-  const handleTextChange = useCallback((questionId, text) => {
-    setUserResponses((prevResponses) => ({
-      ...prevResponses,
-      [questionId]: text,
+  const handleTextChange = (questionId, text) => {
+    setUserResponses(prevResponses => ({
+        ...prevResponses,
+        [questionId]: text, // Store text directly for text answers
     }));
-  }, []);
+};
+
+
 
   // Go to the next question
   const handleNextClick = useCallback(() => {

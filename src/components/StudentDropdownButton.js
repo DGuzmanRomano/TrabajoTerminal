@@ -10,7 +10,7 @@ const StudentDropdownButton = ({ title, onActionSelect }) => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-                <Dropdown.Item onClick={() => onActionSelect('action1')}>Action 1</Dropdown.Item>
+                <Dropdown.Item onClick={() => onActionSelect('action1')}>Ver Calificaciones</Dropdown.Item>
                 {/* Add more items here if needed */}
             </Dropdown.Menu>
         </Dropdown>

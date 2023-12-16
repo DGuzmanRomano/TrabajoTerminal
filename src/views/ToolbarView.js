@@ -41,7 +41,36 @@ const Toolbar = (props) => {
     const [isScoresModalOpen, setIsScoresModalOpen] = useState(false);
 
 
+    const [userQuizzes, setUserQuizzes] = useState([]);
 
+
+    const fetchUserQuizzes = async () => {
+        if (user && user.role === 'student') {
+            try {
+                const response = await fetch(`http://localhost:3001/user-quizzes/${user.id}`);
+                const quizzes = await response.json();
+                setUserQuizzes(quizzes); // Set the quizzes in state
+            } catch (error) {
+                console.error('Error fetching user quizzes:', error);
+            }
+        }
+    };
+    
+
+    useEffect(() => {
+        if (isScoresModalOpen && user && user.role === 'student') {
+            fetchUserQuizzes();
+        }
+    }, [isScoresModalOpen, user]);
+    
+    const handleQuizSelection = (quizId) => {
+       
+        fetchQuizFeedback(quizId);
+        console.log(`Quiz selected: ${quizId}`);
+        // For example, open a modal with the feedback details
+    };
+
+    
     
 
     const handleStudentDropdownAction = (action) => {
@@ -124,6 +153,23 @@ const handleLogin = (email, password) => {
 const handleLectureClick = (lectureId, lectureTitle) => {
     setSelectedLectureId(lectureId);
     
+};
+
+
+const [quizFeedback, setQuizFeedback] = useState(null);
+
+const fetchQuizFeedback = async (quizId) => {
+    try {
+        const response = await fetch(`http://localhost:3001/quiz-feedback/${user.id}/${quizId}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const feedbackDetails = await response.json();
+        setQuizFeedback(feedbackDetails); // Update the state with the fetched feedback
+    } catch (error) {
+        console.error('Error fetching quiz feedback:', error);
+        // Handle errors or show a message to the user
+    }
 };
 
 
@@ -309,8 +355,12 @@ const handleLectureClick = (lectureId, lectureTitle) => {
        <ScoresModal
             isOpen={isScoresModalOpen}
             onClose={() => setIsScoresModalOpen(false)}
-            scores={10}
+            scores={10} // You might want to calculate or fetch this
+            quizzes={userQuizzes}
+            onQuizSelect={handleQuizSelection}
+            quizFeedback={quizFeedback} // Pass the feedback details to the modal
         />
+
 
     </div>
 );

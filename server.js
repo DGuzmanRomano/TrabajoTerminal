@@ -328,47 +328,6 @@ function calculateScore(questions, userResponses, totalQuestions) {
 
 
 
-app.get('/user-quizzes/:userId', async (req, res) => {
-    const { userId } = req.params;
-
-    try {
-        const query = `
-            SELECT qz.quiz_id, qz.quiz_name, qs.quiz_score
-            FROM quizzes qz
-            JOIN quiz_status qs ON qz.quiz_id = qs.quiz_id
-            WHERE qs.student_id = ?
-        `;
-        const [quizzes] = await db.promise().query(query, [userId]);
-        res.json(quizzes);
-    } catch (error) {
-        console.error('Error fetching user quizzes:', error);
-        res.status(500).send('Error fetching user quizzes');
-    }
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 app.get('/examples', (req, res) => {
     const query = "SELECT example_id, example_code, example_title, example_description FROM examples";
     db.query(query, (err, results) => {
@@ -449,6 +408,87 @@ app.post('/add-lecture', addLecture);
 
 
 
+app.get('/user-quizzes/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const query = `
+            SELECT qz.quiz_id, qz.quiz_name, qs.quiz_score
+            FROM quizzes qz
+            JOIN quiz_status qs ON qz.quiz_id = qs.quiz_id
+            WHERE qs.student_id = ? AND qs.quiz_status = 1
+        `;
+        const [quizzes] = await db.promise().query(query, [userId]);
+        res.json(quizzes);
+    } catch (error) {
+        console.error('Error fetching user quizzes:', error);
+        res.status(500).send('Error fetching user quizzes');
+    }
+});
+
+
+app.get('/quiz-responses/:userId/:quizId', async (req, res) => {
+    const { userId, quizId } = req.params;
+
+    try {
+        const query = `
+            SELECT qr.question_id, qr.question_answer
+            FROM quiz_responses qr
+            WHERE qr.student_id = ? AND qr.quiz_id = ?
+        `;
+        const [responses] = await db.promise().query(query, [userId, quizId]);
+        res.json(responses);
+    } catch (error) {
+        console.error('Error fetching quiz responses:', error);
+        res.status(500).send('Error fetching quiz responses');
+    }
+});
+
+
+
+app.get('/quiz-feedback/:userId/:quizId', async (req, res) => {
+    const { userId, quizId } = req.params;
+
+    try {
+        const query = `
+            SELECT q.question_text, q.code_snippet, qr.question_answer AS user_answer, 
+                   qo.option_text AS correct_answer, q.feedback, 
+                   (qr.question_answer = qo.option_text) AS is_correct
+            FROM quiz_responses qr
+            JOIN questions q ON qr.question_id = q.id
+            JOIN options qo ON q.id = qo.question_id AND qo.is_correct = 1
+            WHERE qr.student_id = ? AND qr.quiz_id = ?
+        `;
+        const [feedbackDetails] = await db.promise().query(query, [userId, quizId]);
+        res.json(feedbackDetails);
+    } catch (error) {
+        console.error('Error fetching quiz feedback:', error);
+        res.status(500).send('Error fetching quiz feedback');
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -494,3 +534,9 @@ app.post('/add-question', async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });
+
+
+
+
+
+

@@ -41,7 +41,7 @@ db.connect(function(err) {
     }
 
     console.log('Connected as ID ' + db.threadId);
-    db.end(); // close the connection
+  
 });
 
 

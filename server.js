@@ -26,7 +26,7 @@ const db = mysql.createConnection({
     user: 'root', // Replace with your Cloud SQL username
     password: '123456', // Replace with your Cloud SQL password
     database: 'tt', // Replace with your Cloud SQL database name
-    
+    connectTimeout: 10000
 });
 
 

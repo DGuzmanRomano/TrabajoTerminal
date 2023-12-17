@@ -40,8 +40,8 @@ db.connect(function(err) {
         return;
     }
 
-    console.log('Connected as ID ' + connection.threadId);
-    connection.end(); // close the connection
+    console.log('Connected as ID ' + db.threadId);
+    db.end(); // close the connection
 });
 
 

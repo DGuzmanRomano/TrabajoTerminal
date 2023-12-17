@@ -12,18 +12,39 @@ app.use(cors()); // Use CORS
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-
+/*
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'd',
     password: 'qazwsx123456',
     database: 'tt'
 });
+*/
+
+
+const db = mysql.createConnection({
+    host: '34.132.215.231', // Replace with the IP of your Cloud SQL instance
+    user: 'root', // Replace with your Cloud SQL username
+    password: '123456', // Replace with your Cloud SQL password
+    database: 'tt', // Replace with your Cloud SQL database name
+    port: 3308
+});
+
+
+
+
+
+
+
 
 db.connect((err) => {
-    if(err) throw err;
+    if (err) {
+        console.error('Error connecting to the MySQL database:', err);
+        return;
+    }
     console.log('Connected to the MySQL database.');
 });
+
 
 
 
@@ -31,7 +52,7 @@ db.connect((err) => {
 app.post('/execute', codeExecutionRoute.executeCode);
 
 
-const PORT = 3001;
+const PORT = 3006;
 app.listen(PORT, () => {
     console.log(`Server started on http://localhost:${PORT}`);
 });

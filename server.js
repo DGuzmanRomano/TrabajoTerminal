@@ -18,8 +18,7 @@ const db = mysql.createConnection({
     user: 'd',
     password: 'qazwsx123456',
     database: 'tt'
-});
-*/
+});*/
 
 
 const db = mysql.createConnection({
@@ -27,7 +26,7 @@ const db = mysql.createConnection({
     user: 'root', // Replace with your Cloud SQL username
     password: '123456', // Replace with your Cloud SQL password
     database: 'tt', // Replace with your Cloud SQL database name
-    port: 3308
+    
 });
 
 
@@ -35,16 +34,15 @@ const db = mysql.createConnection({
 
 
 
-
-
-db.connect((err) => {
+db.connect(function(err) {
     if (err) {
-        console.error('Error connecting to the MySQL database:', err);
+        console.error('Error connecting: ' + err.stack);
         return;
     }
-    console.log('Connected to the MySQL database.');
-});
 
+    console.log('Connected as ID ' + connection.threadId);
+    connection.end(); // close the connection
+});
 
 
 
@@ -52,7 +50,7 @@ db.connect((err) => {
 app.post('/execute', codeExecutionRoute.executeCode);
 
 
-const PORT = 3006;
+const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Server started on http://localhost:${PORT}`);
 });

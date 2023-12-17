@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import '../styles/GoTutorial.css';
 import useLecture from '../controllers/useLecture'; 
 import UserContext from '../components/UserContext';
@@ -39,8 +39,24 @@ const LectureView = ({ lectureId, content }) => {
         setQuestions(newQuestions);
     };
     
+   
 
-
+    useEffect(() => {
+        // If the user logs out and the `user` becomes null, reset the state.
+        if (!user) {
+            setLectureTitle('');
+            setLectureText('');
+            setQuestions([{
+                question: '', 
+                type: 'text',
+                codeSnippet: '',
+                options: ['', '', '', ''],
+                correctOption: 0,
+                feedback: ''
+            }]);
+            // Reset any other state variables or perform cleanup here
+        }
+    }, [user]); 
 
 
     const [questions, setQuestions] = useState([{
@@ -264,7 +280,22 @@ const handleQuestionSubmit = async () => {
 
 
 
+if (!user) {
+    content=""
+    return (
+        <div className="lecture-view-container card go-tutorial">
+        <div className="card-body">
 
+        {content ? 
+            <div className="text-muted">{content}</div> : 
+            <div className="card-body" dangerouslySetInnerHTML={{ __html: fetchedContent }}></div> 
+          
+          }
+
+        </div>
+      </div>
+    );
+}
 
 if (content === 'createLecture') {
     return (

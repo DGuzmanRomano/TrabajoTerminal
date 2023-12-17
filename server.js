@@ -20,14 +20,6 @@ const db = mysql.createConnection({
     database: 'tt'
 });
 
-/*
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'rdguzmanromano',
-    password: '123456',
-    database: 'tt'
-});*/
-
 db.connect((err) => {
     if(err) throw err;
     console.log('Connected to the MySQL database.');
@@ -96,9 +88,6 @@ app.get('/api/user-lectures', (req, res) => {
 
 
 
-
-
-
 app.get('/lecture/:id', (req, res) => {
     const lectureId = req.params.id;
 
@@ -125,15 +114,11 @@ app.get('/lecture/:id', (req, res) => {
 
 
 
-
 app.get('/quiz/all/:id', (req, res) => {
-    const quizId  = req.params.id;
+    const quizId = req.params.id;
 
-    const query = `SELECT questions.*
-    FROM questions
-    INNER JOIN quiz_question ON questions.id = quiz_question.question_id
-    WHERE quiz_question.quiz_id = ?;`;
-    db.query(query, [quizId ], (err, quizResults) => {
+    const query = 'SELECT * FROM questions WHERE quiz_id = ?;';
+    db.query(query, [quizId], (err, quizResults) => {
         if (err) {
             console.error(err);
             return res.status(500).send('Database error.');
@@ -160,14 +145,6 @@ app.get('/quiz/all/:id', (req, res) => {
         });
     });
 });
-
-
-app.post('/quiz/validateAll', async (req, res) => {
-   
-});
-
-
-
 
 
 
@@ -197,32 +174,6 @@ app.get('/api/quizzes', (req, res) => {
         res.json(results);
     });
 });
-
-
-app.get('/api/examples', (req, res) => {
-    const query = 'SELECT title FROM examples';
-    db.query(query, (err, results) => {
-        if(err) {
-            console.error(err);
-            return res.status(500).send('Database error.');
-        }
-        const titles = results.map(result => result.title);
-        res.json(titles);
-    });
-});
-
-
-app.get('/api/examples/:id', (req, res) => {
-    const query = 'SELECT * FROM examples WHERE id_example = ?';
-    db.query(query, [req.params.id], (err, results) => {
-        if(err) {
-            console.error(err);
-            return res.status(500).send('Database error.');
-        }
-        res.json(results[0]);
-    });
-});
-
 
 
 
@@ -329,7 +280,7 @@ function calculateScore(questions, userResponses, totalQuestions) {
 
 
 app.get('/examples', (req, res) => {
-    const query = "SELECT example_id, example_code, example_title, example_description FROM examples";
+    const query = "SELECT example_id, example_code, example_title FROM examples";
     db.query(query, (err, results) => {
         if (err) {
             res.status(500).send('Error fetching examples from database');
@@ -338,6 +289,13 @@ app.get('/examples', (req, res) => {
         res.json(results);
     });
 });
+
+
+
+
+
+
+
 
 
 app.post('/login', (req, res) => {

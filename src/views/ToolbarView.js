@@ -112,7 +112,7 @@ const Toolbar = (props) => {
 
     
 useEffect(() => {
-    fetch('http://localhost:3001/examples') // Replace with your server URL
+    fetch('http://localhost:3001/examples') 
         .then(response => response.json())
         .then(data => {
             setExampleTitles(data);

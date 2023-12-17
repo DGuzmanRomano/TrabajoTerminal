@@ -27,7 +27,7 @@ function App() {
     const handleExecute = async (codeToExecute) => {
         const requestBody = { content: codeToExecute };
         try {
-            const response = await fetch('http://localhost:3001/execute', {
+            const response = await fetch('http://34.125.198.90:3001/execute', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

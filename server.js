@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 /*
 const db = mysql.createConnection({
-    host: 'localhost',
+    host: '34.125.198.90',
     user: 'd',
     password: 'qazwsx123456',
     database: 'tt'
@@ -52,7 +52,7 @@ app.post('/execute', codeExecutionRoute.executeCode);
 
 const PORT = 3001;
 app.listen(PORT, () => {
-    console.log(`Server started on http://localhost:${PORT}`);
+    console.log(`Server started on http://34.125.198.90:${PORT}`);
 });
 
 

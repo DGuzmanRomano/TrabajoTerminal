@@ -38,7 +38,7 @@ const QuestionView = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:3001/add-question', {
+            const response = await fetch('http://34.125.198.90:3001/add-question', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(questionData)

@@ -78,7 +78,7 @@ const ProfessorView = ({ content }) => {
       };
   
       try {
-          const response = await fetch('http://localhost:3001/add-lecture', {
+          const response = await fetch('http://34.125.198.90:3001/add-lecture', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(lectureData)
@@ -217,7 +217,7 @@ const handleQuestionSubmit = async () => {
     
 
     try {
-        const response = await fetch('http://localhost:3001/add-question', {
+        const response = await fetch('http://34.125.198.90:3001/add-question', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(quizData)

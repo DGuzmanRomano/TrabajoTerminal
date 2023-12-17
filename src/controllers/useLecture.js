@@ -8,7 +8,7 @@ const useLecture = (lectureId) => {
 
     useEffect(() => {
         if (lectureId) {
-            axios.get(`http://localhost:3001/lecture/${lectureId}`)
+            axios.get(`http://34.125.198.90:3001/lecture/${lectureId}`)
                 .then(response => {
                     setContent(response.data);
                 })

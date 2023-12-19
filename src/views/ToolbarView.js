@@ -47,7 +47,7 @@ const Toolbar = (props) => {
     const fetchUserQuizzes = async () => {
         if (user && user.role === 'student') {
             try {
-                const response = await fetch(`http://34.125.198.90:3001/user-quizzes/${user.id}`);
+                const response = await fetch(`http://localhost:3001/user-quizzes/${user.id}`);
                 const quizzes = await response.json();
                 setUserQuizzes(quizzes); // Set the quizzes in state
             } catch (error) {
@@ -81,11 +81,11 @@ const Toolbar = (props) => {
     };
 
     useEffect(() => {
-        let endpoint ='http://34.125.198.90:3001/api/lectures';
+        let endpoint ='http://localhost:3001/api/lectures';
 
         if (user) {
             // If user is logged in, change endpoint to fetch user-specific lectures
-            endpoint = `http://34.125.198.90:3001/api/user-lectures?userId=${user.id}&userRole=${user.role}`;
+            endpoint = `http://localhost:3001/api/user-lectures?userId=${user.id}&userRole=${user.role}`;
         }
         fetch(endpoint)
         .then(response => response.json())
@@ -112,7 +112,7 @@ const Toolbar = (props) => {
 
     
 useEffect(() => {
-    fetch('http://34.125.198.90:3001/examples') 
+    fetch('http://localhost:3001/examples') 
         .then(response => response.json())
         .then(data => {
             setExampleTitles(data);
@@ -125,7 +125,7 @@ useEffect(() => {
 
 
 const handleLogin = (email, password) => {
-    fetch('http://34.125.198.90:3001/login', {
+    fetch('http://localhost:3001/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -160,7 +160,7 @@ const [quizFeedback, setQuizFeedback] = useState(null);
 
 const fetchQuizFeedback = async (quizId) => {
     try {
-        const response = await fetch(`http://34.125.198.90:3001/quiz-feedback/${user.id}/${quizId}`);
+        const response = await fetch(`http://localhost:3001/quiz-feedback/${user.id}/${quizId}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }

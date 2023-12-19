@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Toolbar from './views/ToolbarView';
 import './styles/OutputPanel.css';
 import LectureView from './views/LectureView';
 import OutputPanel from './views/OutputPanelView';
 import CodeEditorController from './controllers/CodeEditorController';
-
+import LoginModal from './components/LoginModal'; 
 import UserContext from './components/UserContext';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -22,12 +22,12 @@ function App() {
     const [output, setOutput] = useState('');
     const [user, setUser] = useState(null);
     const [lectureContent, setLectureContent] = useState('');
-
+    const [showLoginModal, setShowLoginModal] = useState(false);
 
     const handleExecute = async (codeToExecute) => {
         const requestBody = { content: codeToExecute };
         try {
-            const response = await fetch('http://34.125.198.90:3001/execute', {
+            const response = await fetch('http://localhost:3001/execute', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -47,7 +47,17 @@ function App() {
         }
     };
 
+    useEffect(() => {
+        if (!user) {
+            setShowLoginModal(true);
+        } else {
+            setShowLoginModal(false);
+        }
+    }, [user]);
+
+
     
+
     const handleProfessorAction = (actionType) => {
         if (actionType === 'action1') {
             // Handle action 1
@@ -73,9 +83,40 @@ const handleFileSelect = (fileContent) => {
 };
 
 
+
+
+const handleLogin = (email, password) => {
+    fetch('http://localhost:3001/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log(`User: ${data.name}, Role: ${data.role}`);
+            setShowLoginModal(false); // Corrected this line
+            setUser({ id: data.id, name: data.name, role: data.role });
+        } else {
+            // Handle login failure
+            console.error('Login failed:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error during login:', error);
+    });
+};
+
+
+
+
+
     return (
         <UserContext.Provider value={{ user, setUser }}>
             <div className="App">
+            {user ? (
+                    <>
+
             <Toolbar 
                 user={user} 
                 onLectureSelect={handleLectureSelection} 
@@ -102,6 +143,15 @@ const handleFileSelect = (fileContent) => {
                 <div className="output-container">
                     <OutputPanel output={output} />
                 </div>
+                </>
+                ) : (
+                    <div>Loading or placeholder content</div>
+                )}
+                <LoginModal 
+                    isOpen={showLoginModal} 
+                    onClose={() => setShowLoginModal(false)} 
+                    onLogin={handleLogin} 
+                />
             </div>
         </UserContext.Provider>
     );

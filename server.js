@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql2')
 const codeExecutionRoute = require('./CodeExecution.js'); 
+const https = require('https');
 
 const app = express();
 
@@ -12,15 +13,15 @@ app.use(cors()); // Use CORS
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-/*
+
 const db = mysql.createConnection({
-    host: '34.125.198.90',
+    host: 'localhost',
     user: 'd',
     password: 'qazwsx123456',
     database: 'tt'
-});*/
+});
 
-
+/*
 const db = mysql.createConnection({
     host: '34.132.215.231', // Replace with the IP of your Cloud SQL instance
     user: 'root', // Replace with your Cloud SQL username
@@ -29,7 +30,7 @@ const db = mysql.createConnection({
     connectTimeout: 10000
 });
 
-
+*/
 
 
 
@@ -52,7 +53,7 @@ app.post('/execute', codeExecutionRoute.executeCode);
 
 const PORT = 3001;
 app.listen(PORT, () => {
-    console.log(`Server started on http://34.125.198.90:${PORT}`);
+    console.log(`Server started on http://localhost:${PORT}`);
 });
 
 
@@ -308,9 +309,6 @@ app.get('/examples', (req, res) => {
         res.json(results);
     });
 });
-
-
-
 
 
 

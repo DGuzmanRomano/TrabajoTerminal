@@ -56,7 +56,7 @@ const useQuizController = (quizId, user) => {
         }));
         console.log("Submitting quiz with data:", { quizId, userResponses: userAnswers, studentId });
   
-        const result = await axios.post(`http://34.125.198.90:3001/submit-quiz`, {
+        const result = await axios.post(`http://localhost:3001/submit-quiz`, {
             quizId,
             userResponses: userAnswers,
             studentId // Include this line

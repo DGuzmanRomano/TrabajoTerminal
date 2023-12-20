@@ -60,3 +60,31 @@
     background-color: #004499;
     border-color: #004499;
 }
+
+
+.quiz-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* This should be the height of the modal content area */
+}
+
+.question-section,
+.options-grid,
+.text-answer-input {
+    /* Adjust if needed to ensure they do not grow beyond their content */
+    flex-shrink: 0;
+}
+
+.btn-groupq {
+    margin-top: auto; /* This will push your button group to the bottom */
+    flex-shrink: 0;
+}
+
+
+.monaco-editor-container {
+    position: relative; /* If you need to position inner elements absolutely relative to this container */
+    z-index: 10; /* Only if needed, to ensure it's above other elements */
+    min-height: 200px; /* Minimum height for visibility */
+    flex-grow: 1; /* If you're using flexbox */
+    overflow: hidden; /* Or 'auto' if you want to allow scrolling */
+}

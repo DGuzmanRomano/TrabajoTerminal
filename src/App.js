@@ -24,6 +24,10 @@ function App() {
     const [lectureContent, setLectureContent] = useState('');
     const [showLoginModal, setShowLoginModal] = useState(false);
 
+
+
+
+
     const handleExecute = async (codeToExecute) => {
         const requestBody = { content: codeToExecute };
         try {
@@ -47,16 +51,14 @@ function App() {
         }
     };
 
-    useEffect(() => {
-        if (!user) {
-            setShowLoginModal(true);
-        } else {
-            setShowLoginModal(false);
-        }
-    }, [user]);
 
 
     
+    useEffect(() => {
+        setShowLoginModal(!user);
+    }, [user]);
+
+
 
     const handleProfessorAction = (actionType) => {
         if (actionType === 'action1') {
@@ -110,51 +112,41 @@ const handleLogin = (email, password) => {
 
 
 
-
-    return (
-        <UserContext.Provider value={{ user, setUser }}>
-            <div className="App">
-            {user ? (
-                    <>
-
+return (
+    <UserContext.Provider value={{ user, setUser }}>
+        <div className="App">
             <Toolbar 
                 user={user} 
                 onLectureSelect={handleLectureSelection} 
                 onExecute={() => handleExecute(code)} 
                 onProfessorAction={handleProfessorAction}
                 onFileSelect={handleFileSelect}
-
                 code={code}
-
-
             />
-                
-                <div className="content container-fluid">
-                    <div className="row h-100">
-                        <div className="col-md-6">
-                            <CodeEditorController onExecute={handleExecute} code={code} setCode={setCode} />
-                        </div>
-                        <div className="col-md-6">
-                        <LectureView lectureId={selectedLecture} content={lectureContent} /> {/* Pass content to LectureView */}
-                        </div>
+            
+            <div className="content container-fluid">
+                <div className="row h-100">
+                    <div className="col-md-6">
+                        <CodeEditorController onExecute={handleExecute} code={code} setCode={setCode} />
+                    </div>
+                    <div className="col-md-6">
+                        <LectureView lectureId={selectedLecture} content={lectureContent} />
                     </div>
                 </div>
-
-                <div className="output-container">
-                    <OutputPanel output={output} />
-                </div>
-                </>
-                ) : (
-                    <div>Loading or placeholder content</div>
-                )}
-                <LoginModal 
-                    isOpen={showLoginModal} 
-                    onClose={() => setShowLoginModal(false)} 
-                    onLogin={handleLogin} 
-                />
             </div>
-        </UserContext.Provider>
-    );
+
+            <div className="output-container">
+                <OutputPanel output={output} />
+            </div>
+
+            <LoginModal 
+                isOpen={showLoginModal} 
+                onClose={() => setShowLoginModal(false)} 
+                onLogin={handleLogin} 
+            />
+        </div>
+    </UserContext.Provider>
+);
 }
 
 export default App;

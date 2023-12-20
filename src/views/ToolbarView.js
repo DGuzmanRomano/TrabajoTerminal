@@ -273,43 +273,29 @@ const fetchQuizFeedback = async (quizId) => {
                         items={exampleTitles}
                         onItemClick={handleExampleClick} 
                     />
-                </div>
 
-               
-
-
-
-
-                    <div className="btn-group mr-2" role="group">
-                    <TopicsDropdownButton
+<TopicsDropdownButton
                         title="Lecciones"
                         items={lectureData.map(lecture => lecture.lecture_title)}
                         itemIds={lectureData.map(lecture => lecture.lecture_id)}
                         onItemClick={props.onLectureSelect}
                     />
 
-                    </div>
 
-
-
-                    <div className="btn-group" role="group">
-                    <QuizDropdownButton 
+<QuizDropdownButton 
                         title="Cuestionario"
                         items={quizzes} 
                         onItemClick={(quiz) => handleOptionClick(quiz.quiz_id, quiz.quiz_name)}
                     />
 
 
-
-                    </div>
                 </div>
-                    <div className="gopher" >  
-                    
-                    
+
+               
 
 
-                      </div>
-
+                </div>
+                  
 
                
 

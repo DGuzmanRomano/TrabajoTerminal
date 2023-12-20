@@ -246,6 +246,12 @@ const handleQuestionSubmit = async () => {
         };
     });
 
+
+
+
+
+    
+
     const quizData = {
         quizName: quizName,
         professorId: user.id, 
@@ -324,7 +330,7 @@ if (content === 'createLecture') {
 
     else if (content === 'createQuestion') {
         return (
-            <div className="question-view-container card go-tutorial">
+            <div className="lecture-view-container card go-tutorial">
                 <div className="card-body">
                     {showSuccess && (
                         <div className="alert alert-success" role="alert">

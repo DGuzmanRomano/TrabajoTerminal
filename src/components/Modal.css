@@ -1,6 +1,52 @@
 .modal-content {
   background-color: #1a2d4e !important;  /* Dark blue background color */
   color: #f0f0f0;  /* Almost white text color */
+  height: 100%; /* Ensures the content takes the full height of the modal */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+}
+
+.upper-half {
+  flex-basis: 50%; /* Assign 50% of the modal's height */
+  overflow-y: auto; /* Add scroll to this section if content is too big */
+}
+
+.lower-half {
+  flex-basis: 50%; /* Assign the remaining 50% of the modal's height */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Aligns the buttons to the bottom */
+}
+
+.closeb {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 1.5rem; /* Adjust size as needed */
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7); /* Increase the last value for a darker overlay */
+    backdrop-filter: blur(2px);
+  z-index: 1000; /* Ensures modal is on top of other content */
+}
+
+.modal-dialog.modal-custom-size {
+  max-width: 80%; /* Width of the modal */
+  height: 80%; /* Height of the modal */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
 }
 
 
@@ -23,11 +69,26 @@
   opacity: 1;
 }
 
+
+.modal-header,
 .modal-body {
-  overflow-y: auto;
-  max-height: calc(100vh - 150px);  /* Adjust this value based on your needs */
+    flex: 0 0 auto; /* Don't grow, don't shrink, be the size of their content */
 }
+.modal-body {
+  flex-grow: 1; /* Grow to fill any remaining space */
+  overflow-y: auto; /* If content is too large, let it scroll */
+}
+
 
 .closeb span {
   font-size: 1.2rem;  /* Adjust this value as needed */
 }
+.modal-custom-size {
+  width: 90%;  /* Custom width */
+  max-width: 1200px;  /* Maximum width */
+  height: 90%;  /* Custom height */
+  max-height: 1200px;  /* Maximum height */
+}
+
+
+

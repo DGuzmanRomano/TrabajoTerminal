@@ -7,7 +7,7 @@ const QuizModal = ({ isOpen, onClose, content, title }) => {
 
     return (
         <div className="modal show d-block" tabIndex="-1">
-            <div className="modal-dialog modal-lg modal-custom-size">
+            <div className="modal-dialog modal-xl modal-custom-size">
                 <div className="modal-content">
                     <div className="modal-header">
                     <h5 className="modal-title">{title}</h5> {}

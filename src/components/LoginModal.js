@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 
-const LoginModal = ({ isOpen, onClose, onLogin }) => {
+const LoginModal = ({ isOpen, onLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onLogin(email, password); // Pass 'email' instead of 'username'
+        onLogin(email, password);
     };
 
     return (
-        <Modal show={isOpen} onHide={onClose}>
-            <Modal.Header closeButton>
+        <Modal show={isOpen} backdrop="static">
+            <Modal.Header>
                 <Modal.Title>Inicio de Sesión</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label>Correo:</label> {/* Updated label */}
+                        <label>Correo:</label>
                         <input
-                            type="email" // Changed 'text' to 'email' for proper validation
+                            type="email"
                             className="form-control"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)} // Updated to setEmail
+                            onChange={(e) => setEmail(e.target.value)}
                             required
                         />
                     </div>

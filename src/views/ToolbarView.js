@@ -233,7 +233,7 @@ const fetchQuizFeedback = async (quizId) => {
                         <button type="button" className="btn btn-primary" onClick={props.onExecute}>Ejecutar</button>
 
 
-                        <button type="button" className="btn btn-secondary" onClick={() => document.getElementById('fileInput').click()}>Archivo</button>
+                        <button type="button" className="btn btn-secondary" onClick={() => document.getElementById('fileInput').click()}>Abrir</button>
                         <input type="file" id="fileInput" accept=".go" style={{ display: 'none' }} onChange={handleFileChange} />
 
 

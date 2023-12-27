@@ -1,21 +1,29 @@
 import React, { useState } from 'react';
-import { Modal } from 'react-bootstrap';
+import { Modal, Alert } from 'react-bootstrap';
 
-const LoginModal = ({ isOpen, onLogin }) => {
+const LoginModal = ({ isOpen, onClose, onLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onLogin(email, password);
+        onLogin(email, password, setError);
     };
 
+    const handleClose = () => {
+        setError('');
+        onClose();
+    };
+
+
     return (
-        <Modal show={isOpen} backdrop="static">
+        <Modal show={isOpen} onHide={handleClose} backdrop="static">
             <Modal.Header>
                 <Modal.Title>Inicio de Sesión</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                {error && <Alert variant="danger">{error}</Alert>}
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label>Correo:</label>

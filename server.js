@@ -73,29 +73,37 @@ app.get('/api/lectures', (req, res) => {
 });
 
 
-
 app.get('/api/user-lectures', (req, res) => {
     const userId = req.query.userId;
-    const userRole = req.query.userRole; // Add a parameter to determine the user role
+    const userRole = req.query.userRole;
 
-    // Query for fetching lectures for professors
-    let query = `
-    SELECT DISTINCT lecture_id, lecture_title FROM lectures
-    WHERE author_id = 1 OR author_id = ?
-    
-    `;
-
-    // If the user is a student, modify the query
-    if (userRole === 'student') {
+    let query;
+    if (userRole === 'professor') {
+        query = 'SELECT DISTINCT lecture_id, lecture_title FROM lectures WHERE author_id = 1 OR author_id = ?';
+    } else if (userRole === 'student') {
         query = `
-            SELECT DISTINCT l.lecture_id, l.lecture_title
-            FROM lectures l
-            JOIN students s ON l.author_id = s.professor_id
-            WHERE l.author_id = 1 OR s.student_id = ?
+            (
+                SELECT DISTINCT lecture_id, lecture_title
+                FROM lectures
+                WHERE author_id = 1
+            )
+            UNION
+            (
+                SELECT DISTINCT l.lecture_id, l.lecture_title
+                FROM lectures l
+                JOIN students s ON l.author_id = s.professor_id
+                WHERE s.student_id = ?
+            )
+            ORDER BY lecture_title
         `;
     }
+    
+    
+    
+    else {
+        return res.status(400).send('Invalid user role.');
+    }
 
-    // Execute the query
     db.query(query, [userId], (err, results) => {
         if (err) {
             console.error(err);
@@ -104,6 +112,7 @@ app.get('/api/user-lectures', (req, res) => {
         res.json(results);
     });
 });
+
 
 
 

@@ -80,13 +80,10 @@ const Toolbar = (props) => {
      
     };
 
-    useEffect(() => {
-        let endpoint ='http://localhost:3001/api/lectures';
 
-        if (user) {
-            // If user is logged in, change endpoint to fetch user-specific lectures
-            endpoint = `http://localhost:3001/api/user-lectures?userId=${user.id}&userRole=${user.role}`;
-        }
+useEffect(() => {
+    if (user) {
+        const endpoint = `http://localhost:3001/api/user-lectures?userId=${user.id}&userRole=${user.role}`;
         fetch(endpoint)
         .then(response => response.json())
         .then(data => {
@@ -95,6 +92,7 @@ const Toolbar = (props) => {
         .catch(error => {
             console.error("Error fetching lectures:", error);
         });
+    }
 }, [user]);
 
 
@@ -121,31 +119,6 @@ useEffect(() => {
             console.error("Error fetching examples:", error);
         });
 }, []);
-
-
-
-const handleLogin = (email, password) => {
-    fetch('http://localhost:3001/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            console.log(`User: ${data.name}, Role: ${data.role}`);
-            setIsLoginModalOpen(false);
-            setUser({ id: data.id, name: data.name, role: data.role });
-           
-        } else {
-            // Handle login failure
-            console.error('Login failed:', data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error during login:', error);
-    });
-};
 
 
 
@@ -324,12 +297,7 @@ const fetchQuizFeedback = async (quizId) => {
                 onClose={() => setIsExampleModalOpen(false)}
             />
 
-             <LoginModal
-                isOpen={isLoginModalOpen}
-                onClose={() => setIsLoginModalOpen(false)}
-                onLogin={handleLogin}
-            />
-
+           
 
         <QuizModal
             isOpen={isQuizModalOpen}

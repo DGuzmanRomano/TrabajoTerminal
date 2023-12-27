@@ -86,8 +86,7 @@ const handleFileSelect = (fileContent) => {
 
 
 
-
-const handleLogin = (email, password) => {
+const handleLogin = (email, password, setError) => {
     fetch('http://localhost:3001/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -96,19 +95,18 @@ const handleLogin = (email, password) => {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            console.log(`User: ${data.name}, Role: ${data.role}`);
-            setShowLoginModal(false); // Corrected this line
+            setShowLoginModal(false);
             setUser({ id: data.id, name: data.name, role: data.role });
+            setError('');
         } else {
-            // Handle login failure
-            console.error('Login failed:', data.message);
+            // Here, we use the setError function to display an error message
+            setError('Datos incorrectos, favor de revisarlos e intentar nuevamente.');
         }
     })
     .catch(error => {
-        console.error('Error during login:', error);
+        setError('An error occurred during login. Please try again later.');
     });
 };
-
 
 
 
@@ -140,9 +138,9 @@ return (
             </div>
 
             <LoginModal 
-                isOpen={showLoginModal} 
-                onClose={() => setShowLoginModal(false)} 
-                onLogin={handleLogin} 
+                 isOpen={showLoginModal} 
+                 onClose={() => setShowLoginModal(false)} 
+                 onLogin={handleLogin} 
             />
         </div>
     </UserContext.Provider>

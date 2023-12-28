@@ -192,17 +192,45 @@ app.get('/api/quiz', (req, res) => {
 
 
 
+  app.get('/api/quizzes', (req, res) => {
+    const userId = req.query.userId;
+    const userRole = req.query.userRole;
+    let query;
 
-app.get('/api/quizzes', (req, res) => {
-    const query = 'SELECT quiz_id, quiz_name FROM quizzes';
-    db.query(query, (err, results) => {
-        if(err) {
+    if (userRole === 'professor') {
+        query = `
+            SELECT DISTINCT quiz_id, quiz_name FROM quizzes
+            WHERE author_id = 1 OR author_id = ?
+        `;
+    } else if (userRole === 'student') {
+        query = `
+            (
+                SELECT DISTINCT quiz_id, quiz_name
+                FROM quizzes
+                WHERE author_id = 1
+            )
+            UNION
+            (
+                SELECT DISTINCT q.quiz_id, q.quiz_name
+                FROM quizzes q
+                JOIN students s ON q.author_id = s.professor_id
+                WHERE s.student_id = ?
+            )
+           
+        `;
+    } else {
+        return res.status(400).send('Invalid user role.');
+    }
+
+    db.query(query, [userId], (err, results) => {
+        if (err) {
             console.error(err);
             return res.status(500).send('Database error.');
         }
         res.json(results);
     });
 });
+
 
 
 
@@ -390,6 +418,8 @@ app.post('/add-lecture', addLecture);
 
 
 
+///////////////////////////////////////////////////////////////
+
 
 
 app.get('/user-quizzes/:userId', async (req, res) => {
@@ -477,34 +507,27 @@ app.get('/quiz-feedback/:userId/:quizId', async (req, res) => {
 
 
 
-
 app.post('/add-question', async (req, res) => {
-
-    console.log("Request body:", req.body);
-
     const { quizName, professorId, questions } = req.body;
 
     try {
         // Insert the quiz and get its ID
         const [quizResult] = await db.promise().execute(
             'INSERT INTO quizzes (quiz_name, author_id) VALUES (?, ?)',
-            [quizName, professorId] // Include professorId here
+            [quizName, professorId]
         );
         const quizId = quizResult.insertId;
 
+        // Insert questions and answers
         for (const { question, type, codeSnippet, feedback, answers } of questions) {
-            console.log("Inserting question:", {question, type, codeSnippet, feedback, quizId});
-        
             const [questionResult] = await db.promise().execute(
                 'INSERT INTO questions (question_text, question_type, code_snippet, feedback, quiz_id) VALUES (?, ?, ?, ?, ?)',
-                [question, type, codeSnippet, feedback, quizId] // Use 'type' here instead of 'questionType'
+                [question, type, codeSnippet, feedback, quizId]
             );
             const questionId = questionResult.insertId;
 
-            // Insert answers
+            // Insert answers for each question
             for (const { text, is_correct } of answers) {
-                console.log("Inserting answer:", {text, questionId, is_correct}); // Add this line
-
                 await db.promise().execute(
                     'INSERT INTO options (option_text, question_id, is_correct) VALUES (?, ?, ?)',
                     [text, questionId, is_correct]
@@ -512,15 +535,25 @@ app.post('/add-question', async (req, res) => {
             }
         }
 
-        res.json({ success: true, message: 'Questions and answers submitted successfully' });
+        // Fetch students associated with the professor
+        const [students] = await db.promise().execute(
+            'SELECT student_id FROM students WHERE professor_id = ?',
+            [professorId]
+        );
+
+        // Insert records into quiz_status for each student
+        for (const student of students) {
+            await db.promise().execute(
+                'INSERT INTO quiz_status (quiz_id, student_id, quiz_status) VALUES (?, ?, ?)',
+                [quizId, student.student_id, 0]
+            );
+        }
+
+        res.json({ success: true, message: 'Quiz, questions, and answers submitted successfully' });
     } catch (error) {
-        console.error('Error submitting questions and answers:', error);
+        console.error('Error in /add-question endpoint:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });
-
-
-
-
 
 

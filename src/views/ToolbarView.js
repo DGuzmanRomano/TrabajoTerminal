@@ -97,15 +97,15 @@ useEffect(() => {
 
 
 
-
-    useEffect(() => {
-        fetchQuizzes()
+useEffect(() => {
+    if (user) {
+        fetchQuizzes(user.id, user.role)
             .then(setQuizzes)
             .catch(error => {
                 console.error("Error fetching quizzes:", error);
             });
-    }, []);
-      
+    }
+}, [user]); 
 
 
     
@@ -247,7 +247,7 @@ const fetchQuizFeedback = async (quizId) => {
                         onItemClick={handleExampleClick} 
                     />
 
-<TopicsDropdownButton
+                    <TopicsDropdownButton
                         title="Lecciones"
                         items={lectureData.map(lecture => lecture.lecture_title)}
                         itemIds={lectureData.map(lecture => lecture.lecture_id)}
@@ -255,7 +255,7 @@ const fetchQuizFeedback = async (quizId) => {
                     />
 
 
-<QuizDropdownButton 
+                    <QuizDropdownButton 
                         title="Cuestionario"
                         items={quizzes} 
                         onItemClick={(quiz) => handleOptionClick(quiz.quiz_id, quiz.quiz_name)}

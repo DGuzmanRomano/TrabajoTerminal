@@ -459,23 +459,20 @@ if (content === 'createLecture') {
 
 
     else {
+        return (
+          <div className="lecture-view-container card go-tutorial">
+            <div className="card-body">
+              {content ? 
+                <div className="text-muted">{content}</div> : 
+                <div className="card-body" dangerouslySetInnerHTML={{ __html: fetchedContent }}></div> 
+              }
+            </div>
+          </div>
+        );
+    }
+    
 
-        
-    return (
-      <div className="lecture-view-container card go-tutorial">
-        <div className="card-body">
-
-        {content ? 
-            <div className="text-muted">{content}</div> : 
-            <div className="card-body" dangerouslySetInnerHTML={{ __html: fetchedContent }}></div> 
-          
-          }
-
-        </div>
-      </div>
-    );
-
-  }
+  
 };
 
 export default LectureView;

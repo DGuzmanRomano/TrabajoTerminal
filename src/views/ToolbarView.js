@@ -322,5 +322,3 @@ const fetchQuizFeedback = async (quizId) => {
 };
 
 export default Toolbar;
-
-

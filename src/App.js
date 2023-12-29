@@ -97,9 +97,12 @@ const handleLogin = (email, password, setError) => {
         if (data.success) {
             setShowLoginModal(false);
             setUser({ id: data.id, name: data.name, role: data.role });
+            setLectureContent(``); // Set welcome message as lecture content
+            setCode(``);
+            setOutput(``);
+
             setError('');
         } else {
-            // Here, we use the setError function to display an error message
             setError('Datos incorrectos, favor de revisarlos e intentar nuevamente.');
         }
     })
@@ -107,6 +110,7 @@ const handleLogin = (email, password, setError) => {
         setError('An error occurred during login. Please try again later.');
     });
 };
+
 
 
 

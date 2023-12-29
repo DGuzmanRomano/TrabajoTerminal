@@ -5,6 +5,7 @@ import UserContext from '../components/UserContext';
 import MonacoEditor from '@monaco-editor/react';
 import ReactQuill from 'react-quill'; // Make sure to import ReactQuill
 import 'react-quill/dist/quill.snow.css';
+import { Toast } from 'react-bootstrap';
 
 import '../styles/RightPanel.css';  
 
@@ -18,7 +19,7 @@ const LectureView = ({ lectureId, content }) => {
     const [titleValidation, setTitleValidation] = useState('');
     const [textValidation, setTextValidation] = useState('');
     
-
+    const [showToast, setShowToast] = useState(false);
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     const [questionValidation, setQuestionValidation] = useState('');
@@ -274,7 +275,16 @@ const handleQuestionSubmit = async () => {
         console.log(result.message); // Or handle this in the UI
 
         // Reset form or update UI as needed
-        setQuestions([{ question: '', type: 'text', options: ['', '', '', ''], correctOption: 0, codeSnippet: '', feedback: '' }]);
+        setQuestions([{
+            question: '', 
+            type: 'text',
+            answer: '',
+            options: ['', '', '', ''],
+            correctOption: 0,
+            codeSnippet: '',
+            feedback: ''
+        }]);
+        setQuizName(''); // Reset the quiz name
         setShowSuccess(true);
         setTimeout(() => setShowSuccess(false), 3000);
     } catch (error) {
@@ -282,7 +292,6 @@ const handleQuestionSubmit = async () => {
         setShowSuccess(false);
     }
 };
-
 
 
 
@@ -331,6 +340,17 @@ if (content === 'createLecture') {
     else if (content === 'createQuestion') {
         return (
             <div className="lecture-view-container card go-tutorial">
+                {showToast && (
+                                <Toast onClose={() => setShowToast(false)} delay={3000} autohide>
+                                    <Toast.Header>
+                                        <strong className="mr-auto">Success</strong>
+                                    </Toast.Header>
+                                    <Toast.Body>Cuestionario añadido exitosamente!</Toast.Body>
+                                </Toast>
+                            )}
+
+
+
                 <div className="card-body">
                     {showSuccess && (
                         <div className="alert alert-success" role="alert">

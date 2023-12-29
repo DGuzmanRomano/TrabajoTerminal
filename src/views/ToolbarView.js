@@ -57,6 +57,7 @@ const Toolbar = (props) => {
     };
     
 
+
     useEffect(() => {
         if (isScoresModalOpen && user && user.role === 'student') {
             fetchUserQuizzes();

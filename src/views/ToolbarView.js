@@ -162,8 +162,8 @@ const fetchQuizFeedback = async (quizId) => {
     };
 
     const handleLogout = () => {
-        // Perform any additional logout operations you may need
-        setUser(null); // Clear the user from the context
+         localStorage.removeItem('user');
+        setUser(null); 
     };
 
 

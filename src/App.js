@@ -53,7 +53,32 @@ function App() {
 
 
 
+
+    useEffect(() => {
+        // Debug: Log the value retrieved from Local Storage
+        const storedUser = localStorage.getItem('user');
+        console.log('Retrieved from Local Storage:', storedUser);
     
+        try {
+            if (storedUser) {
+                // Parse and set the user if storedUser is truthy
+                setUser(JSON.parse(storedUser));
+            } else {
+                setShowLoginModal(true);
+            }
+        } catch (error) {
+            console.error('Error parsing user data from Local Storage:', error);
+            // Handle parsing error (e.g., invalid JSON or corrupted data)
+            // You might want to clear the corrupted data from Local Storage
+            localStorage.removeItem('user');
+            setShowLoginModal(true);
+        }
+    }, []);
+    
+    
+    
+    
+
     useEffect(() => {
         setShowLoginModal(!user);
     }, [user]);
@@ -102,6 +127,9 @@ const handleLogin = (email, password, setError) => {
             setOutput(``);
 
             setError('');
+
+            localStorage.setItem('user', JSON.stringify({ id: data.id, name: data.name, role: data.role }));
+            
         } else {
             setError('Datos incorrectos, favor de revisarlos e intentar nuevamente.');
         }

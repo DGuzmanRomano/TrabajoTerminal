@@ -122,7 +122,7 @@ const handleLogin = (email, password, setError) => {
         if (data.success) {
             setShowLoginModal(false);
             setUser({ id: data.id, name: data.name, role: data.role });
-            setLectureContent(``); // Set welcome message as lecture content
+            setLectureContent(`  `); // Set welcome message as lecture content
             setCode(``);
             setOutput(``);
 
@@ -140,6 +140,14 @@ const handleLogin = (email, password, setError) => {
 };
 
 
+const handleLogout = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+    setLectureContent(`  `);  // Reset lecture content
+    setSelectedLecture(null);  // Optionally reset selected lecture
+    // Reset other states as needed
+};
+
 
 
 return (
@@ -151,6 +159,7 @@ return (
                 onExecute={() => handleExecute(code)} 
                 onProfessorAction={handleProfessorAction}
                 onFileSelect={handleFileSelect}
+                onLogout={handleLogout}
                 code={code}
             />
             

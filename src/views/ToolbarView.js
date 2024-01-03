@@ -162,8 +162,8 @@ const fetchQuizFeedback = async (quizId) => {
     };
 
     const handleLogout = () => {
-         localStorage.removeItem('user');
-        setUser(null); 
+        // Call the logout function passed from App.js
+        props.onLogout(); 
     };
 
 

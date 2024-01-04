@@ -12,6 +12,7 @@ import LoginModal from '../components/LoginModal';
 
 import ScoresModal from '../components/ScoresModal';
 import ProfessorDropdownButton from '../components/ProfessorDropdownButton'; 
+import Professor2DropdownButton from '../components/Professor2DropdownButton';
 import StudentDropdownButton from '../components/StudentDropdownButton'; 
 
 
@@ -167,18 +168,22 @@ const fetchQuizFeedback = async (quizId) => {
     };
 
 
-
     const professorControls = user && user.role === 'professor' && (
         <>
             <span className="navbar-text welcome-message">
                 Bienvenido, profesor {user.name}
             </span>
             <ProfessorDropdownButton
-                title="Menú de profesor"
+                title="Dropdown 1 Title"
+                onAction={props.onProfessorAction} 
+            />
+            <Professor2DropdownButton
+                title="Dropdown 2 Title"
                 onAction={props.onProfessorAction} 
             />
         </>
     );
+    
 
     // Welcome message and dropdown for students
     const studentControls = user && user.role === 'student' && (
@@ -271,7 +276,9 @@ const fetchQuizFeedback = async (quizId) => {
                 </div>
                   
 
-               
+                <div className="toolbar-title">
+                <h1>Your App Title</h1> {/* Replace with your actual title */}
+            </div>
 
                 {/* Login Button */}
                 <div className="right-buttons">
@@ -279,8 +286,8 @@ const fetchQuizFeedback = async (quizId) => {
                 {user ? (
                     // Render Logout button when user is logged in
                     <button className="btn btn-outline-primary mr-2" onClick={handleLogout}>
-                        Salir
-                    </button>
+                    Salir
+                </button>
                 ) : (
                     // Render Login button when no user is logged in
                     <button className="btn btn-outline-primary mr-2" onClick={() => setIsLoginModalOpen(true)}>

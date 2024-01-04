@@ -86,17 +86,22 @@ function App() {
 
 
     const handleProfessorAction = (actionType) => {
-        if (actionType === 'action1') {
-            // Handle action 1
-            setLectureContent('createLecture');
-
-
-        } else if (actionType === 'action2') {
-            
-            setLectureContent('createQuestion');
+        switch (actionType) {
+            case 'action1':
+                // Action 1: Create a Question
+                setLectureContent('createQuestion');
+                break;
+            case 'action5':
+                // Action 5: Create a Lecture
+                setLectureContent('createLecture');
+                break;
+            // ... handle other actions if needed
+            default:
+                // Optional: handle unknown actions or do nothing
+                break;
         }
-        // Add more cases for other actions as needed
     };
+    
     
 
     const handleLectureSelection = (lectureId) => {

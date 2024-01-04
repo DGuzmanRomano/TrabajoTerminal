@@ -7,6 +7,10 @@
     font-family: 'Arial', sans-serif; /* Choosing a readable font for education */
 }
 
+
+
+
+
 .toolbar {
     background-color: #E5F4F9; /* Lighter Go Blue for contrast */
     padding: 10px 20px;
@@ -69,3 +73,22 @@
 .welcome-message {
     color: white;
 }
+
+
+
+.submenu {
+    position: absolute;
+    left: 100%; /* Position to the right of the parent item */
+    top: 0;
+    z-index: 1000;
+    /* Add more styles as needed */
+}
+
+
+.toolbar-title {
+    flex-grow: 1;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

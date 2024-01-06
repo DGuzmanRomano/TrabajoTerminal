@@ -277,7 +277,7 @@ const fetchQuizFeedback = async (quizId) => {
                   
 
                 <div className="toolbar-title">
-                <h1>Your App Title</h1> {/* Replace with your actual title */}
+                <h1></h1> {/* Replace with your actual title */}
             </div>
 
                 {/* Login Button */}

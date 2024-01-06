@@ -14,23 +14,26 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
+
+
+/*
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'd',
     password: 'qazwsx123456',
     database: 'tt'
-});
+});*/
 
-/*
+
 const db = mysql.createConnection({
-    host: '34.132.215.231', // Replace with the IP of your Cloud SQL instance
+    host: '34.132.246.80', // Replace with the IP of your Cloud SQL instance
     user: 'root', // Replace with your Cloud SQL username
     password: '123456', // Replace with your Cloud SQL password
     database: 'tt', // Replace with your Cloud SQL database name
     connectTimeout: 10000
 });
 
-*/
+
 
 
 

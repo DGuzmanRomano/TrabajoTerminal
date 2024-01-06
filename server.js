@@ -25,12 +25,12 @@ const db = mysql.createConnection({
 });*/
 
 
-const db = mysql.createConnection({
-    host: '34.132.246.80', // Replace with the IP of your Cloud SQL instance
-    user: 'root', // Replace with your Cloud SQL username
-    password: '123456', // Replace with your Cloud SQL password
-    database: 'tt', // Replace with your Cloud SQL database name
-    connectTimeout: 10000
+const db = mysql.createPool({
+    connectionLimit: 10, // Adjust the limit as per your application's needs
+    host: '34.132.246.80',
+    user: 'root',
+    password: '123456',
+    database: 'tt'
 });
 
 

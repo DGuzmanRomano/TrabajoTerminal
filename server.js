@@ -26,15 +26,20 @@ const db = mysql.createConnection({
 
 
 const db = mysql.createPool({
-    connectionLimit: 10, // Adjust the limit as per your application's needs
     host: '34.132.246.80',
     user: 'root',
     password: '123456',
-    database: 'tt'
+    database: 'tt',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
 
-
+db.query('SELECT 1 + 1 AS solution', (error, results, fields) => {
+    if (error) throw error;
+    console.log('The solution is: ', results[0].solution);
+});
 
 
 

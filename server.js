@@ -36,25 +36,6 @@ const db = mysql.createPool({
 });
 
 
-db.query('SELECT 1 + 1 AS solution', (error, results, fields) => {
-    if (error) throw error;
-    console.log('The solution is: ', results[0].solution);
-});
-
-
-
-db.connect(function(err) {
-    if (err) {
-        console.error('Error connecting: ' + err.stack);
-        return;
-    }
-
-    console.log('Connected as ID ' + db.threadId);
-  
-});
-
-
-
 
 app.post('/execute', codeExecutionRoute.executeCode);
 
@@ -63,7 +44,6 @@ const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Server started on http://localhost:${PORT}`);
 });
-
 
 
 ////////////////////////LECTURAS///////////////////////

@@ -1,31 +1,29 @@
 /* OutputPanel.css */
 
 .output-panel {
-    display: flex; 
-    flex-direction: column;
-    height: 100%; /* Use the full height of the parent container */
-    background-color: #1e1e1e; /* Dark background for the panel */
-    color: #ffffff; /* White text color */
-  }
-  
-  .output-header {
-    background:  #007D9C; /* Dark gray background for the header */
-    color: #ffffff; /* White text color */
-    padding: 10px; /* Add some padding for aesthetic */
-    border-bottom: 1px solid #4d4d4d; /* Slightly lighter border color */
-  }
-  
-  .output-content {
-    overflow-y: auto; /* Allow vertical scroll */
-    color: #ffffff; /* White text color */
-    flex-grow: 1; /* Allow this area to grow and take the remaining space */
-    padding: 10px; /* Padding inside the content area */
-  }
-  
-  /* Make sure pre tag does not overflow its container */
-  .output-content pre {
-    word-wrap: break-word; 
-    color: #16c210; /* White text color */
-    white-space: pre-wrap;
-  }
-  
+  display: flex; 
+  flex-direction: column;
+  height: 100%;
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.output-header {
+  background:  #007D9C;
+  color: #ffffff;
+  padding: 10px;
+  border-bottom: 1px solid #4d4d4d;
+}
+
+.output-content {
+  overflow-y: auto;
+  color: #ffffff;
+  flex-grow: 1;
+  padding: 10px;
+}
+
+.output-content pre {
+  word-wrap: break-word;
+  color: #16c210;
+  white-space: pre-wrap;
+}

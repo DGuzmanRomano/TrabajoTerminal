@@ -9,18 +9,18 @@ const ExampleModal = ({ isOpen, content, title, onClose }) => {
         navigator.clipboard.writeText(content)
             .then(() => {
                 setShowAlert(true);
-                setTimeout(() => setShowAlert(false), 2000); // Hide the alert after 2 seconds
+                setTimeout(() => setShowAlert(false), 2000); 
             })
             .catch((err) => {
                 console.error('Could not copy text: ', err);
-                // Optionally handle the error case, e.g., by showing a different alert
+               
             });
     };
 
     return (
         <Modal show={isOpen} onHide={onClose} size="lg">
             <Modal.Header closeButton>
-                <Modal.Title>{title || 'Código de Ejemplo'}</Modal.Title> {/* Use the passed title */}
+                <Modal.Title>{title || 'Código de Ejemplo'}</Modal.Title> {}
             </Modal.Header>
             <Modal.Body>
                 <div className="d-flex justify-content-end">

@@ -3,7 +3,7 @@ import { fetchQuizData, submitQuizAnswers } from '../models/QuizModel'
 import axios from 'axios';
 
 const useQuizController = (quizId, user) => {
-  // State for the current index, user responses, and score could be managed here
+  
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
   const [userResponses, setUserResponses] = useState({});
   const [score, setScore] = useState(0);
@@ -11,31 +11,30 @@ const useQuizController = (quizId, user) => {
 
   const [data, setData] = useState([]);
 
-  // Handle when the user selects an option for a question
+ 
   const handleOptionClick = (questionId, option) => {
     setUserResponses(prevResponses => ({
         ...prevResponses,
-        [questionId]: { option_text: option.option_text }, // Store in an object for multiple-choice
+        [questionId]: { option_text: option.option_text }, 
     }));
 };
 
 
-  // Handle text change for text-based answers
   const handleTextChange = (questionId, text) => {
     setUserResponses(prevResponses => ({
         ...prevResponses,
-        [questionId]: text, // Store text directly for text answers
+        [questionId]: text, 
     }));
 };
 
 
 
-  // Go to the next question
+ 
   const handleNextClick = useCallback(() => {
     setActiveQuestionIndex((prevIndex) => prevIndex + 1);
   }, []);
 
-  // Go to the previous question
+  
   const handlePrevClick = useCallback(() => {
     setActiveQuestionIndex((prevIndex) => Math.max(prevIndex - 1, 0));
   }, []);
@@ -56,10 +55,10 @@ const useQuizController = (quizId, user) => {
         }));
         console.log("Submitting quiz with data:", { quizId, userResponses: userAnswers, studentId });
   
-        const result = await axios.post(`http://localhost:3001/submit-quiz`, {
+        const result = await axios.post(`http://34.125.183.229:3001/submit-quiz`, {
             quizId,
             userResponses: userAnswers,
-            studentId // Include this line
+            studentId 
         });
 
         setScore(result.data.score);
@@ -86,10 +85,10 @@ const useQuizController = (quizId, user) => {
       }
     };
 
-    if (quizId) { // Only try to load data if a quizId is provided
+    if (quizId) { 
       loadData();
     }
-  }, [quizId]); // It will run only when the quizId changes
+  }, [quizId]); 
 
 
 

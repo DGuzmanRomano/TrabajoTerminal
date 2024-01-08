@@ -1,54 +1,43 @@
-/* RightPanel.css */
-/* RightPanel.css */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* This ensures padding does not affect the overall dimensions */
+    box-sizing: border-box;
 }
-/* Main content background */
+
 .lecture-view-container {
     background-color: #ffffff;
     color: #DEF3FF;
     border-radius: 4px;
-    overflow: auto; /* Scrollbar will appear here if the content overflows */
+    overflow: auto;
 }
 
-
-/* Ensure padding is applied */
 .lecture-view-container .card-body {
     padding: 15px;
-    overflow: auto; /* Allow scrolling within the card body */
-    height: 100%; 
+    overflow: auto;
+    height: 100%;
 }
 
-
-/* Card body styling */
 .card-body {
-    background-color:  #1e1e1e; /* Consistent with the main background */
-    color: #DEF3FF; /* Maintain readability with light text */
+    background-color: #1e1e1e;
+    color: #DEF3FF;
 }
 
-/* Targeting the HTML tags within the component to ensure they get styled */
 .lecture-view-container h1,
 .lecture-view-container h2,
-.lecture-view-container h3
-{
-    color: #84C3E8; /* Light text color for readability */
+.lecture-view-container h3 {
+    color: #84C3E8;
 }
 
-
-.lecture-view-container p{
-
+.lecture-view-container p {
     color: #ffffff;
-    line-height: 1.6; 
+    line-height: 1.6;
 }
 
 .lecture-view-container code {
-    
-    background-color:#5f5f5f; /* Dark background for code elements */
-    color:#ffffff; /* Light text color for readability */
-    padding: 2px 4px; /* Padding inside inline code elements */
-    border-radius: 3px; /* Rounded corners for inline code elements */
+    background-color: #5f5f5f;
+    color: #ffffff;
+    padding: 2px 4px;
+    border-radius: 3px;
 }
 
 .lecture-view-container pre code {
@@ -58,91 +47,66 @@
     border-radius: 0;
 }
 
-/* Styles for code blocks */
 .lecture-view-container pre {
-    background-color: #333; /* Dark background for code blocks */
-    color: #F5F5F5; /* Light text color for code */
-    padding: 10px; /* Padding inside code blocks */
-    border-radius: 4px; /* Rounded corners for code blocks */
-    overflow-x: auto; /* Horizontal scrolling for overflow */
-    white-space: pre-wrap; /* Ensures code wraps and respects indentation */
-    word-break: break-all; /* Prevents long lines from breaking layout */
+    background-color: #333;
+    color: #F5F5F5;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
 }
 
-
-
-
-
-
-
-
-
-/* Button styling */
 button {
-    background-color: #074569; /* Principal color for buttons */
-    color: #F5F5F5; /* Light text for readability */
-    border: none; /* Remove default border */
-    padding: 10px 20px; /* Padding inside the buttons */
-    margin: 5px; /* Spacing around buttons */
-    border-radius: 4px; /* Optional: rounded corners for buttons */
-    cursor: pointer; /* Change cursor to indicate clickable */
+    background-color: #074569;
+    color: #F5F5F5;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 4px;
+    cursor: pointer;
 }
-
-
 
 button:hover {
-    background-color: #063e55; /* Slightly darker shade for hover state */
+    background-color: #063e55;
 }
 
-
-/* Select styling */
 select {
-    background-color: #ffffff; /* White background for dropdown */
-    color: #333333; /* Dark text color for contrast */
-    border: 1px solid #cccccc; /* Subtle border */
-    padding: 5px; /* Padding inside the select box */
-    margin-bottom: 10px; /* Space below select box */
+    background-color: #ffffff;
+    color: #333333;
+    border: 1px solid #cccccc;
+    padding: 5px;
+    margin-bottom: 10px;
 }
 
-/* Styling for success alert messages */
 .alert-success {
-    background-color: #3E7EA8; /* Light accent color for success messages */
-    color: #F5F5F5; /* Light text color for readability */
-    padding: 10px; /* Padding inside the alert box */
-    border-radius: 4px; /* Optional: rounded corners for the alert box */
-    margin-bottom: 15px; /* Space below the alert box */
+    background-color: #3E7EA8;
+    color: #F5F5F5;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
 }
 
-/* Text color for muted text */
 .text-muted {
-    color: #F5F5F5; /* Light text color for readability */
+    color: #F5F5F5;
 }
 
-
-
-
-
-
-/* Custom styles for ReactQuill toolbar */
 .ql-toolbar.ql-snow {
-    color: white; /* This will set the toolbar icons to white */
-    background: #333; /* Optional: if you also want to change the toolbar background */
+    color: white;
+    background: #333;
 }
 
-/* Changing the color of the buttons inside the toolbar to white */
 .ql-toolbar.ql-snow .ql-picker-label,
 .ql-toolbar.ql-snow .ql-picker-item,
 .ql-toolbar.ql-snow button {
     color: white;
 }
 
-/* If you want to change the color of the tooltips as well */
 .ql-snow .ql-tooltip {
     color: white;
     background: #333;
 }
 
-/* To ensure dropdowns in the toolbar match the dark theme */
 .ql-snow .ql-stroke {
     stroke: white;
 }
@@ -152,64 +116,52 @@ select {
     fill: white;
 }
 
-/* Custom styles for ReactQuill dropdown */
 .ql-snow .ql-picker.ql-expanded .ql-picker-options {
-    background-color: #333; /* Dark background for dropdown */
-    color: white; /* White text color for dropdown items */
+    background-color: #333;
+    color: white;
 }
 
-/* Style for the options within the dropdown */
 .ql-snow .ql-picker.ql-expanded .ql-picker-options .ql-picker-item {
-    color: white; /* White text color for readability */
+    color: white;
 }
 
-/* Hover state for the options within the dropdown */
 .ql-snow .ql-picker.ql-expanded .ql-picker-options .ql-picker-item:hover {
-    background-color: #555; /* Slightly lighter background for hover state */
+    background-color: #555;
 }
 
-
-/* RightPanel.css */
-
-/* Ensure the background color is consistent */
 .question-view-container {
-    background-color: #1e1e1e; /* Set the background color to match the Monaco Editor */
+    background-color: #1e1e1e;
 }
 
-/* Add margin to the Monaco Editor container */
 .monaco-editor-container {
-    margin: 10px 0; /* Adjust the value as needed for top and bottom margin */
-    border: 3px solid #585858; /* If you want a border around the editor */
-    background-color: #1e1e1e; /* Set the background color to match the container */
+    margin: 10px 0;
+    border: 3px solid #585858;
+    background-color: #1e1e1e;
 }
 
-/* If the Monaco Editor does not have a specific class, target the element more generally */
 .react-monaco-editor-container .monaco-editor .monaco-editor-background,
 .react-monaco-editor-container .monaco-editor,
 .react-monaco-editor-container .monaco-editor .margin {
-    background-color: #1e1e1e; /* Ensure the editor matches the desired background color */
-    color: #fdfdfd; /* Ensure the text is the color you want */
+    background-color: #1e1e1e;
+    color: #fdfdfd;
 }
 
-/* Adjust textarea to fill width and have consistent background */
 .question-view-container textarea {
-    width: calc(100% - 30px); /* Adjust width to account for padding */
-    background-color: #2b2b2b; /* Set your preferred background color */
-    color: white; /* Text color */
-    margin: 10px 0; /* Space above and below the textarea */
-    padding: 15px; /* Padding inside the textarea */
-    border: 1px solid #6d6c6c; /* Subtle border */
-    border-radius: 4px; /* Rounded corners */
+    width: calc(100% - 30px);
+    background-color: #2b2b2b;
+    color: white;
+    margin: 10px 0;
+    padding: 15px;
+    border: 1px solid #6d6c6c;
+    border-radius: 4px;
 }
 
-/* Rest of the styles */
-/* Input and Textarea styling */
 input[type="text"],
 textarea {
-    background-color: #2b2b2b; /* Set your preferred background color */
-    color: white; /* Text color */
-    margin: 1px 0; /* Space above and below the textarea */
-    padding: 5px; /* Padding inside the inputs */
-    margin-bottom: 10px; /* Space between inputs */
-    width: 100%; 
+    background-color: #2b2b2b;
+    color: white;
+    margin: 1px 0;
+    padding: 5px;
+    margin-bottom: 10px;
+    width: 100%;
 }

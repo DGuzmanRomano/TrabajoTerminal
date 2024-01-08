@@ -15,18 +15,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 
-
 /*
+
 const db = mysql.createConnection({
-    host: 'localhost',
+    host: '34.125.183.229',
     user: 'd',
     password: 'qazwsx123456',
     database: 'tt'
-});*/
-
+});
+*/
 
 const db = mysql.createPool({
-    host: '34.132.246.80',
+    host: '34.125.183.229',
     user: 'root',
     password: '123456',
     database: 'tt',
@@ -35,23 +35,13 @@ const db = mysql.createPool({
     queueLimit: 0
 });
 
-
-
-app.post('/execute', codeExecutionRoute.executeCode);
-
-
 const PORT = 3001;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server started on port ${PORT}`);
 });
 
-
-
-////////////////////////LECTURAS///////////////////////
-
-
 app.get('/api/lectures', (req, res) => {
-    const query = 'SELECT lecture_id, lecture_title FROM lectures WHERE author_id = 1';
+    const query = 'SELECT lecture_id, lecture_title FROM lectures';
     db.query(query, (err, results) => {
         if (err) {
             console.error(err);
@@ -60,6 +50,10 @@ app.get('/api/lectures', (req, res) => {
         res.json(results); 
     });
 });
+
+
+app.post('/execute', codeExecutionRoute.executeCode);
+
 
 
 app.get('/api/user-lectures', (req, res) => {
@@ -126,6 +120,16 @@ app.get('/lecture/:id', (req, res) => {
 
 
 
+app.delete('/delete-lecture/:lectureId', (req, res) => {
+    const { lectureId } = req.params;
+    db.query('DELETE FROM lectures WHERE lecture_id = ?', [lectureId], (err, result) => {
+        if (err) {
+            res.status(500).send({ message: 'Error deleting lecture' });
+        } else {
+            res.send({ message: 'Lecture deleted successfully' });
+        }
+    });
+});
 
 
 ////////////////////////////////////////////////////
@@ -344,8 +348,7 @@ app.get('/examples', (req, res) => {
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
-    // This query will check both students and professors tables
-    const query = `
+        const query = `
         SELECT student_id AS id_user, student_name AS user_name, 'student' AS user_role 
         FROM students 
         WHERE student_email = ? AND student_password = ?
@@ -355,15 +358,14 @@ app.post('/login', (req, res) => {
         WHERE professor_email = ? AND professor_password = ?
     `;
 
-    // Execute the query
     db.execute(query, [email, password, email, password], (err, results, fields) => {
         if (err) {
-            // Handle error
+           
             console.error('Error during database query', err);
             return res.status(500).json({ success: false, message: 'Internal server error' });
         }
 
-        // If results array is not empty, login is successful
+      
         if (results.length > 0) {
             const user = results[0];
             return res.json({
@@ -373,7 +375,7 @@ app.post('/login', (req, res) => {
                 role: user.user_role
             });
         } else {
-            // No user found with the given email and password
+           
             return res.status(401).json({ success: false, message: 'Incorrect email or password' });
         }
     });

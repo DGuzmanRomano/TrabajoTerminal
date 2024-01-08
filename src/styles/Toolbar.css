@@ -1,18 +1,13 @@
 .toolbar-header {
-    background-color: #00ADD8; /* Go Blue */
+    background-color: #00ADD8;
     color: white;
-   
     text-align: center;
     font-size: 24px;
-    font-family: 'Arial', sans-serif; /* Choosing a readable font for education */
+    font-family: 'Arial', sans-serif;
 }
 
-
-
-
-
 .toolbar {
-    background-color: #E5F4F9; /* Lighter Go Blue for contrast */
+    background-color: #E5F4F9;
     padding: 10px 20px;
     display: flex;
     justify-content: space-between;
@@ -20,16 +15,15 @@
 
 .button {
     padding: 8px 15px;
- 
     cursor: pointer;
-    background-color: #007AB8; /* Slightly darker blue for buttons */
+    background-color: #007AB8;
     color: white;
     border: none;
     border-radius: 4px;
 }
 
 .button:hover {
-    background-color: #005a8e; /* A shade darker for hover state */
+    background-color: #005a8e;
 }
 
 .dropdown {
@@ -50,40 +44,31 @@
     padding: 12px 16px;
     text-decoration: none;
     display: block;
-    color: #007AB8; /* Dark Blue */
+    color: #007AB8;
 }
 
 .dropdown-menu a:hover {
-    background-color: #E5F4F9; /* Light Blue */
+    background-color: #E5F4F9;
 }
-
 
 .left-buttons, .right-buttons {
     display: inline-block;
 }
 
-
 .gopher {
-    height: 50px; /* Adjust the size as necessary */
-    /* additional styling for the logo if needed */
+    height: 50px;
 }
-
-/* Toolbar.css */
 
 .welcome-message {
     color: white;
 }
 
-
-
 .submenu {
     position: absolute;
-    left: 100%; /* Position to the right of the parent item */
+    left: 100%;
     top: 0;
     z-index: 1000;
-    /* Add more styles as needed */
 }
-
 
 .toolbar-title {
     flex-grow: 1;
@@ -91,4 +76,4 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+}

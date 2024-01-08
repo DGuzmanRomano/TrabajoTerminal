@@ -31,7 +31,7 @@ function App() {
     const handleExecute = async (codeToExecute) => {
         const requestBody = { content: codeToExecute };
         try {
-            const response = await fetch('http://localhost:3001/execute', {
+            const response = await fetch('http://34.125.183.229:3001/execute', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -55,21 +55,21 @@ function App() {
 
 
     useEffect(() => {
-        // Debug: Log the value retrieved from Local Storage
+       
         const storedUser = localStorage.getItem('user');
         console.log('Retrieved from Local Storage:', storedUser);
     
         try {
             if (storedUser) {
-                // Parse and set the user if storedUser is truthy
+                
                 setUser(JSON.parse(storedUser));
             } else {
                 setShowLoginModal(true);
             }
         } catch (error) {
             console.error('Error parsing user data from Local Storage:', error);
-            // Handle parsing error (e.g., invalid JSON or corrupted data)
-            // You might want to clear the corrupted data from Local Storage
+           
+        
             localStorage.removeItem('user');
             setShowLoginModal(true);
         }
@@ -88,19 +88,24 @@ function App() {
     const handleProfessorAction = (actionType) => {
         switch (actionType) {
             case 'action1':
-                // Action 1: Create a Question
+                // Create a Question
                 setLectureContent('createQuestion');
                 break;
             case 'action5':
-                // Action 5: Create a Lecture
+                // Create a Lecture
                 setLectureContent('createLecture');
                 break;
-            // ... handle other actions if needed
+            case 'action7':
+                // Delete a Lecture
+                setLectureContent('deleteLecture');
+                break;
+           
             default:
-                // Optional: handle unknown actions or do nothing
+               
                 break;
         }
     };
+    
     
     
 
@@ -117,7 +122,7 @@ const handleFileSelect = (fileContent) => {
 
 
 const handleLogin = (email, password, setError) => {
-    fetch('http://localhost:3001/login', {
+    fetch('http://34.125.183.229:3001/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -149,8 +154,8 @@ const handleLogout = () => {
     localStorage.removeItem('user');
     setUser(null);
     setLectureContent(`  `);  // Reset lecture content
-    setSelectedLecture(null);  // Optionally reset selected lecture
-    // Reset other states as needed
+    setSelectedLecture(null); 
+   
 };
 
 

@@ -1,4 +1,3 @@
-
 .options-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -10,15 +9,14 @@
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
-    background-color: #007BFF; /* Example blue color */
+    background-color: #007BFF;
     color: white;
     font-size: 1rem;
     transition: background-color 0.3s;
+}
 
-    /* Optional: Add some hover and focus styles for better interactivity */
-    &:hover, &:focus {
-        background-color: #0056b3; /* Darker blue on hover/focus */
-    }
+.option-button:hover, .option-button:focus {
+    background-color: #0056b3;
 }
 
 .btn-groupq {
@@ -29,62 +27,53 @@
 }
 
 .prev-button {
-    background-color: #00645c;  /* Dark blue */
+    background-color: #00645c;
     color: rgb(233, 233, 233);
     border-color: #0056b3;
 }
 
 .next-button {
     flex-grow: 1;
-    text-align: right; /* align text to the right for next/submit button */
+    text-align: right;
 }
 
 .submit-all-button {
-  /* This makes the dtake up space */ 
-    text-align: right;  /* Align the Submit All button to the right */
-     background-color: #53cc0d;  /* Dark blue */
+    text-align: right;
+    background-color: #53cc0d;
 }
 
-
-
-
-/* Darker shade of blue for Next and Previous buttons */
 .prev-button .btn-dir, .next-button .btn-dir {
-    background-color: #00645c;  /* Dark blue */
+    background-color: #00645c;
     color: rgb(233, 233, 233);
     border-color: #0056b3;
 }
 
-/* For hover state */
 .prev-button .btn-dir:hover, .next-button .btn-dir:hover {
     background-color: #004499;
     border-color: #004499;
 }
 
-
 .quiz-container {
     display: flex;
     flex-direction: column;
-    height: 100%; /* This should be the height of the modal content area */
+    height: 100%;
 }
 
 .question-section,
 .options-grid,
 .text-answer-input {
-    /* Adjust if needed to ensure they do not grow beyond their content */
     flex-shrink: 0;
 }
 
 .btn-groupq {
-    margin-top: auto; /* This will push your button group to the bottom */
+    margin-top: auto;
     flex-shrink: 0;
 }
 
-
 .monaco-editor-container {
-    position: relative; /* If you need to position inner elements absolutely relative to this container */
-    z-index: 10; /* Only if needed, to ensure it's above other elements */
-    min-height: 200px; /* Minimum height for visibility */
-    flex-grow: 1; /* If you're using flexbox */
-    overflow: hidden; /* Or 'auto' if you want to allow scrolling */
+    position: relative;
+    z-index: 10;
+    min-height: 200px;
+    flex-grow: 1;
+    overflow: hidden;
 }

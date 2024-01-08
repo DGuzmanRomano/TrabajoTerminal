@@ -18,7 +18,6 @@ import StudentDropdownButton from '../components/StudentDropdownButton';
 
 import UserContext from '../components/UserContext';
 
-import logo from '../gopher.png';
 
 
 const Toolbar = (props) => {
@@ -48,7 +47,7 @@ const Toolbar = (props) => {
     const fetchUserQuizzes = async () => {
         if (user && user.role === 'student') {
             try {
-                const response = await fetch(`http://localhost:3001/user-quizzes/${user.id}`);
+                const response = await fetch(`http://34.125.183.229:3001/user-quizzes/${user.id}`);
                 const quizzes = await response.json();
                 setUserQuizzes(quizzes); // Set the quizzes in state
             } catch (error) {
@@ -69,7 +68,7 @@ const Toolbar = (props) => {
        
         fetchQuizFeedback(quizId);
         console.log(`Quiz selected: ${quizId}`);
-        // For example, open a modal with the feedback details
+        
     };
 
     
@@ -85,7 +84,7 @@ const Toolbar = (props) => {
 
 useEffect(() => {
     if (user) {
-        const endpoint = `http://localhost:3001/api/user-lectures?userId=${user.id}&userRole=${user.role}`;
+        const endpoint = `http://34.125.183.229:3001/api/user-lectures?userId=${user.id}&userRole=${user.role}`;
         fetch(endpoint)
         .then(response => response.json())
         .then(data => {
@@ -112,7 +111,7 @@ useEffect(() => {
 
     
 useEffect(() => {
-    fetch('http://localhost:3001/examples') 
+    fetch('http://34.125.183.229:3001/examples') 
         .then(response => response.json())
         .then(data => {
             setExampleTitles(data);
@@ -135,7 +134,7 @@ const [quizFeedback, setQuizFeedback] = useState(null);
 
 const fetchQuizFeedback = async (quizId) => {
     try {
-        const response = await fetch(`http://localhost:3001/quiz-feedback/${user.id}/${quizId}`);
+        const response = await fetch(`http://34.125.183.229:3001/quiz-feedback/${user.id}/${quizId}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -277,12 +276,12 @@ const fetchQuizFeedback = async (quizId) => {
                   
 
                 <div className="toolbar-title">
-                <h1></h1> {/* Replace with your actual title */}
+                <h1></h1> {}
             </div>
 
-                {/* Login Button */}
+                {}
                 <div className="right-buttons">
-                {professorControls || studentControls} {/* Render based on the role */}
+                {professorControls || studentControls} {}
                 {user ? (
                     // Render Logout button when user is logged in
                     <button className="btn btn-outline-primary mr-2" onClick={handleLogout}>
@@ -298,7 +297,7 @@ const fetchQuizFeedback = async (quizId) => {
 
            </div>
 
-            {/* Modal */}
+           
              <ExampleModal
                 isOpen={isExampleModalOpen}
                 content={currentExampleCode}
@@ -317,10 +316,10 @@ const fetchQuizFeedback = async (quizId) => {
        <ScoresModal
             isOpen={isScoresModalOpen}
             onClose={() => setIsScoresModalOpen(false)}
-            scores={10} // You might want to calculate or fetch this
+            scores={10} 
             quizzes={userQuizzes}
             onQuizSelect={handleQuizSelection}
-            quizFeedback={quizFeedback} // Pass the feedback details to the modal
+            quizFeedback={quizFeedback} 
         />
 
 

@@ -1,8 +1,6 @@
 import React from 'react';
 import '../styles/OutputPanel.css';  
 
-
-// OutputPanel component (React)
 const OutputPanel = ({ output }) => {
   return (
     <div className="output-panel">

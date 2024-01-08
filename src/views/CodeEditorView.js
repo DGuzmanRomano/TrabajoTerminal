@@ -7,7 +7,6 @@ import React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import '../styles/CodeEditor.css';
 
-// You don't need to import modes and themes as you did with Ace Editor; they are included in the Monaco build.
 
 const CodeEditorView = ({ code, setCode }) => {
   // Options for the Monaco Editor

@@ -3,7 +3,7 @@ import '../styles/GoTutorial.css';
 import useLecture from '../controllers/useLecture'; 
 import UserContext from '../components/UserContext';
 import MonacoEditor from '@monaco-editor/react';
-import ReactQuill from 'react-quill'; // Make sure to import ReactQuill
+import ReactQuill from 'react-quill'; 
 import 'react-quill/dist/quill.snow.css';
 import { Toast } from 'react-bootstrap';
 
@@ -25,8 +25,27 @@ const LectureView = ({ lectureId, content }) => {
     const [questionValidation, setQuestionValidation] = useState('');
     const [answerValidation, setAnswerValidation] = useState('');
     const [quizName, setQuizName] = useState('');
+    const [lecturesList, setLecturesList] = useState([]);
 
 
+
+
+    const fetchLectures = async () => {
+        try {
+            const response = await fetch('http://34.125.183.229:3001/api/lectures');
+            if (!response.ok) throw new Error('Failed to fetch lectures');
+            const lectures = await response.json();
+            setLecturesList(lectures);
+        } catch (error) {
+            console.error('Error fetching lectures:', error);
+        }
+    };
+    
+
+    useEffect(() => {
+        fetchLectures();
+    }, []);
+    
 
     const handleCodeSnippetChange = (questionIndex, value) => {
         const newQuestions = [...questions];
@@ -103,7 +122,7 @@ const LectureView = ({ lectureId, content }) => {
       };
   
       try {
-          const response = await fetch('http://localhost:3001/add-lecture', {
+          const response = await fetch('http://34.125.183.229:3001/add-lecture', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(lectureData)
@@ -114,8 +133,7 @@ const LectureView = ({ lectureId, content }) => {
           }
   
           const result = await response.json();
-          console.log(result.message); // Or handle this in the UI
-          // Reset form or update UI as needed
+          console.log(result.message); 
           setLectureTitle('');
           setLectureText('');
           setShowSuccess(true); 
@@ -124,7 +142,7 @@ const LectureView = ({ lectureId, content }) => {
 
       } catch (error) {
           console.error('Error submitting lecture:', error);
-          // Handle error in the UI
+         
           setShowSuccess(false); 
       }
   };
@@ -183,6 +201,15 @@ const handleCorrectOptionChange = (questionIndex, optionIndex) => {
 };
 
 
+const handleDeleteLecture = async (lectureId) => {
+    try {
+        const response = await fetch(`http://34.125.183.229:3001/delete-lecture/${lectureId}`, { method: 'DELETE' });
+        if (!response.ok) throw new Error('Failed to delete lecture');
+        fetchLectures(); // Refresh the list after deletion
+    } catch (error) {
+        console.error('Error deleting lecture:', error);
+    }
+};
 
 
 
@@ -261,7 +288,7 @@ const handleQuestionSubmit = async () => {
     
 
     try {
-        const response = await fetch('http://localhost:3001/add-question', {
+        const response = await fetch('http://34.125.183.229:3001/add-question', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(quizData)
@@ -457,7 +484,23 @@ if (content === 'createLecture') {
     }
 
 
-
+    else if (content === 'deleteLecture') {
+        return (
+            <div className="lecture-view-container card go-tutorial">
+                <div className="card-body">
+                    <ul>
+                        {lecturesList.map(lecture => (
+                            <li key={lecture.lecture_id}>
+                                {lecture.lecture_title}
+                                <button onClick={() => handleDeleteLecture(lecture.lecture_id)}>Delete</button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+        );
+    }
+    
     else {
         return (
           <div className="lecture-view-container card go-tutorial">

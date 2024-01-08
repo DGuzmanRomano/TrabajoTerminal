@@ -1,56 +1,49 @@
-/*App.css*/
 .content {
-    height: 80vh; 
-    overflow: hidden; /* This will prevent any additional scrolling on the content div itself */
+  height: 80vh;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 
+.content .col-md-6 {
+  height: 100%;
+  overflow-y: auto;
+  padding: 0;
+}
 
-    flex: 1; /* This will make the content take up the remaining space */
-    display: flex;
-    flex-direction: column;
-  }
-  
-  /* Equal width and full height for the code editor and lecture view */
-  .content .col-md-6 {
-    height: 100%;
-    overflow-y: auto; /* Enables scrolling */
-    padding: 0; /* Remove padding if necessary, or adjust as needed */
-  }
-  
-  /* Styles for the output container */
-  .output-container {
-    height: 20vh;
-    overflow-y: auto;
-    flex-shrink: 0; /* This prevents the output container from shrinking */
-  }
-/* Ensure the container-fluid doesn't add unwanted space */
+.output-container {
+  height: 20vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
 .container-fluid {
-    padding: 0; /* Remove padding if necessary */
-  }
-  .row.h-100 {
-    height: 70vh; /* vh is the viewport height */
+  padding: 0;
+}
 
-    flex: 1; /* This will allow the row to expand to fill available content space */
-  min-height: 0; /* This helps to deal with an overflow issue in flex containers */
-  }
-  
+.row.h-100 {
+  height: 70vh;
+  flex: 1;
+  min-height: 0;
+}
+
 .App {
-    background-color: #074468;
-    display: flex;
-    flex-direction: column;
-    height: 100vh; /* Make the app fill the full viewport height */
-    overflow: hidden; /* Prevent overflow to avoid the vertical scrollbar */
+  background-color: #074468;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .toolbar {
-    background-color: #007D9C;
+  background-color: #007D9C;
 }
 
-
 .output-container {
-    height: 20vh; /* Set the height of the output container */
-    overflow: hidden; /* Hide the overflow */
-    display: flex;
-    flex-direction: column;
-    background-color: #1e1e1e;
-  }
-  
+  height: 20vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: #1e1e1e;
+}

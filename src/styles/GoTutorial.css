@@ -1,16 +1,13 @@
 .go-tutorial {
-  background-color: #747474; /* Gray background */
-  color: rgb(182, 0, 0); /* White text for contrast */
-  
+  background-color: #747474;
+  color: rgb(182, 0, 0);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 100%; /* Full height of its parent */
-  overflow-y: auto; /* Enables vertical scrolling */
-  margin-bottom: 0; /* Remove any additional margin if it's there */
+  height: 100%;
+  overflow-y: auto;
+  margin-bottom: 0;
 }
 
 .lecture-view-container {
-  height: 100%; /* Fill the height of the parent */
-  width: 100%; /* Fill the width of the parent */
+  height: 100%;
+  width: 100%;
 }
-
-

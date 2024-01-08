@@ -28,7 +28,7 @@ const Quiz = ({ quizId }) => {
         return <p>No se encontraron preguntas.</p>;
     }
 
-    // Render the feedback section
+   
     const renderFeedback = () => (
         <div className="feedback-section">
             <h3>Resultados:</h3>

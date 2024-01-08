@@ -1,29 +1,29 @@
 .modal-content {
-  background-color: #1a2d4e !important;  /* Dark blue background color */
-  color: #f0f0f0;  /* Almost white text color */
-  height: 100%; /* Ensures the content takes the full height of the modal */
+  background-color: #1a2d4e !important;
+  color: #f0f0f0;
+  height: 100%;
   overflow-y: auto;
   display: flex;
-  flex-direction: column; /* Stack children vertically */
+  flex-direction: column;
 }
 
 .upper-half {
-  flex-basis: 50%; /* Assign 50% of the modal's height */
-  overflow-y: auto; /* Add scroll to this section if content is too big */
+  flex-basis: 50%;
+  overflow-y: auto;
 }
 
 .lower-half {
-  flex-basis: 50%; /* Assign the remaining 50% of the modal's height */
+  flex-basis: 50%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* Aligns the buttons to the bottom */
+  justify-content: flex-end;
 }
 
 .closeb {
   cursor: pointer;
   border: none;
   background: none;
-  font-size: 1.5rem; /* Adjust size as needed */
+  font-size: 1.5rem;
 }
 
 .modal {
@@ -35,20 +35,19 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7); /* Increase the last value for a darker overlay */
-    backdrop-filter: blur(2px);
-  z-index: 1000; /* Ensures modal is on top of other content */
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(2px);
+  z-index: 1000;
 }
 
 .modal-dialog.modal-custom-size {
-  max-width: 80%; /* Width of the modal */
-  height: 80%; /* Height of the modal */
+  max-width: 80%;
+  height: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
 }
-
 
 .modal-dialog {
   margin: auto;
@@ -58,8 +57,8 @@
 }
 
 .closeb {
-  color: rgb(255, 255, 255);  /* Change this to white if you prefer */
-  opacity: 1;  /* This ensures that the color is not faded out */
+  color: rgb(255, 255, 255);
+  opacity: 1;
   background-color: #ff0000;
 }
 
@@ -69,26 +68,23 @@
   opacity: 1;
 }
 
-
 .modal-header,
 .modal-body {
-    flex: 0 0 auto; /* Don't grow, don't shrink, be the size of their content */
-}
-.modal-body {
-  flex-grow: 1; /* Grow to fill any remaining space */
-  overflow-y: auto; /* If content is too large, let it scroll */
+  flex: 0 0 auto;
 }
 
+.modal-body {
+  flex-grow: 1;
+  overflow-y: auto;
+}
 
 .closeb span {
-  font-size: 1.2rem;  /* Adjust this value as needed */
+  font-size: 1.2rem;
 }
+
 .modal-custom-size {
-  width: 90%;  /* Custom width */
-  max-width: 1200px;  /* Maximum width */
-  height: 90%;  /* Custom height */
-  max-height: 1200px;  /* Maximum height */
+  width: 90%;
+  max-width: 1200px;
+  height: 90%;
+  max-height: 1200px;
 }
-
-
-

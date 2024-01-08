@@ -1,35 +1,32 @@
-
-
 /* Show the submenu on hover */
 .dropdown-item:hover + .submenu, .submenu:hover {
     display: block;
 }
 .submenu {
     position: absolute;
-    left: 100%; /* Align to the left of the parent item */
+    left: 100%;
     top: 0;
     z-index: 1000;
-    display: none; /* Initially hide the submenu */
-    min-width: 160px; /* Same as Bootstrap dropdown */
-    padding: .5rem 0; /* Same as Bootstrap dropdown */
-    margin: .125rem 0 0; /* Same as Bootstrap dropdown */
-    font-size: 1rem; /* Same as Bootstrap dropdown */
-    color: #212529; /* Same as Bootstrap dropdown */
+    display: none;
+    min-width: 160px;
+    padding: .5rem 0;
+    margin: .125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
     text-align: left;
     list-style: none;
-    background-color: #fff; /* Same as Bootstrap dropdown */
+    background-color: #fff;
     background-clip: padding-box;
-    border: 1px solid rgba(0,0,0,.15); /* Same as Bootstrap dropdown */
-    border-radius: .25rem; /* Same as Bootstrap dropdown */
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
 }
 
-/* Optional: Add a small arrow to indicate a submenu */
 .submenu:before {
     content: "";
     position: absolute;
     top: 10px;
-    right: -5px; /* Change to 'right' since the submenu is on the left */
+    left: -5px;
     border-top: 5px solid transparent;
     border-bottom: 5px solid transparent;
-    border-left: 5px solid #fff; /* Arrow pointing to the right */
+    border-right: 5px solid #fff;
 }

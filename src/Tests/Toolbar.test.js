@@ -1,4 +1,4 @@
-/*import React from 'react';
+import React from 'react';
 import { render } from '@testing-library/react';
 import Toolbar from '../views/ToolbarView';
 import UserContext from '../components/UserContext';
@@ -51,4 +51,3 @@ describe('Toolbar', () => {
 
   // Agrega más pruebas según sea necesario
 });
-*/

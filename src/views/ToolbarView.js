@@ -173,11 +173,11 @@ const fetchQuizFeedback = async (quizId) => {
                 Bienvenido, profesor {user.name}
             </span>
             <ProfessorDropdownButton
-                title="Dropdown 1 Title"
+                title="Gestionar Cuestionarios"
                 onAction={props.onProfessorAction} 
             />
             <Professor2DropdownButton
-                title="Dropdown 2 Title"
+                title="Gestionar Lecciones"
                 onAction={props.onProfessorAction} 
             />
         </>

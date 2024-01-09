@@ -9,9 +9,9 @@ const Professor2DropdownButton = ({ title, onAction }) => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-                <Dropdown.Item onClick={() => onAction('action5')}>Action 5</Dropdown.Item>
-                <Dropdown.Item onClick={() => onAction('action6')}>Action 6</Dropdown.Item>
-                <Dropdown.Item onClick={() => onAction('action7')}>Action 7</Dropdown.Item>
+                <Dropdown.Item onClick={() => onAction('action5')}>Crear Lección</Dropdown.Item>
+                <Dropdown.Item onClick={() => onAction('action6')}>Eliminar Lección</Dropdown.Item>
+                <Dropdown.Item onClick={() => onAction('action7')}>Modificar Lección</Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
     );

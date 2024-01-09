@@ -3,7 +3,7 @@ import axios from 'axios';
 const fetchQuizData = async (quizId) => {
     console.log(`Fetching data for quizId: ${quizId}`);
     try {
-        const response = await axios.get(`http://34.125.183.229:3001/quiz/all/${quizId}`);
+        const response = await axios.get(`/api/quiz/all/${quizId}`);
         console.log('Quiz data received:', response.data);
         return response.data;
     } catch (error) {
@@ -14,7 +14,7 @@ const fetchQuizData = async (quizId) => {
 
 const submitQuizAnswers = async (userResponses) => {
     try {
-        const response = await axios.post('http://34.125.183.229:3001/quiz/validateAll', {
+        const response = await axios.post('/api/quiz/validateAll', {
             responses: userResponses
         });
         return response.data;

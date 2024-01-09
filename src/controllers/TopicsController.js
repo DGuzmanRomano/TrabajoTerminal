@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const fetchTopics = async () => {
     try {
-        const response = await axios.get('http://34.125.183.229:3001/api/lectures');
+        const response = await axios.get('/api/api/lectures');
         console.log("Fetched Topics:", response.data);
         return response.data; 
     } catch (error) {

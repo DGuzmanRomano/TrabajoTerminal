@@ -9,7 +9,6 @@ jest.mock('../controllers/QuizzesController', () => ({
   fetchQuizzes: jest.fn(() => Promise.resolve([])),
 }));
 
-// Mock global de fetch
 global.fetch = jest.fn(() =>
   Promise.resolve({
     json: () => Promise.resolve([]), // Puedes ajustar esto para simular diferentes respuestas
@@ -30,9 +29,9 @@ describe('Toolbar', () => {
       </UserContext.Provider>
     );
 
-    const welcomeText = await findByText(`Bienvenido, profesor ${user.name}`);
-    expect(welcomeText).toBeInTheDocument();
-    // Agrega más expectativas según los elementos específicos de la UI para profesores
+    const TextoBienvenida = await findByText(`Bienvenido, profesor ${user.name}`);
+    expect(TextoBienvenida).toBeInTheDocument();
+    
   });
 
   it('muestra controles de estudiante para usuarios con rol de estudiante', async () => {
@@ -44,10 +43,8 @@ describe('Toolbar', () => {
       </UserContext.Provider>
     );
 
-    const welcomeText = await findByText('Bienvenido, Estudiante');
-    expect(welcomeText).toBeInTheDocument();
-    // Agrega más expectativas según los elementos específicos de la UI para estudiantes
-  });
+    const TextoBienvenida = await findByText('Bienvenido, Estudiante');
+    expect(TextoBienvenida).toBeInTheDocument();
+     });
 
-  // Agrega más pruebas según sea necesario
 });

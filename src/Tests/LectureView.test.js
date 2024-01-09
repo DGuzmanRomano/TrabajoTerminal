@@ -5,25 +5,24 @@ import axios from 'axios';
 import LectureView from '../views/LectureView';
 import UserContext from '../components/UserContext';
 
-// Mock axios
+// Simulación de axios
 jest.mock('axios');
 
 describe('LectureView', () => {
-  it('renders the lecture content when provided with a lectureId', async () => {
-    // Mock implementation of axios.get
-    axios.get.mockResolvedValue({ data: 'Mocked Lecture Content' });
+  it('renderiza el contenido de la lección cuando se proporciona un Id', async () => {
+    // Implementación simulada de axios.get
+    axios.get.mockResolvedValue({ data: 'Contenido de Leccion de prueba' });
 
-    // Render the component with a specific lectureId
+    // Renderiza el componente con un lectureId específico
     const { findByText } = render(
-      <UserContext.Provider value={{ user: { id: '123', role: 'student' } }}>
+      <UserContext.Provider value={{ user: { id: '123', role: 'estudiante' } }}>
         <LectureView lectureId="1" />
       </UserContext.Provider>
     );
 
-    // Check if the mocked lecture content is rendered
-    const content = await findByText('Mocked Lecture Content');
+    // Comprueba si se renderiza el contenido de la lección de prueba
+    const content = await findByText('Contenido de Leccion de prueba');
     expect(content).toBeInTheDocument();
   });
 
-  // Additional tests can be added here
 });

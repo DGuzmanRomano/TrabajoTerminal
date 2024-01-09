@@ -10,8 +10,9 @@ const ProfessorDropdownButton = ({ title, onAction }) => {
 
             <Dropdown.Menu>
                 <Dropdown.Item onClick={() => onAction('action1')}>Crear Cuestionario</Dropdown.Item>
-                <Dropdown.Item onClick={() => onAction('action2')}>Eliminar Cuestionario</Dropdown.Item>
-                <Dropdown.Item onClick={() => onAction('action3')}>Modificar Cuestionario</Dropdown.Item>
+                
+                <Dropdown.Item onClick={() => onAction('action2')}>Modificar Cuestionario</Dropdown.Item>
+                <Dropdown.Item onClick={() => onAction('action3')}>Eliminar Cuestionario</Dropdown.Item>
                 <Dropdown.Item onClick={() => onAction('action4')}>Ver calificaciones</Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>

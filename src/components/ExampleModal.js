@@ -6,16 +6,21 @@ const ExampleModal = ({ isOpen, content, title, onClose }) => {
     const [showAlert, setShowAlert] = useState(false);
 
     const handleCopyToClipboard = () => {
+        if (!navigator.clipboard) {
+            console.error('Clipboard not available');
+            return;
+        }
+    
         navigator.clipboard.writeText(content)
             .then(() => {
                 setShowAlert(true);
-                setTimeout(() => setShowAlert(false), 2000); 
+                setTimeout(() => setShowAlert(false), 2000);
             })
             .catch((err) => {
                 console.error('Could not copy text: ', err);
-               
             });
     };
+    
 
     return (
         <Modal show={isOpen} onHide={onClose} size="lg">

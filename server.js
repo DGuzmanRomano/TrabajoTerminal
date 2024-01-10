@@ -16,15 +16,16 @@ app.use(express.json());
 
 
 
-
+/*
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'd',
     password: 'qazwsx123456',
     database: 'tt'
 });
+*/
 
-/*
+
 const db = mysql.createPool({
     host: '34.132.246.80',
     user: 'root',
@@ -33,7 +34,7 @@ const db = mysql.createPool({
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
-});*/
+});
 
 const PORT = 3001;
 app.listen(PORT, '0.0.0.0', () => {

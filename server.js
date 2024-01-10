@@ -26,7 +26,7 @@ const db = mysql.createConnection({
 */
 
 const db = mysql.createPool({
-    host: '34.125.183.229',
+    host: '34.132.246.80',
     user: 'root',
     password: '123456',
     database: 'tt',

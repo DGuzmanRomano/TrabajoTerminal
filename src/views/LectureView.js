@@ -32,7 +32,7 @@ const LectureView = ({ lectureId, content }) => {
 
     const fetchLectures = async () => {
         try {
-            const response = await fetch('http://34.125.183.229:3001/api/lectures');
+            const response = await fetch('http://localhost:3001/api/lectures');
             if (!response.ok) throw new Error('Failed to fetch lectures');
             const lectures = await response.json();
             setLecturesList(lectures);
@@ -122,7 +122,7 @@ const LectureView = ({ lectureId, content }) => {
       };
   
       try {
-          const response = await fetch('http://34.125.183.229:3001/add-lecture', {
+          const response = await fetch('http://localhost:3001/add-lecture', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(lectureData)
@@ -203,7 +203,7 @@ const handleCorrectOptionChange = (questionIndex, optionIndex) => {
 
 const handleDeleteLecture = async (lectureId) => {
     try {
-        const response = await fetch(`http://34.125.183.229:3001/delete-lecture/${lectureId}`, { method: 'DELETE' });
+        const response = await fetch(`http://localhost:3001/delete-lecture/${lectureId}`, { method: 'DELETE' });
         if (!response.ok) throw new Error('Failed to delete lecture');
         fetchLectures(); // Refresh the list after deletion
     } catch (error) {
@@ -288,7 +288,7 @@ const handleQuestionSubmit = async () => {
     
 
     try {
-        const response = await fetch('http://34.125.183.229:3001/add-question', {
+        const response = await fetch('http://localhost:3001/add-question', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(quizData)

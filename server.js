@@ -42,8 +42,12 @@ app.listen(PORT, '0.0.0.0', () => {
 });
 
 app.get('/api/lectures', (req, res) => {
-    const query = 'SELECT lecture_id, lecture_title FROM lectures';
-    db.query(query, (err, results) => {
+    const userId = req.query.userId; 
+    if (!userId) {
+        return res.status(400).send('User ID is required.');
+    }
+    const query = 'SELECT lecture_id, lecture_title FROM lectures WHERE author_id = ?';
+    db.query(query, [userId], (err, results) => {
         if (err) {
             console.error(err);
             return res.status(500).send('Database error.');

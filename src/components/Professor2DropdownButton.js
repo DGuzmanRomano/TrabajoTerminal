@@ -11,8 +11,6 @@ const Professor2DropdownButton = ({ title, onAction }) => {
             <Dropdown.Menu>
                 <Dropdown.Item onClick={() => onAction('action5')}>Crear Lección</Dropdown.Item>
                 
-                <Dropdown.Item onClick={() => onAction('action6')}>Modificar Lección</Dropdown.Item>
-                <Dropdown.Item onClick={() => onAction('action7')}>Eliminar Lección</Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
     );

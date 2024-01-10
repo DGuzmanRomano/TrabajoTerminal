@@ -31,8 +31,12 @@ const LectureView = ({ lectureId, content }) => {
 
 
     const fetchLectures = async () => {
+        if (!user || !user.id) {
+            console.log('User not logged in.');
+            return;
+        }
         try {
-            const response = await fetch('http://34.125.183.229:3001/api/lectures');
+            const response = await fetch(`http://34.125.183.229:3001/api/lectures?userId=${user.id}`);
             if (!response.ok) throw new Error('Failed to fetch lectures');
             const lectures = await response.json();
             setLecturesList(lectures);
@@ -40,6 +44,7 @@ const LectureView = ({ lectureId, content }) => {
             console.error('Error fetching lectures:', error);
         }
     };
+    
     
 
     useEffect(() => {
@@ -68,7 +73,7 @@ const LectureView = ({ lectureId, content }) => {
             setLectureText('');
             setQuestions([{
                 question: '', 
-                type: 'text',
+                type: 'text_answer',
                 codeSnippet: '',
                 options: ['', '', '', ''],
                 correctOption: 0,
@@ -81,7 +86,7 @@ const LectureView = ({ lectureId, content }) => {
 
     const [questions, setQuestions] = useState([{
         question: '', 
-        type: 'text', // 'text', 'true_false', or 'multiple_choice'
+        type: 'text_answer', // 'text', 'true_false', or 'multiple_choice'
         codeSnippet: '', // For the code snippet
         options: ['', '', '', ''], // Four options for multiple-choice
         correctOption: 0, // Index of the correct option
@@ -175,7 +180,7 @@ const handleAddQuestion = () => {
         ...questions,
         {
             question: '', 
-            type: 'text', // Default to 'text'
+            type: 'text_answer', // Default to 'text'
             answer: '', // For text and true/false questions
             options: ['', '', '', ''], // Four options for multiple-choice
             correctOption: 0 // Index of the correct option for multiple-choice
@@ -222,16 +227,17 @@ const handleQuestionSubmit = async () => {
 
     // Validate each question-answer pair
     questions.forEach(({ question, type, answer, correctAnswer }, index) => {
-        if (!question.trim()) {
+        if (!question || !question.trim()) {
             validationErrors[index] = { ...validationErrors[index], question: 'Question is required.' };
             isValid = false;
         }
-
-        if (type === 'text' && !answer.trim()) {
+    
+        if (type === 'text_answer' && (!answer || !answer.trim())) {
             validationErrors[index] = { ...validationErrors[index], answer: 'Answer is required.' };
             isValid = false;
         }
     });
+    
 
     if (!isValid) {
         // Update state to display validation errors
@@ -246,13 +252,13 @@ const handleQuestionSubmit = async () => {
         let answers = [];
         
         switch (q.type) {
-            case 'text':
+            case 'text_answer':
                 answers.push({ text: q.answer, is_correct: 1 });
                 break;
             case 'true_false':
                 answers = [
-                    { text: 'true', is_correct: q.correctAnswer === 'true' ? 1 : 0 },
-                    { text: 'false', is_correct: q.correctAnswer === 'false' ? 1 : 0 }
+                    { text: 'Verdadero', is_correct: q.correctAnswer === 'true' ? 1 : 0 },
+                    { text: 'Falso', is_correct: q.correctAnswer === 'false' ? 1 : 0 }
                 ];
                 break;
             case 'multiple_choice':
@@ -304,7 +310,7 @@ const handleQuestionSubmit = async () => {
         // Reset form or update UI as needed
         setQuestions([{
             question: '', 
-            type: 'text',
+            type: 'text_answer',
             answer: '',
             options: ['', '', '', ''],
             correctOption: 0,
@@ -396,7 +402,7 @@ if (content === 'createLecture') {
                     <p>Pregunta {index + 1}:</p>
                     <input type="text" value={q.question} onChange={(e) => handleQuestionChange(index, 'question', e.target.value)} />
                     <select value={q.type} onChange={(e) => handleQuestionChange(index, 'type', e.target.value)}>
-                        <option value="text">Texto</option>
+                        <option value="text_answer">Texto</option>
                         <option value="true_false">Verdadero / Falso</option>
                         <option value="multiple_choice">Opción múltiple</option> {/* Add this line */}
                     </select>
@@ -416,7 +422,7 @@ if (content === 'createLecture') {
                 />
             </div>
 
-                {q.type === 'text' && (
+                {q.type === 'text_answer' && (
                     <div>
                         <p>Respuesta:</p>
                         <textarea value={q.answer} onChange={(e) => handleQuestionChange(index, 'answer', e.target.value)} />
@@ -426,11 +432,11 @@ if (content === 'createLecture') {
                     <div>
                         <p>Respuesta Correcta:</p>
                         <label>
-                            <input type="radio" value="true" checked={q.correctAnswer === 'true'} onChange={(e) => handleQuestionChange(index, 'correctAnswer', 'true')} />
+                            <input type="radio" value="Verdadero" checked={q.correctAnswer === 'true'} onChange={(e) => handleQuestionChange(index, 'correctAnswer', 'true')} />
                             Verdadero
                         </label>
                         <label>
-                            <input type="radio" value="false" checked={q.correctAnswer === 'false'} onChange={(e) => handleQuestionChange(index, 'correctAnswer', 'false')} />
+                            <input type="radio" value="Falso" checked={q.correctAnswer === 'false'} onChange={(e) => handleQuestionChange(index, 'correctAnswer', 'false')} />
                             Falso
                         </label>
                     </div>

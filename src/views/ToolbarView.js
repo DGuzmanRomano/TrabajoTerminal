@@ -170,7 +170,7 @@ const fetchQuizFeedback = async (quizId) => {
     const professorControls = user && user.role === 'professor' && (
         <>
             <span className="navbar-text welcome-message">
-                Bienvenido, profesor {user.name}
+                 {user.name}
             </span>
             <ProfessorDropdownButton
                 title="Gestionar Cuestionarios"

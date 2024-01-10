@@ -39,8 +39,8 @@ const Quiz = ({ quizId }) => {
                         ? userResponse
                         : userResponse?.option_text || "";
                     const correctOption = question.options.find(o => o.is_correct);
-                    const correctAnswer = correctOption ? correctOption.option_text : "No correct answer";
-                    const questionFeedback = question.feedback || "No feedback provided";
+                    const correctAnswer = correctOption ? correctOption.option_text : "No hay respuesta";
+                    const questionFeedback = question.feedback || "No hay retroalimentacion";
                     const isCorrect = question.options.some((o) => (o.option_text === userAnswerText && o.is_correct));
                     const backgroundColor = isCorrect ? 'green' : 'red';
 
@@ -114,7 +114,7 @@ const Quiz = ({ quizId }) => {
                         <input
                             type="text"
                             className="text-answer-input"
-                            placeholder="Type your answer here"
+                            placeholder="Escribe tu respuesta"
                             value={userResponses[data[activeQuestionIndex].id] || ''}
                             onChange={(e) => handleTextChange(data[activeQuestionIndex].id, e.target.value)}
                         />

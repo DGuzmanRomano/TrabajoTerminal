@@ -47,7 +47,7 @@ const Toolbar = (props) => {
     const fetchUserQuizzes = async () => {
         if (user && user.role === 'student') {
             try {
-                const response = await fetch(`/api/user-quizzes/${user.id}`);
+                const response = await fetch(`http://34.125.183.229:3001/user-quizzes/${user.id}`);
                 const quizzes = await response.json();
                 setUserQuizzes(quizzes); // Set the quizzes in state
             } catch (error) {
@@ -84,7 +84,7 @@ const Toolbar = (props) => {
 
 useEffect(() => {
     if (user) {
-        const endpoint = `/api/api/user-lectures?userId=${user.id}&userRole=${user.role}`;
+        const endpoint = `http://34.125.183.229:3001/api/user-lectures?userId=${user.id}&userRole=${user.role}`;
         fetch(endpoint)
         .then(response => response.json())
         .then(data => {
@@ -111,7 +111,7 @@ useEffect(() => {
 
     
 useEffect(() => {
-    fetch('/api/examples') 
+    fetch('http://34.125.183.229:3001/examples') 
         .then(response => response.json())
         .then(data => {
             setExampleTitles(data);
@@ -134,7 +134,7 @@ const [quizFeedback, setQuizFeedback] = useState(null);
 
 const fetchQuizFeedback = async (quizId) => {
     try {
-        const response = await fetch(`/api/quiz-feedback/${user.id}/${quizId}`);
+        const response = await fetch(`http://34.125.183.229:3001/quiz-feedback/${user.id}/${quizId}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
